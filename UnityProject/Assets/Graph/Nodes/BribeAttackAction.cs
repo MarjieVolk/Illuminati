@@ -15,10 +15,11 @@ public class BribeAttackAction : Action {
 	}
 
 	override public List<Highlightable> getPossibleTargets() {
-		List<NodeData> nodes = Graph.instance.getNeutralConnectedNodes(this.gameObject.GetComponent<NodeData>());
+		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
+		List<NodeData> nodes = Graph.instance.getNeutralConnectedNodes(thisNode);
 		List<Highlightable> ret = new List<Highlightable>();
 		foreach (NodeData node in nodes) {
-			if (this.gameObject.GetComponent<NodeData>().owner != node.owner) {
+			if (this.gameObject.GetComponent<NodeData>().Owner != node.Owner) {
 				ret.Add(node);
 			}
 		}
