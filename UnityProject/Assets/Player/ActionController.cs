@@ -12,22 +12,24 @@ namespace Assets.Player
 
         public void selectAction(Action toSelect)
         {
-            PlayerData CurrentPlayer = this.GetComponent<TurnController>().CurrentPlayer;
             //if the action is targeted
             //ask for targets
             if (toSelect.isTargeting)
             {
                 //highlight the possible targets
-                toSelect.getPossibleTargets().ForEach
+                toSelect.getPossibleTargets().ForEach((x) => x.setHighlighted());
+
                 //attach event handlers to the possible targets so they're selected when they're clicked
-                //make a cancel button, attach an event handler to it
+                toSelect.getPossibleTargets().ForEach((x) => x.OnClicked += () => toSelect.scheduleUse(x));
+
+                // TODO make a cancel button, attach an event handler to it
 
                 return;
             }
             
             //no target needed
             //add the action to the player
-            CurrentPlayer.scheduleAction(toSelect);
+            toSelect.scheduleUse(null);
         }
 
         // Use this for initialization
