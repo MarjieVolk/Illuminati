@@ -25,4 +25,6 @@ public abstract class Action : MonoBehaviour {
 	public GameObject getButton() {
 		return button;
 	}
+
+    public abstract void Activate();
 }
