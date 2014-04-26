@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class Action : MonoBehaviour {
 
@@ -16,9 +17,9 @@ public abstract class Action : MonoBehaviour {
 	
 	}
 
-	public abstract GameObject[] getPossibleTargets();
+	public abstract List<Highlightable> getPossibleTargets();
 
-	public abstract bool scheduleUse(GameObject target);
+	public abstract bool scheduleUse(Highlightable target);
 
 	public abstract void clearScheduledUse();
 

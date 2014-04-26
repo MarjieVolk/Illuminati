@@ -5,6 +5,8 @@ using System;
 public class Highlightable : MonoBehaviour {
 	
 	public Sprite highlightSprite;
+    public delegate void OnClickHandler();
+    public event OnClickHandler OnClicked;
 
 	private Sprite normalSprite;
 	private SpriteRenderer spriteRenderer;
@@ -27,4 +29,9 @@ public class Highlightable : MonoBehaviour {
 	public void setUnhighlighted() {
 		spriteRenderer.sprite = normalSprite;
 	}
+
+    void OnMouseUpAsButton()
+    {
+        if (OnClicked != null) OnClicked();
+    }
 }
