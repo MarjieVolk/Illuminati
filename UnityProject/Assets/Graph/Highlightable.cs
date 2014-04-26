@@ -30,14 +30,6 @@ public class Highlightable : MonoBehaviour {
 		spriteRenderer.sprite = normalSprite;
 	}
 
-	void OnMouseEnter() {
-		setHighlighted();
-	}
-
-	void OnMouseExit() {
-		setUnhighlighted();
-	}
-
     void OnMouseUpAsButton()
     {
         if (OnClicked != null) OnClicked();

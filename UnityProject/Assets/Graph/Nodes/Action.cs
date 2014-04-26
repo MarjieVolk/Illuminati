@@ -5,10 +5,11 @@ using System.Collections.Generic;
 public abstract class Action : MonoBehaviour {
 
 	public bool isTargeting;
+	public GameObject button;
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
@@ -22,7 +23,9 @@ public abstract class Action : MonoBehaviour {
 
 	public abstract void clearScheduledUse();
 
-    public abstract void Activate();
+	public GameObject getButton() {
+		return button;
+	}
 
-	public GameObject getButton();
+    public abstract void Activate();
 }
