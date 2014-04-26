@@ -16,11 +16,12 @@ namespace Assets.Player
             //ask for targets
             if (selected.isTargeting)
             {
+                List<Highlightable> possibleTargets = selected.getPossibleTargets();
                 //highlight the possible targets
-                selected.getPossibleTargets().ForEach((x) => x.setHighlighted());
+                possibleTargets.ForEach((x) => x.setHighlighted());
 
                 //attach event handlers to the possible targets so they're selected when they're clicked
-                selected.getPossibleTargets().ForEach((x) => x.OnClicked += () => scheduleAction(selected, x));
+                possibleTargets.ForEach((x) => x.OnClicked += () => scheduleAction(selected, x));
 
                 // TODO make a cancel button, attach an event handler to it
 
@@ -34,6 +35,12 @@ namespace Assets.Player
 
         void scheduleAction(Action toSchedule, Highlightable target)
         {
+            //the other targets should not be highlighted now
+            foreach (Highlightable toUnHighlight in toSchedule.getPossibleTargets())
+            {
+                toUnHighlight.setUnhighlighted();
+            }
+
             PlayerData currentPlayer = this.GetComponent<TurnController>().CurrentPlayer;
 
             toSchedule.SetScheduled(target);
