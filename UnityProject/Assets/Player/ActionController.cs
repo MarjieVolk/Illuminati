@@ -8,12 +8,14 @@ namespace Assets.Player
 {
     public class ActionController : MonoBehaviour
     {
-        private Action selectedAction;
+        public bool inSelectionState { get; private set; }
 
         private Dictionary<Highlightable, Highlightable.OnClickHandler> clickHandlers;
 
         public void selectAction(Action selected)
         {
+            inSelectionState = true;
+
             //if the action is targeted
             //ask for targets
             if (selected.isTargeting)
@@ -48,12 +50,15 @@ namespace Assets.Player
 
             toSchedule.SetScheduled(target);
             if (!currentPlayer.scheduleAction(toSchedule)) toSchedule.clearScheduled();
+
+            inSelectionState = false;
         }
 
         // Use this for initialization
         void Start()
         {
             clickHandlers = new Dictionary<Highlightable, Highlightable.OnClickHandler>();
+            inSelectionState = false;
         }
 
         // Update is called once per frame
