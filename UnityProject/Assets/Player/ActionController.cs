@@ -10,17 +10,17 @@ namespace Assets.Player
     {
         private Action selectedAction;
 
-        public void selectAction(Action toSelect)
+        public void selectAction(Action selected)
         {
             //if the action is targeted
             //ask for targets
-            if (toSelect.isTargeting)
+            if (selected.isTargeting)
             {
                 //highlight the possible targets
-                toSelect.getPossibleTargets().ForEach((x) => x.setHighlighted());
+                selected.getPossibleTargets().ForEach((x) => x.setHighlighted());
 
                 //attach event handlers to the possible targets so they're selected when they're clicked
-                toSelect.getPossibleTargets().ForEach((x) => x.OnClicked += () => toSelect.scheduleUse(x));
+                selected.getPossibleTargets().ForEach((x) => x.OnClicked += () => scheduleAction(selected, x));
 
                 // TODO make a cancel button, attach an event handler to it
 
@@ -29,7 +29,15 @@ namespace Assets.Player
             
             //no target needed
             //add the action to the player
-            toSelect.scheduleUse(null);
+            selected.scheduleUse(null);
+        }
+
+        void scheduleAction(Action toSchedule, Highlightable target)
+        {
+            PlayerData currentPlayer = this.GetComponent<TurnController>().CurrentPlayer;
+
+            toSchedule.SetTarget(target);
+            currentPlayer.scheduleAction(toSchedule);
         }
 
         // Use this for initialization
