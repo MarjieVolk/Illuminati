@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ActionButton : MonoBehaviour {
 
+    public event Highlightable.OnClickHandler OnClick;
+
 	public Sprite hover, selected;
 
 	private Sprite normal;
@@ -45,5 +47,7 @@ public class ActionButton : MonoBehaviour {
 		isSelected = true;
 		spriteRenderer.sprite = selected;
 		menu.setActionSelected(true);
+
+        if (null != OnClick) OnClick();
 	}
 }
