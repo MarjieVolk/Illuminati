@@ -41,9 +41,7 @@ public class Graph : MonoBehaviour {
 	/// <returns>The connected nodes.</returns>
 	/// <param name="node">Node.</param>
 	public List<NodeData> getConnectedNodes(NodeData node) {
-		Debug.Log("Starting");
 		List<EdgeData> edges = getConnectedEdges(node);
-		Debug.Log("Found " + edges.Count + " edges");
 		List<NodeData> nodes = new List<NodeData>();
 		foreach (EdgeData edge in edges) {
 			if (edge.nodeOne.GetComponent<NodeData>() == node) {
