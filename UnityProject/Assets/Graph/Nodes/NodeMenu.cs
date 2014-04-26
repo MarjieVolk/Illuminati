@@ -75,7 +75,6 @@ public class NodeMenu : MonoBehaviour {
 		if (button != null) {
 			button.OnMouseEnter();
 		}
-		Debug.Log("Hovering over " + obj);
 	}
 
 	void OnMouseUpAsButton() {
