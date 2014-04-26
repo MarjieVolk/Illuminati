@@ -10,6 +10,8 @@ namespace Assets.Player
     {
         private Action selectedAction;
 
+        private Dictionary<Highlightable, Highlightable.OnClickHandler> clickHandlers;
+
         public void selectAction(Action selected)
         {
             //if the action is targeted
@@ -21,7 +23,7 @@ namespace Assets.Player
                 possibleTargets.ForEach((x) => x.setHighlighted());
 
                 //attach event handlers to the possible targets so they're selected when they're clicked
-                possibleTargets.ForEach((x) => x.OnClicked += () => scheduleAction(selected, x));
+                possibleTargets.ForEach((x) => { clickHandlers[x] = () => scheduleAction(selected, x); x.OnClicked += clickHandlers[x]; });
 
                 // TODO make a cancel button, attach an event handler to it
 
@@ -36,9 +38,10 @@ namespace Assets.Player
         void scheduleAction(Action toSchedule, Highlightable target)
         {
             //the other targets should not be highlighted now
-            foreach (Highlightable toUnHighlight in toSchedule.getPossibleTargets())
+            foreach (Highlightable noLongerATarget in toSchedule.getPossibleTargets())
             {
-                toUnHighlight.setUnhighlighted();
+                noLongerATarget.setUnhighlighted();
+                noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];
             }
 
             PlayerData currentPlayer = this.GetComponent<TurnController>().CurrentPlayer;
@@ -50,7 +53,7 @@ namespace Assets.Player
         // Use this for initialization
         void Start()
         {
-
+            clickHandlers = new Dictionary<Highlightable, Highlightable.OnClickHandler>();
         }
 
         // Update is called once per frame
