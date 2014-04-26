@@ -41,15 +41,17 @@ public class Graph : MonoBehaviour {
 	/// <returns>The connected nodes.</returns>
 	/// <param name="node">Node.</param>
 	public List<NodeData> getConnectedNodes(NodeData node) {
+		Debug.Log("Starting");
 		List<EdgeData> edges = getConnectedEdges(node);
+		Debug.Log("Found " + edges.Count + " edges");
 		List<NodeData> nodes = new List<NodeData>();
 		foreach (EdgeData edge in edges) {
-			if (edge.nodeOne == node) {
+			if (edge.nodeOne.GetComponent<NodeData>() == node) {
 				nodes.Add(edge.nodeTwo.GetComponent<NodeData>());
-			} else if (edge.nodeTwo == node) {
+			} else if (edge.nodeTwo.GetComponent<NodeData>() == node) {
 				nodes.Add(edge.nodeOne.GetComponent<NodeData>());
 			} else {
-				Debug.LogError("Edge listed as connected to Node, but it is not");
+				Debug.LogError("Edge listed as connected to Node, but it is not -- one:" + edge.nodeOne + ", two:" + edge.nodeTwo + ", desired:" + node);
 			}
 		}
 		return nodes;
