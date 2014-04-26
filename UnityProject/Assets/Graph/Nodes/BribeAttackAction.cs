@@ -18,14 +18,6 @@ public class BribeAttackAction : Action {
 		return null;
 	}
 	
-	override public bool scheduleUse(Highlightable target) {
-		return false;
-	}
-	
-	override public void clearScheduledUse() {
-
-	}
-	
 	override public void Activate() {
 
 	}

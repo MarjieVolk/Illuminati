@@ -5,9 +5,9 @@ using System;
 
 public abstract class Action : MonoBehaviour {
 
-	public bool isTargeting;
 	public GameObject button;
-
+	
+	protected bool isTargeting;
     protected bool isScheduled;
     protected Highlightable target;
 
