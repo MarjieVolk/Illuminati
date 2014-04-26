@@ -29,14 +29,14 @@ namespace Assets.Player
             
             //no target needed
             //add the action to the player
-            selected.scheduleUse(null);
+            scheduleAction(selected, null);
         }
 
         void scheduleAction(Action toSchedule, Highlightable target)
         {
             PlayerData currentPlayer = this.GetComponent<TurnController>().CurrentPlayer;
 
-            toSchedule.SetTarget(target);
+            toSchedule.SetScheduled(target);
             currentPlayer.scheduleAction(toSchedule);
         }
 
