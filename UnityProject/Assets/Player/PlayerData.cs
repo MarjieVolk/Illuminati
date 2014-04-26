@@ -21,16 +21,32 @@ public class PlayerData : MonoBehaviour {
     void OnGUI()
     {
         //Make buttons for each selected action (to cancel it, you see), indicate how many action points remain
+        int xLocation = 0;
+        foreach (Action action in selectedActions)
+        {
+            if (GUI.Button(new Rect(xLocation, 800, 100, 90), "" + xLocation))
+            {
+                cancelAction(action);
+            }
+            xLocation += 110;
+        }
+
+        GUI.TextArea(new Rect(0, 700, 100, 90), "Action points: " + actionPoints);
     }
 
     public void cancelAction(Action toCancel)
     {
         selectedActions.Remove(toCancel);
+        actionPoints++;
     }
 
-    public void scheduleAction(Action toSelect)
+    public bool scheduleAction(Action toSelect)
     {
+        if (actionPoints <= 0) return false;
+
         selectedActions.Add(toSelect);
+        actionPoints--;
+        return true;
     }
 
 	public void endTurn() {

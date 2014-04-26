@@ -37,7 +37,7 @@ namespace Assets.Player
             PlayerData currentPlayer = this.GetComponent<TurnController>().CurrentPlayer;
 
             toSchedule.SetScheduled(target);
-            currentPlayer.scheduleAction(toSchedule);
+            if (!currentPlayer.scheduleAction(toSchedule)) toSchedule.clearScheduled();
         }
 
         // Use this for initialization
