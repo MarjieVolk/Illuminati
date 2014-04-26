@@ -20,4 +20,6 @@ public abstract class Action : MonoBehaviour {
 	public abstract bool scheduleUse(GameObject target);
 
 	public abstract void clearScheduledUse();
+
+	public GameObject getButton();
 }
