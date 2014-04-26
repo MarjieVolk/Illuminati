@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerData : MonoBehaviour {
 
+    public string Name;
 	private int actionPoints;
 
 	// Use this for initialization
@@ -17,6 +18,10 @@ public class PlayerData : MonoBehaviour {
 
 	public void endTurn() {
 		actionPoints = 4;
-		// Notify controller to advance turn
 	}
+
+    public void startTurn()
+    {
+
+    }
 }
