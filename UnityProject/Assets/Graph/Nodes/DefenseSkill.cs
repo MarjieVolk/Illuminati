@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Skill : MonoBehaviour {
-
+public class DefenseSkill : MonoBehaviour {
+	
 	DominationType type;
-	bool isAttack; // true for attack skill, false for defense skill
 	int value;
 
 	// Use this for initialization
