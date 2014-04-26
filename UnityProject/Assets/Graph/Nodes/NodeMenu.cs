@@ -26,7 +26,7 @@ public class NodeMenu : MonoBehaviour {
 			offset *= 0.8f;
 			
 			GameObject realButton = (GameObject) Instantiate(button, transform.position + offset, Quaternion.identity);
-			//realButton.transform.parent = this.gameObject.transform;
+			realButton.transform.parent = this.gameObject.transform;
 			realButton.GetComponent<ActionButton>().setMenu(this);
 			buttons.Add(realButton);
 			
@@ -61,7 +61,34 @@ public class NodeMenu : MonoBehaviour {
 
 	void OnMouseExit() {
 		if (!isActionSelected) {
-			//hide();
+			hide();
+		}
+		clearChildHighlights();
+	}
+
+	void OnMouseOver() {
+		clearChildHighlights();
+
+		RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+		GameObject obj = hit.collider.gameObject;
+		ActionButton button = obj.GetComponent<ActionButton>();
+		if (button != null) {
+			button.OnMouseEnter();
+		}
+	}
+
+	void OnMouseUpAsButton() {
+		RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+		GameObject obj = hit.collider.gameObject;
+		ActionButton button = obj.GetComponent<ActionButton>();
+		if (button != null) {
+			button.OnMouseUpAsButton();
+		}
+	}
+
+	private void clearChildHighlights() {
+		foreach (GameObject obj in buttons) {
+			obj.GetComponent<ActionButton>().OnMouseExit();
 		}
 	}
 }

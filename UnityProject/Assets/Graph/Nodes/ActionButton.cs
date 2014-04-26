@@ -26,21 +26,21 @@ public class ActionButton : MonoBehaviour {
 	
 	}
 
-	void OnMouseEnter() {
+	public void OnMouseEnter() {
 		if (!isSelected) {
 			Debug.Log("Set to hover");
 			spriteRenderer.sprite = hover;
 		}
 	}
 
-	void OnMouseExit() {
+	public void OnMouseExit() {
 		if (!isSelected) {
 			Debug.Log("Set to normal");
 			spriteRenderer.sprite = normal;
 		}
 	}
 
-	void OnMouseUpAsButton() {
+	public void OnMouseUpAsButton() {
 		Debug.Log("Set to selected");
 		isSelected = true;
 		spriteRenderer.sprite = selected;
