@@ -7,7 +7,7 @@ public abstract class Action : MonoBehaviour {
 
 	public GameObject button;
 	
-	protected bool isTargeting;
+	public bool isTargeting { get; set;}
     protected bool isScheduled;
     protected Highlightable target;
 
