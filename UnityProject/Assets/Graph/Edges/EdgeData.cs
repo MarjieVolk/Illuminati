@@ -14,6 +14,8 @@ public class EdgeData : Highlightable {
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
+		direction = EdgeDirection.Neutral;
+		type = DominationType.Bribe;
 	}
 	
 	// Update is called once per frame
