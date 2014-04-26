@@ -20,6 +20,7 @@ public class NodeMenu : MonoBehaviour {
 		float dAngle = 360.0f / 5;
 		foreach (Action a in actions) {
 			GameObject button = a.getButton();
+			button.GetComponent<ActionButton>().setMenu(this);
 			float y = Mathf.Sin(angle);
 			float x = Mathf.Cos(angle);
 			Vector3 offset = new Vector3(x, y, 0);
@@ -32,6 +33,10 @@ public class NodeMenu : MonoBehaviour {
 
 	public void hide() {
 
+	}
+
+	public void setActionSelected(bool isActionSelected) {
+		this.isActionSelected = isActionSelected;
 	}
 
 	void OnMouseExit() {

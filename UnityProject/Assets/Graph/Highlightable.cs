@@ -27,12 +27,4 @@ public class Highlightable : MonoBehaviour {
 	public void setUnhighlighted() {
 		spriteRenderer.sprite = normalSprite;
 	}
-
-	void OnMouseEnter() {
-		setHighlighted();
-	}
-
-	void OnMouseExit() {
-		setUnhighlighted();
-	}
 }
