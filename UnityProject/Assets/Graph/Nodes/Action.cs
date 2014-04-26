@@ -22,4 +22,6 @@ public abstract class Action : MonoBehaviour {
 	public abstract void clearScheduledUse();
 
     public abstract void Activate();
+
+	public GameObject getButton();
 }
