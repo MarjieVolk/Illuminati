@@ -97,9 +97,9 @@ public class Graph : MonoBehaviour {
 		List<NodeData> nodes = new List<NodeData>();
 		foreach (EdgeData edge in edges) {
 			if (edge.direction == EdgeData.EdgeDirection.Neutral) {
-				NodaData other = edge.nodeOne;
+				NodeData other = edge.nodeOne.GetComponent<NodeData>();
 				if (node == other) {
-					other = edge.nodeTwo;
+					other = edge.nodeTwo.GetComponent<NodeData>();
 				}
 				nodes.Add(other);
 			}
