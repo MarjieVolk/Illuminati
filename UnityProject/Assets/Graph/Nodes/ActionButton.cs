@@ -8,7 +8,6 @@ public class ActionButton : MonoBehaviour {
 	public Sprite hover, selected;
 
 	private Sprite normal;
-	private SpriteRenderer spriteRenderer;
 
 	private bool isSelected = false;
 	private NodeMenu menu;
@@ -19,8 +18,7 @@ public class ActionButton : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-		normal = spriteRenderer.sprite;
+		normal = this.gameObject.GetComponent<SpriteRenderer>().sprite;
 	}
 	
 	// Update is called once per frame
@@ -29,23 +27,22 @@ public class ActionButton : MonoBehaviour {
 	}
 
 	public void OnMouseEnter() {
-		if (!isSelected) {
-			Debug.Log("Set to hover");
-			spriteRenderer.sprite = hover;
+		if (!isSelected && hover != null) {
+			this.gameObject.GetComponent<SpriteRenderer>().sprite = hover;
 		}
 	}
 
 	public void OnMouseExit() {
-		if (!isSelected) {
-			Debug.Log("Set to normal");
-			spriteRenderer.sprite = normal;
+		if (!isSelected && normal != null) {
+			this.gameObject.GetComponent<SpriteRenderer>().sprite = normal;
 		}
 	}
 
 	public void OnMouseUpAsButton() {
-		Debug.Log("Set to selected");
 		isSelected = true;
-		spriteRenderer.sprite = selected;
+		if (selected != null) {
+			this.gameObject.GetComponent<SpriteRenderer>().sprite = selected;
+		}
 		menu.setActionSelected(true);
 
         if (null != OnClick) OnClick();
