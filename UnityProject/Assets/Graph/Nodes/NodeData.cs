@@ -4,6 +4,7 @@ using System.Collections;
 public class NodeData : Highlightable {
 
 	private GameObject[] edges;
+	public PlayerData owner { get; private set; }
 
 	// Used for freezing the node for a certain number of turns after performing an action
 	private int nTurnsUntilAvailable;

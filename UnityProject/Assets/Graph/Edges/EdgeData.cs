@@ -6,6 +6,9 @@ public class EdgeData : Highlightable {
 	public GameObject nodeOne;
 	public GameObject nodeTwo;
 
+	public DominationType type {get; private set;}
+	public EdgeDirection direction {get; private set;}
+
 	float visibility;
 	
 	// Use this for initialization
@@ -17,4 +20,8 @@ public class EdgeData : Highlightable {
 	void Update () {
 	
 	}
+
+	public enum EdgeDirection {
+		OneToTwo, TwoToOne, Neutral
+	};
 }
