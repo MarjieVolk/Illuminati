@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Player;
 
 public class NodeMenu : MonoBehaviour {
 
@@ -28,6 +29,9 @@ public class NodeMenu : MonoBehaviour {
 			GameObject realButton = (GameObject) Instantiate(button, transform.position + offset, Quaternion.identity);
 			realButton.transform.parent = this.gameObject.transform;
 			realButton.GetComponent<ActionButton>().setMenu(this);
+
+            ActionController actionController = FindObjectOfType<ActionController>();
+            realButton.GetComponent<ActionButton>().OnClick += () => actionController.selectAction(a);
 			buttons.Add(realButton);
 			
 			angle -= dAngle;
