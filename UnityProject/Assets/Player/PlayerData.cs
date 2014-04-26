@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Influence : MonoBehaviour {
+public class PlayerData : MonoBehaviour {
 
-	public DominationType type;
-
-	// True if from nodeOne to nodeTwo, false if from nodeTwo to nodeOne
-	bool direction;
+	private int actionPoints;
 
 	// Use this for initialization
 	void Start () {
@@ -16,5 +13,10 @@ public class Influence : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void endTurn() {
+		actionPoints = 4;
+		// Notify controller to advance turn
 	}
 }

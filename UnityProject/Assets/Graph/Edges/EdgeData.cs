@@ -3,8 +3,8 @@ using System.Collections;
 
 public class EdgeData : MonoBehaviour {
 
-	GameObject nodeOne;
-	GameObject nodeTwo;
+	public GameObject nodeOne;
+	public GameObject nodeTwo;
 
 	float visibility;
 

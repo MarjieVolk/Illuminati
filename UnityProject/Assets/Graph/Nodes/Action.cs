@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Action : MonoBehaviour {
+public abstract class Action : MonoBehaviour {
+
+	public bool isTargeting;
 
 	// Use this for initialization
 	void Start () {
@@ -12,4 +14,10 @@ public class Action : MonoBehaviour {
 	void Update () {
 	
 	}
+
+	public abstract GameObject[] getPossibleTargets();
+
+	public abstract bool scheduleUse(GameObject target);
+
+	public abstract void clearScheduledUse();
 }

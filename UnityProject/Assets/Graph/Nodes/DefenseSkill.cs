@@ -3,8 +3,8 @@ using System.Collections;
 
 public class DefenseSkill : MonoBehaviour {
 	
-	DominationType type;
-	int value;
+	public DominationType type;
+	public int value;
 
 	// Use this for initialization
 	void Start () {
