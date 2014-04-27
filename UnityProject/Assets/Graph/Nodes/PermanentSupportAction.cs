@@ -78,10 +78,6 @@ public class PermanentSupportAction : Action {
 			DefenseSkill thisDefenseSkill = thisNode.getDefenseSkill(type);
 			targetDefenseSkill.value += getIncreaseAmount(thisDefenseSkill.getWorkingValue() - targetDefenseSkill.getWorkingValue());
 		}
-
-		// Increase edge visibility, whether you win or not
-		EdgeData connection = GraphUtility.instance.getConnectingEdge(node, thisNode);
-		connection.triggerEdge(0.6f);
 	}
 
 	private int getIncreaseAmount(int difference) {

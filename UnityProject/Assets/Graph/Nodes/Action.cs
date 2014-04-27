@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Assets.Player;
 
 public abstract class Action : MonoBehaviour {
 
 	public GameObject button;
+    public float PathVisibilityIncreaseProbability;
+    public float CarryingEdgeVisibilityIncreaseProbability;
 	
 	public bool isTargeting { get; set;}
     private Targetable target;
@@ -19,6 +22,16 @@ public abstract class Action : MonoBehaviour {
 		doActivate(target);
 		clearScheduled();
         GraphUtility.instance.TidyGraph();
+
+        //do applicable visibility increases
+        if (isTargeting && target.GetType() == typeof(NodeData))
+        {
+            if (GraphUtility.instance.getConnectedNodes(GetComponent<NodeData>()).Contains((NodeData)target))
+            {
+                GraphUtility.instance.getConnectingEdge(GetComponent<NodeData>(), (NodeData)target).triggerEdge(CarryingEdgeVisibilityIncreaseProbability);
+            }
+        }
+        IncreaseVisibilityBetweenNodes(TurnController.instance.CurrentPlayer.StartingNode, GetComponent<NodeData>(), PathVisibilityIncreaseProbability);
 	}
 	
 	public abstract List<Targetable> getPossibleTargets();
