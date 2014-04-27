@@ -40,6 +40,7 @@ public class PlayerData : MonoBehaviour {
     public void cancelAction(Action toCancel)
     {
         selectedActions.Remove(toCancel);
+        toCancel.clearScheduled();
         actionPoints++;
     }
 
@@ -57,6 +58,7 @@ public class PlayerData : MonoBehaviour {
         {
             action.Activate();
         }
+        selectedActions = new List<Action>();
 	}
 
     public void startTurn()
