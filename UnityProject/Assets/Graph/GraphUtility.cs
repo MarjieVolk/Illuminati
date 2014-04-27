@@ -226,4 +226,34 @@ public class GraphUtility : MonoBehaviour {
             }
         }
     }
+
+    public List<NodeData> TopologicalSortOnEdgeSubset(NodeData origin, HashSet<EdgeData> includedEdges)
+    {
+        Stack<NodeData> result = new Stack<NodeData>();
+        recTopoSort(origin, includedEdges, new HashSet<NodeData>(), result);
+
+        List<NodeData> ret = new List<NodeData>();
+        while (result.Count > 0)
+        {
+            ret.Add(result.Pop());
+        }
+
+        return ret;
+    }
+
+    private void recTopoSort(NodeData origin, HashSet<EdgeData> includedEdges, HashSet<NodeData> visitedNodes, Stack<NodeData> result)
+    {
+        if (visitedNodes.Contains(origin)) return;
+
+        visitedNodes.Add(origin);
+        foreach (NodeData node in getInfluencedNodes(origin))
+        {
+            EdgeData edge = getConnectingEdge(origin, node);
+            if (!includedEdges.Contains(edge)) continue;
+
+            recTopoSort(node, includedEdges, visitedNodes, result);
+        }
+
+        result.Push(origin);
+    }
 }

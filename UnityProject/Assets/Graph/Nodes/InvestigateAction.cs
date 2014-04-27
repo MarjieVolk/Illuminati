@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 
 using Assets.Graph;
+using Assets.Player;
 
 namespace Assets.Graph.Nodes
 {
@@ -37,6 +38,8 @@ namespace Assets.Graph.Nodes
             float visibilityIncreaseAmount = UnityEngine.Random.value * (maxVisibilityIncrease - minVisibilityIncrease) + minVisibilityIncrease;
 
             ((EdgeData)target).Visibility += visibilityIncreaseAmount;
+
+            IncreaseVisibilityBetweenNodes(TurnController.instance.CurrentPlayer.StartingNode, GetComponent<NodeData>(), 0.5f);
         }
 		
 		public override string getAdditionalTextForTarget(Targetable target) {
