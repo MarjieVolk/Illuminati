@@ -28,6 +28,9 @@ public abstract class Action : MonoBehaviour {
         this.target = target;
         isScheduled = true;
 
+		gameObject.GetComponent<NodeMenu>().clear();
+		gameObject.GetComponent<NodeMenu>().hide();
+
         return true;
     }
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Player;
 
 public class ActionButton : MonoBehaviour {
 
@@ -9,7 +10,6 @@ public class ActionButton : MonoBehaviour {
 
 	private Sprite normal;
 
-	private bool isSelected = false;
 	private NodeMenu menu;
 
 	public void setMenu(NodeMenu menu) {
@@ -26,24 +26,33 @@ public class ActionButton : MonoBehaviour {
 	
 	}
 
+	/// <summary>
+	/// Returns the sprite to normal, regardless of situation
+	/// </summary>
+	public void clear() {
+		this.gameObject.GetComponent<SpriteRenderer>().sprite = normal;
+	}
+
 	public void OnMouseEnter() {
-		if (!isSelected && hover != null) {
+		if (!ActionController.instance.inSelectionState && hover != null) {
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = hover;
 		}
 	}
 
 	public void OnMouseExit() {
-		if (!isSelected && normal != null) {
+		if (!ActionController.instance.inSelectionState && normal != null) {
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = normal;
 		}
 	}
 
 	public void OnMouseUpAsButton() {
-		isSelected = true;
+		if (ActionController.instance.inSelectionState) {
+			return;
+		}
+
 		if (selected != null) {
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = selected;
 		}
-		menu.setActionSelected(true);
 
         if (null != OnClick) OnClick();
 	}

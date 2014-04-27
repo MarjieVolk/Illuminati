@@ -7,7 +7,6 @@ public class NodeMenu : MonoBehaviour {
 
 	public bool isShown { get; private set; }
 
-	private bool isActionSelected = false;
 	private List<GameObject> buttons;
 
 	// Use this for initialization
@@ -42,7 +41,7 @@ public class NodeMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
 	public void show() {
@@ -59,12 +58,14 @@ public class NodeMenu : MonoBehaviour {
 		}
 	}
 
-	public void setActionSelected(bool isActionSelected) {
-		this.isActionSelected = isActionSelected;
+	public void clear() {
+		foreach (GameObject obj in buttons) {
+			obj.GetComponent<ActionButton>().clear();
+		}
 	}
 
 	void OnMouseExit() {
-		if (!isActionSelected) {
+		if (!ActionController.instance.inSelectionState) {
 			hide();
 		}
 		clearChildHighlights();
