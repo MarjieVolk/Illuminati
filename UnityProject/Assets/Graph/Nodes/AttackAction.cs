@@ -49,36 +49,21 @@ public class AttackAction : Action {
 		connection.triggerEdge(0.5f);
 
 		// Find attacker attack score and defender defense score
-		DefenseSkill[] targetDefenses = target.gameObject.GetComponents<DefenseSkill>();
-		DefenseSkill targetDefense = null;
-		foreach (DefenseSkill d in targetDefenses) {
-			if (d.type == attackType) {
-				targetDefense = d;
-				break;
-			}
-		}
-
-		AttackSkill[] attacks = gameObject.GetComponents<AttackSkill>();
-		AttackSkill attack = null;
-		foreach (AttackSkill a in attacks) {
-			if (a.type == attackType) {
-				attack = a;
-				break;
-			}
-		}
+		int targetDefense = otherNode.getDefense(attackType);
+		int attack = thisNode.getDefense(attackType);
 		
-		int min = targetDefense.value / 2;
-		int max = targetDefense.value * 2;
+		int min = targetDefense / 2;
+		int max = targetDefense * 2;
 
 		// Determine if node is captured
 		bool doCapture = false;
 
-		if (attack.value <= min) {
+		if (attack <= min) {
 			doCapture = false;
-		} else if (attack.value >= max) {
+		} else if (attack >= max) {
 			doCapture = true;
 		} else {
-			double probability = ((double) (attack.value - min)) / ((double) (max - min));
+			double probability = ((double) (attack - min)) / ((double) (max - min));
 			doCapture = gen.NextDouble() <= probability;
 		}
 		
