@@ -86,6 +86,10 @@ public class AttackAction : Action {
 		if (doCapture) {
 			otherNode.Owner = thisNode.Owner;
 
+			foreach (EdgeData edge in Graph.instance.getConnectedEdges(otherNode)) {
+				edge.direction = EdgeData.EdgeDirection.Neutral;
+			}
+
 			connection.type = attackType;
 			connection.direction = connection.nodeOne == thisNode ? EdgeData.EdgeDirection.OneToTwo : EdgeData.EdgeDirection.TwoToOne;
 		}

@@ -11,12 +11,14 @@ namespace Assets.Player
 		public static ActionController instance { get; private set; }
 
         public bool inSelectionState { get; private set; }
+		private Action selected;
 
         private Dictionary<Highlightable, Highlightable.OnClickHandler> clickHandlers;
 
         public void selectAction(Action selected)
         {
             inSelectionState = true;
+			this.selected = selected;
 
             //if the action is targeted
             //ask for targets
@@ -67,7 +69,18 @@ namespace Assets.Player
         // Update is called once per frame
         void Update()
         {
-
+			if (inSelectionState && Input.GetMouseButtonDown(1)) {
+				// Clicked on something else with action selected -- cancel selection
+				foreach (Highlightable noLongerATarget in selected.getPossibleTargets())
+				{
+					noLongerATarget.setUnhighlighted();
+					noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];
+				}
+				
+				inSelectionState = false;
+				selected.gameObject.GetComponent<NodeMenu>().hide();
+				selected = null;
+			}
         }
     }
 }
