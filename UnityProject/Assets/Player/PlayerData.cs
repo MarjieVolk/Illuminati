@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Player;
 
 public class PlayerData : MonoBehaviour {
 
@@ -20,6 +21,7 @@ public class PlayerData : MonoBehaviour {
 
     void OnGUI()
     {
+        if (this != TurnController.instance.CurrentPlayer) return;
         //Make buttons for each selected action (to cancel it, you see), indicate how many action points remain
         int xLocation = 0;
         List<Action> toCancel = new List<Action>();
@@ -34,7 +36,7 @@ public class PlayerData : MonoBehaviour {
 
         foreach (Action action in toCancel) cancelAction(action);
 
-        GUI.TextArea(new Rect(0, 550, 100, 90), "Action points: " + actionPoints);
+        GUI.Label(new Rect(0, 550, 100, 90), "Action points: " + actionPoints);
     }
 
     public void cancelAction(Action toCancel)
