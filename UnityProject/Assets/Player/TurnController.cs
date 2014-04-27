@@ -8,6 +8,10 @@ namespace Assets.Player
     {
 		public static TurnController instance { get; private set; }
 
+        public delegate void OnTurnEndHandler();
+
+        public event OnTurnEndHandler OnTurnEnd;
+
         public PlayerData CurrentPlayer;
         public PlayerData OtherPlayer;
 
@@ -42,6 +46,8 @@ namespace Assets.Player
 
             //set visibility ot public information only
             this.GetComponent<VisibilityController>().setVisibility(VisibilityController.Visibility.Public);
+
+            if (null != OnTurnEnd) OnTurnEnd();
 
             //start the next player's turn
             OtherPlayer.startTurn();
