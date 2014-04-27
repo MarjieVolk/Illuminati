@@ -22,7 +22,7 @@ public class AttackAction : Action {
 
 	override public List<Highlightable> getPossibleTargets() {
 		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
-		List<NodeData> nodes = Graph.instance.getNeutralConnectedNodes(thisNode);
+		List<NodeData> nodes = GraphUtility.instance.getNeutralConnectedNodes(thisNode);
 		List<Highlightable> ret = new List<Highlightable>();
 		foreach (NodeData node in nodes) {
 			if (this.gameObject.GetComponent<NodeData>().Owner != node.Owner) {
@@ -36,7 +36,7 @@ public class AttackAction : Action {
 		NodeData otherNode = target.GetComponent<NodeData>();
 		NodeData thisNode = this.GetComponent<NodeData>();
 		
-		List<EdgeData> thisEdges = Graph.instance.getConnectedEdges(thisNode);
+		List<EdgeData> thisEdges = GraphUtility.instance.getConnectedEdges(thisNode);
 		EdgeData connection = null;
 		foreach (EdgeData edge in thisEdges) {
 			if (edge.nodeOne == otherNode.gameObject || edge.nodeTwo == otherNode.gameObject) {
