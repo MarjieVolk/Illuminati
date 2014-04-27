@@ -39,7 +39,7 @@ namespace Assets.Player
             GUI.TextArea(new Rect(10, 110, 100, 90), CurrentPlayer.Name);
         }
 
-        private void NextTurn()
+        public void NextTurn()
         {
             //end the current player's turn
             CurrentPlayer.endTurn();
