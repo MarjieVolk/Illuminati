@@ -22,6 +22,7 @@ public class EdgeData : Highlightable {
         Visibility = 0;
 
         TurnController.instance.OnTurnEnd += () => Visibility *= 0.9f;
+        TurnController.instance.OnTurnEnd += () => triggerEdge(0.1f);
 	}
 	
 	// Update is called once per frame
@@ -67,8 +68,8 @@ public class EdgeData : Highlightable {
 
     void OnGUI()
     {
-        if(displayVisibility) GUI.Label(new Rect(500, 0, 100, 20), "Visibility: " + Visibility);
-	}
+        if (displayVisibility) GUI.Label(new Rect(500, 0, 1000, 20), "Visibility: " + (int)(Visibility * 100) + "%");
+    }
 	
 	override public bool viewAsOwned(VisibilityController.Visibility vis) {
 		bool isPrivate = vis == VisibilityController.Visibility.Private;

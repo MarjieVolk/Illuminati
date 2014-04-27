@@ -10,6 +10,11 @@ namespace Assets.Graph.Nodes
 {
     public class InvestigateAction : Action
     {
+        void Start()
+        {
+            isTargeting = true;
+        }
+
         public float minVisibilityIncrease, maxVisibilityIncrease;
 
         //can target any edge that does not belong to you
@@ -17,8 +22,8 @@ namespace Assets.Graph.Nodes
         {
             List<EdgeData> allEdges = new List<EdgeData>(FindObjectsOfType<EdgeData>());
             List<EdgeData> notMyEdges = allEdges.Where<EdgeData>(
-                (x) => EdgeData.EdgeDirection.Neutral != x.direction 
-                    && x.nodeOne.GetComponent<NodeData>().Owner != GetComponent<NodeData>().Owner
+                (x) => EdgeData.EdgeDirection.Neutral == x.direction 
+                    || (EdgeData.EdgeDirection.Neutral != x.direction && x.nodeOne.GetComponent<NodeData>().Owner != GetComponent<NodeData>().Owner)
                 ).ToList<EdgeData>();
 
             Debug.Log(notMyEdges[0]);
