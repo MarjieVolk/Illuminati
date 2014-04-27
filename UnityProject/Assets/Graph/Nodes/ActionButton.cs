@@ -6,9 +6,7 @@ public class ActionButton : MonoBehaviour {
 
     public event Highlightable.OnClickHandler OnClick;
 
-	public Sprite hover, selected;
-
-	private Sprite normal;
+	public Sprite normal, hover, selected;
 
 	private NodeMenu menu;
 
@@ -18,7 +16,7 @@ public class ActionButton : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		normal = this.gameObject.GetComponent<SpriteRenderer>().sprite;
+		this.gameObject.GetComponent<SpriteRenderer>().sprite = normal;
 	}
 	
 	// Update is called once per frame
