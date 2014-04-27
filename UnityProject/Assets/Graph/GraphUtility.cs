@@ -9,15 +9,20 @@ public class GraphUtility : MonoBehaviour {
 	private Dictionary<NodeData, List<EdgeData>> graph;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		instance = this;
-		graph = new Dictionary<NodeData, List<EdgeData>>();
-		EdgeData[] edges = Object.FindObjectsOfType<EdgeData>();
-		foreach (EdgeData edge in edges) {
-			addEdge(edge.nodeOne.GetComponent<NodeData>(), edge);
-			addEdge(edge.nodeTwo.GetComponent<NodeData>(), edge);
-		}
 	}
+
+    void Start()
+    {
+        graph = new Dictionary<NodeData, List<EdgeData>>();
+        EdgeData[] edges = Object.FindObjectsOfType<EdgeData>();
+        foreach (EdgeData edge in edges)
+        {
+            addEdge(edge.nodeOne.GetComponent<NodeData>(), edge);
+            addEdge(edge.nodeTwo.GetComponent<NodeData>(), edge);
+        }
+    }
 
 	private void addEdge(NodeData node, EdgeData edge) {
 		if (!graph.ContainsKey(node)) {
