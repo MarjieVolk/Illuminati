@@ -16,7 +16,7 @@ namespace Assets.Player
         public PlayerData OtherPlayer;
 
         // Use this for initialization
-        void Start()
+        void Awake()
         {
 			instance = this;
         }
