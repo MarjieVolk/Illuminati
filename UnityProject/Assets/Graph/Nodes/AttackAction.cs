@@ -55,7 +55,7 @@ public class AttackAction : Action {
 			}
 
 			connection.type = attackType;
-			connection.direction = connection.nodeOne == thisNode ? EdgeData.EdgeDirection.OneToTwo : EdgeData.EdgeDirection.TwoToOne;
+			connection.direction = connection.nodeOne.GetComponent<NodeData>() == thisNode ? EdgeData.EdgeDirection.OneToTwo : EdgeData.EdgeDirection.TwoToOne;
 		}
 	}
 
