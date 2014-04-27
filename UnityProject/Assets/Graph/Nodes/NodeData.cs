@@ -40,23 +40,35 @@ public class NodeData : Targetable {
 	}
 
 	public int getAttack(DominationType type) {
+		AttackSkill skill = getAttackSkill(type);
+		if (skill == null) return 0;
+		return skill.value;
+	}
+
+	public AttackSkill getAttackSkill(DominationType type) {
 		AttackSkill[] skills = gameObject.GetComponents<AttackSkill>();
 		foreach (AttackSkill a in skills) {
 			if (a.type == type) {
-				return a.value;
+				return a;
 			}
 		}
-		return 0;
+		return null;
+	}
+	
+	public int getDefense(DominationType type) {
+		DefenseSkill skill = getDefenseSkill(type);
+		if (skill == null) return 0;
+		return skill.value;
 	}
 
-	public int getDefense(DominationType type) {
+	public DefenseSkill getDefenseSkill(DominationType type) {
 		DefenseSkill[] skills = gameObject.GetComponents<DefenseSkill>();
 		foreach (DefenseSkill d in skills) {
 			if (d.type == type) {
-				return d.value;
+				return d;
 			}
 		}
-		return 0;
+		return null;
 	}
 
 	override public bool viewAsOwned(VisibilityController.Visibility vis) {

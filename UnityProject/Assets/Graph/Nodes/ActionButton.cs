@@ -7,6 +7,7 @@ public class ActionButton : MonoBehaviour {
     public event Targetable.OnClickHandler OnClick;
 
 	public Sprite normal, hover, selected;
+	public string tooltip;
 
 	// Use this for initialization
 	void Start () {

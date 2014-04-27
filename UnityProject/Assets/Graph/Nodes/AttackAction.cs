@@ -12,7 +12,7 @@ public class AttackAction : Action {
 	// Use this for initialization
 	void Start () {
 		isTargeting = true;
-		gen = new System.Random();
+		if (gen == null) gen = new System.Random();
 	}
 	
 	// Update is called once per frame
