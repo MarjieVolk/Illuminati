@@ -8,12 +8,6 @@ public class ActionButton : MonoBehaviour {
 
 	public Sprite normal, hover, selected;
 
-	private NodeMenu menu;
-
-	public void setMenu(NodeMenu menu) {
-		this.menu = menu;
-	}
-
 	// Use this for initialization
 	void Start () {
 		this.gameObject.GetComponent<SpriteRenderer>().sprite = normal;

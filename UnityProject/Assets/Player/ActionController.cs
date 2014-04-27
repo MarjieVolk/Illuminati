@@ -26,7 +26,7 @@ namespace Assets.Player
             {
                 List<Highlightable> possibleTargets = selected.getPossibleTargets();
                 //highlight the possible targets
-                possibleTargets.ForEach((x) => x.setHighlighted());
+                possibleTargets.ForEach((x) => x.setHighlighted(true));
 
                 //attach event handlers to the possible targets so they're selected when they're clicked
                 possibleTargets.ForEach((x) => { clickHandlers[x] = () => scheduleAction(selected, x); x.OnClicked += clickHandlers[x]; });
@@ -46,7 +46,7 @@ namespace Assets.Player
             //the other targets should not be highlighted now
             foreach (Highlightable noLongerATarget in toSchedule.getPossibleTargets())
             {
-                noLongerATarget.setUnhighlighted();
+                noLongerATarget.setHighlighted(false);
                 noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];
             }
 
@@ -73,7 +73,7 @@ namespace Assets.Player
 				// Clicked on something else with action selected -- cancel selection
 				foreach (Highlightable noLongerATarget in selected.getPossibleTargets())
 				{
-					noLongerATarget.setUnhighlighted();
+					noLongerATarget.setHighlighted(false);
 					noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];
 				}
 				

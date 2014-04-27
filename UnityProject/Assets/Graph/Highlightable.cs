@@ -1,21 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Assets.Player;
 
-public class Highlightable : MonoBehaviour {
+public abstract class Highlightable : MonoBehaviour {
 	
-	public Sprite highlightSprite;
+	public Sprite normalSprite, highlightSprite, ownedNormalSprite, ownedHighlightSprite;
     public delegate void OnClickHandler();
     public event OnClickHandler OnClicked;
 
-	protected Sprite normalSprite;
 	private SpriteRenderer spriteRenderer;
 	private bool isHighlighted = false;
+	private Sprite curNormal, curHighlight;
 
 	// Use this for initialization
 	protected virtual void Start () {
-		spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
-		normalSprite = spriteRenderer.sprite;
+		spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateVisibility);
+		updateSprites();
 	}
 	
 	// Update is called once per frame
@@ -24,31 +26,35 @@ public class Highlightable : MonoBehaviour {
 	}
 
 	public void setNormalSprite(Sprite newNormal) {
-		normalSprite = newNormal;
-		if (!isHighlighted) {
-			setUnhighlighted();
-		}
+		curNormal = newNormal;
+		setHighlighted(isHighlighted);
 	}
 
 	public void setHighlightedSprite(Sprite newHighlight) {
-		highlightSprite = newHighlight;
-		if (isHighlighted) {
-			setHighlighted();
-		}
+		curHighlight = newHighlight;
+		setHighlighted(isHighlighted);
 	}
 	
-	public void setHighlighted() {
-		isHighlighted = true;
-		spriteRenderer.sprite = highlightSprite;
-	}
-	
-	public void setUnhighlighted() {
-		isHighlighted = false;
-		spriteRenderer.sprite = normalSprite;
+	public void setHighlighted(bool isHighlighted) {
+		this.isHighlighted = isHighlighted;
+		spriteRenderer.sprite = isHighlighted ? curHighlight : curNormal;
 	}
 
     void OnMouseUpAsButton()
     {
         if (OnClicked != null) OnClicked();
     }
+
+	
+	public void updateSprites() {
+		updateVisibility(VisibilityController.instance.visibility);
+	}
+	
+	private void updateVisibility(VisibilityController.Visibility vis) {
+		bool owned = viewAsOwned(vis);
+		setNormalSprite(owned ? ownedNormalSprite : normalSprite);
+		setHighlightedSprite(owned ? ownedHighlightSprite : highlightSprite);
+	}
+
+	public abstract bool viewAsOwned(VisibilityController.Visibility visibility);
 }

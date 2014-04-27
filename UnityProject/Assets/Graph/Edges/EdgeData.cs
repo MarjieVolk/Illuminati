@@ -68,5 +68,16 @@ public class EdgeData : Highlightable {
     void OnGUI()
     {
         if(displayVisibility) GUI.Label(new Rect(500, 0, 100, 20), "Visibility: " + Visibility);
-    }
+	}
+	
+	override public bool viewAsOwned(VisibilityController.Visibility vis) {
+		bool isPrivate = vis == VisibilityController.Visibility.Private;
+		bool isOwned = direction != EdgeDirection.Neutral;
+
+		if (isPrivate && isOwned) {
+			return nodeOne.GetComponent<NodeData>().Owner == TurnController.instance.CurrentPlayer;
+		}
+
+		return false;
+	}
 }

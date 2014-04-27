@@ -4,10 +4,7 @@ using Assets.Player;
 
 public class NodeData : Highlightable {
 
-	public Sprite playerOwnedNormal, playerOwnedHighlight;
 	public PlayerData startingOwner;
-
-	private Sprite unownedNormal, unownedHighlight;
 
 	private PlayerData owner;
 	public PlayerData Owner {
@@ -27,10 +24,7 @@ public class NodeData : Highlightable {
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
-		unownedNormal = normalSprite;
-		unownedHighlight = highlightSprite;
 		Owner = startingOwner;
-		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateVisibility);
 	}
 	
 	// Update is called once per frame
@@ -45,15 +39,28 @@ public class NodeData : Highlightable {
 		}
 	}
 
-	public void updateSprites() {
-		updateVisibility(VisibilityController.instance.visibility);
+	public int getAttack(DominationType type) {
+		AttackSkill[] skills = gameObject.GetComponents<AttackSkill>();
+		foreach (AttackSkill a in skills) {
+			if (a.type == type) {
+				return a.value;
+			}
+		}
+		return 0;
 	}
 
-	private void updateVisibility(VisibilityController.Visibility vis) {
+	public int getDefense(DominationType type) {
+		DefenseSkill[] skills = gameObject.GetComponents<DefenseSkill>();
+		foreach (DefenseSkill d in skills) {
+			if (d.type == type) {
+				return d.value;
+			}
+		}
+		return 0;
+	}
+
+	override public bool viewAsOwned(VisibilityController.Visibility vis) {
 		bool isPrivate = vis == VisibilityController.Visibility.Private;
-		bool viewAsOwned = isPrivate && owner == TurnController.instance.CurrentPlayer;
-		
-		setNormalSprite(viewAsOwned ? playerOwnedNormal : unownedNormal);
-		setHighlightedSprite(viewAsOwned ? playerOwnedHighlight : unownedHighlight);
+		return isPrivate && owner == TurnController.instance.CurrentPlayer;
 	}
 }
