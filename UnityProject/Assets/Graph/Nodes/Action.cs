@@ -8,7 +8,6 @@ public abstract class Action : MonoBehaviour {
 	public GameObject button;
 	
 	public bool isTargeting { get; set;}
-    protected bool isScheduled;
     private Highlightable target;
 
 	public abstract List<Highlightable> getPossibleTargets();
@@ -19,7 +18,7 @@ public abstract class Action : MonoBehaviour {
 
     public void Activate() {
 		doActivate(target);
-		target = null;
+		clearScheduled();
 	}
 
 	protected abstract void doActivate(Highlightable target);
@@ -32,10 +31,10 @@ public abstract class Action : MonoBehaviour {
 
 		print("Target set to " + target);
         this.target = target;
-        isScheduled = true;
 
 		gameObject.GetComponent<NodeMenu>().clear();
 		gameObject.GetComponent<NodeMenu>().hide();
+		gameObject.GetComponent<NodeMenu>().isScheduled = true;
 
         return true;
     }
@@ -43,6 +42,6 @@ public abstract class Action : MonoBehaviour {
     public void clearScheduled()
     {
         target = null;
-        isScheduled = false;
-    }
+		gameObject.GetComponent<NodeMenu>().isScheduled = false;
+	}
 }
