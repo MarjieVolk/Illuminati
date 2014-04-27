@@ -8,9 +8,7 @@ public abstract class Action : MonoBehaviour {
 	public GameObject button;
 	
 	public bool isTargeting { get; set;}
-    private Highlightable target;
-
-	public abstract List<Highlightable> getPossibleTargets();
+    private Targetable target;
 
 	public GameObject getButton() {
 		return button;
@@ -20,10 +18,12 @@ public abstract class Action : MonoBehaviour {
 		doActivate(target);
 		clearScheduled();
 	}
+	
+	public abstract List<Targetable> getPossibleTargets();
+	public abstract string getAdditionalTextForTarget(Targetable target);
+	protected abstract void doActivate(Targetable target);
 
-	protected abstract void doActivate(Highlightable target);
-
-    public bool SetScheduled(Highlightable target)
+    public bool SetScheduled(Targetable target)
     {
         if (isTargeting && null == target) return false;
         if (!isTargeting && null != target) return false;

@@ -18,7 +18,7 @@ namespace Assets.Graph.Nodes
         public float minVisibilityIncrease, maxVisibilityIncrease;
 
         //can target any edge that does not belong to you
-        public override List<Highlightable> getPossibleTargets()
+        public override List<Targetable> getPossibleTargets()
         {
             List<EdgeData> allEdges = new List<EdgeData>(FindObjectsOfType<EdgeData>());
             List<EdgeData> notMyEdges = allEdges.Where<EdgeData>(
@@ -28,15 +28,19 @@ namespace Assets.Graph.Nodes
 
             Debug.Log(notMyEdges[0]);
 
-            return notMyEdges.Select<EdgeData, Highlightable>((x) => (Highlightable) x).ToList<Highlightable>();
+            return notMyEdges.Select<EdgeData, Targetable>((x) => (Targetable) x).ToList<Targetable>();
         }
 
-        protected override void doActivate(Highlightable target)
+        protected override void doActivate(Targetable target)
         {
             //pick a random amount to increase visibility by
             float visibilityIncreaseAmount = UnityEngine.Random.value * (maxVisibilityIncrease - minVisibilityIncrease) + minVisibilityIncrease;
 
             ((EdgeData)target).Visibility += visibilityIncreaseAmount;
         }
+		
+		public override string getAdditionalTextForTarget(Targetable target) {
+			return "";
+		}
     }
 }

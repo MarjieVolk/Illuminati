@@ -2,7 +2,7 @@
 using System.Collections;
 using Assets.Player;
 
-public class NodeData : Highlightable {
+public class NodeData : Targetable {
 
 	public PlayerData startingOwner;
 

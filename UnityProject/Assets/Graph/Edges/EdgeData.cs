@@ -2,7 +2,7 @@
 using System.Collections;
 using Assets.Player;
 
-public class EdgeData : Highlightable {
+public class EdgeData : Targetable {
 
     public float minVisibilityIncrease, maxVisibilityIncrease;
 

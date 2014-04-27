@@ -13,7 +13,7 @@ namespace Assets.Player
         public bool inSelectionState { get; private set; }
 		private Action selected;
 
-        private Dictionary<Highlightable, Highlightable.OnClickHandler> clickHandlers;
+        private Dictionary<Targetable, Targetable.OnClickHandler> clickHandlers;
 
         public void selectAction(Action selected)
         {
@@ -24,7 +24,7 @@ namespace Assets.Player
             //ask for targets
             if (selected.isTargeting)
             {
-                List<Highlightable> possibleTargets = selected.getPossibleTargets();
+                List<Targetable> possibleTargets = selected.getPossibleTargets();
                 //highlight the possible targets
                 possibleTargets.ForEach((x) => x.setHighlighted(true));
 
@@ -41,10 +41,10 @@ namespace Assets.Player
             scheduleAction(selected, null);
         }
 
-        void scheduleAction(Action toSchedule, Highlightable target)
+        void scheduleAction(Action toSchedule, Targetable target)
         {
             //the other targets should not be highlighted now
-            foreach (Highlightable noLongerATarget in toSchedule.getPossibleTargets())
+            foreach (Targetable noLongerATarget in toSchedule.getPossibleTargets())
             {
                 noLongerATarget.setHighlighted(false);
                 noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];
@@ -61,7 +61,7 @@ namespace Assets.Player
         // Use this for initialization
         void Start()
         {
-            clickHandlers = new Dictionary<Highlightable, Highlightable.OnClickHandler>();
+            clickHandlers = new Dictionary<Targetable, Targetable.OnClickHandler>();
             inSelectionState = false;
 			instance = this;
         }
@@ -71,7 +71,7 @@ namespace Assets.Player
         {
 			if (inSelectionState && Input.GetMouseButtonDown(1)) {
 				// Clicked on something else with action selected -- cancel selection
-				foreach (Highlightable noLongerATarget in selected.getPossibleTargets())
+				foreach (Targetable noLongerATarget in selected.getPossibleTargets())
 				{
 					noLongerATarget.setHighlighted(false);
 					noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];

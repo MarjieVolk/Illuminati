@@ -6,8 +6,6 @@ using Assets.Player;
 public abstract class Highlightable : MonoBehaviour {
 	
 	public Sprite normalSprite, highlightSprite, ownedNormalSprite, ownedHighlightSprite;
-    public delegate void OnClickHandler();
-    public event OnClickHandler OnClicked;
 
 	private SpriteRenderer spriteRenderer;
 	private bool isHighlighted = false;
@@ -39,12 +37,6 @@ public abstract class Highlightable : MonoBehaviour {
 		this.isHighlighted = isHighlighted;
 		spriteRenderer.sprite = isHighlighted ? curHighlight : curNormal;
 	}
-
-    void OnMouseUpAsButton()
-    {
-        if (OnClicked != null) OnClicked();
-    }
-
 	
 	public void updateSprites() {
 		updateVisibility(VisibilityController.instance.visibility);

@@ -4,7 +4,7 @@ using Assets.Player;
 
 public class ActionButton : MonoBehaviour {
 
-    public event Highlightable.OnClickHandler OnClick;
+    public event Targetable.OnClickHandler OnClick;
 
 	public Sprite normal, hover, selected;
 
