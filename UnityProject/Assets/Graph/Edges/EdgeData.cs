@@ -3,13 +3,15 @@ using System.Collections;
 
 public class EdgeData : Highlightable {
 
+    public float minVisibilityIncrease, maxVisibilityIncrease;
+
 	public GameObject nodeOne;
 	public GameObject nodeTwo;
 
 	public DominationType type {get; private set;}
 	public EdgeDirection direction {get; private set;}
 
-	float visibility;
+    public float visibility { get; private set; }
 	
 	// Use this for initialization
 	protected override void Start () {
@@ -26,4 +28,24 @@ public class EdgeData : Highlightable {
 	public enum EdgeDirection {
 		OneToTwo, TwoToOne, Neutral
 	};
+
+    public void triggerEdge(float baseTriggerProbability)
+    {
+        float rand = 1.0f;
+        while (rand == 1.0f)
+        {
+            rand = Random.value;
+        }
+
+        if (rand < baseTriggerProbability)
+            triggerEdge();
+    }
+
+    private void triggerEdge()
+    {
+        float rand = Random.value;
+        float visibilityDelta = rand * (maxVisibilityIncrease - minVisibilityIncrease) + minVisibilityIncrease;
+
+        visibility += visibilityDelta;
+    }
 }
