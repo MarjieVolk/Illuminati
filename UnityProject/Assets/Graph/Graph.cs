@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Graph : MonoBehaviour {
+public class GraphUtility : MonoBehaviour {
 	
-	public static Graph instance { get; private set; }
+	public static GraphUtility instance { get; private set; }
 
 	private Dictionary<NodeData, List<EdgeData>> graph;
 
