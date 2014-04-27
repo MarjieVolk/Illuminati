@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Player;
 
 public class EdgeData : Highlightable {
 
@@ -18,6 +19,9 @@ public class EdgeData : Highlightable {
 		base.Start();
 		direction = EdgeDirection.Neutral;
 		type = DominationType.Bribe;
+        visibility = 0;
+
+        TurnController.instance.OnTurnEnd += () => visibility *= 0.9f;
 	}
 	
 	// Update is called once per frame
