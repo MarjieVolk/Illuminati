@@ -26,7 +26,7 @@ namespace Assets.Player
             {
                 List<Targetable> possibleTargets = selected.getPossibleTargets();
                 //highlight the possible targets
-                possibleTargets.ForEach((x) => x.setHighlighted(true));
+				possibleTargets.ForEach((x) => { x.setHighlighted(true); x.showTargetInfoText(selected.getAdditionalTextForTarget(x)); });
 
                 //attach event handlers to the possible targets so they're selected when they're clicked
                 possibleTargets.ForEach((x) => { clickHandlers[x] = () => scheduleAction(selected, x); x.OnClicked += clickHandlers[x]; });
@@ -43,19 +43,12 @@ namespace Assets.Player
 
         void scheduleAction(Action toSchedule, Targetable target)
         {
-            //the other targets should not be highlighted now
-            foreach (Targetable noLongerATarget in toSchedule.getPossibleTargets())
-            {
-                noLongerATarget.setHighlighted(false);
-                noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];
-            }
-
             PlayerData currentPlayer = this.GetComponent<TurnController>().CurrentPlayer;
+			if (currentPlayer.scheduleAction(toSchedule)) {
+				toSchedule.SetScheduled(target);
+			}
 
-            toSchedule.SetScheduled(target);
-            if (!currentPlayer.scheduleAction(toSchedule)) toSchedule.clearScheduled();
-
-            inSelectionState = false;
+			clearSelectionState(toSchedule);
         }
 
         // Use this for initialization
@@ -71,16 +64,25 @@ namespace Assets.Player
         {
 			if (inSelectionState && Input.GetMouseButtonDown(1)) {
 				// Clicked on something else with action selected -- cancel selection
-				foreach (Targetable noLongerATarget in selected.getPossibleTargets())
-				{
-					noLongerATarget.setHighlighted(false);
-					noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];
-				}
-				
-				inSelectionState = false;
+				clearSelectionState(selected);
 				selected.gameObject.GetComponent<NodeMenu>().hide();
-				selected = null;
 			}
         }
+
+		/// <summary>
+		/// Called after a selected action is either scheduled or cancelled.
+		/// </summary>
+		private void clearSelectionState(Action selected) {
+			//the other targets should not be highlighted now
+			foreach (Targetable noLongerATarget in selected.getPossibleTargets())
+			{
+				noLongerATarget.setHighlighted(false);
+				noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];
+				noLongerATarget.hideTargetInfoText();
+			}
+
+			inSelectionState = false;
+			selected = null;
+		}
     }
 }
