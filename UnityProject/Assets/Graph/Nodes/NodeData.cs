@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Player;
 
 public class NodeData : Highlightable {
 
 	public Sprite playerOwnedNormal, playerOwnedHighlight;
+	public PlayerData startingOwner;
 
 	private Sprite unownedNormal, unownedHighlight;
 
@@ -28,6 +30,7 @@ public class NodeData : Highlightable {
 		base.Start();
 		unownedNormal = normalSprite;
 		unownedHighlight = highlightSprite;
+		Owner = startingOwner;
 	}
 	
 	// Update is called once per frame
@@ -37,6 +40,8 @@ public class NodeData : Highlightable {
 
 	void OnMouseEnter() {
 		// Show node menu
-		this.gameObject.GetComponent<NodeMenu>().show();
+		if (owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState) {
+			this.gameObject.GetComponent<NodeMenu>().show();
+		}
 	}
 }

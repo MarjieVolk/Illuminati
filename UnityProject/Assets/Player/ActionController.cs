@@ -8,6 +8,8 @@ namespace Assets.Player
 {
     public class ActionController : MonoBehaviour
     {
+		public static ActionController instance { get; private set; }
+
         public bool inSelectionState { get; private set; }
 
         private Dictionary<Highlightable, Highlightable.OnClickHandler> clickHandlers;
@@ -59,6 +61,7 @@ namespace Assets.Player
         {
             clickHandlers = new Dictionary<Highlightable, Highlightable.OnClickHandler>();
             inSelectionState = false;
+			instance = this;
         }
 
         // Update is called once per frame

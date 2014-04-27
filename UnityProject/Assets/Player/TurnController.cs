@@ -6,6 +6,7 @@ namespace Assets.Player
 {
     public class TurnController : MonoBehaviour
     {
+		public static TurnController instance { get; private set; }
 
         public PlayerData CurrentPlayer;
         public PlayerData OtherPlayer;
@@ -13,7 +14,7 @@ namespace Assets.Player
         // Use this for initialization
         void Start()
         {
-
+			instance = this;
         }
 
         // Update is called once per frame
