@@ -6,6 +6,7 @@ using Assets.Player;
 public class NodeMenu : MonoBehaviour {
 
 	public bool isShown { get; private set; }
+	public bool isScheduled = false;
 
 	private List<GameObject> buttons;
 
@@ -45,6 +46,10 @@ public class NodeMenu : MonoBehaviour {
 	}
 
 	public void show() {
+		if (isScheduled) {
+			return;
+		}
+
 		isShown = true;
 		foreach (GameObject obj in buttons) {
 			obj.SetActive(true);

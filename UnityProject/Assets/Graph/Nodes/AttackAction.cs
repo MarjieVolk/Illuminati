@@ -45,8 +45,10 @@ public class AttackAction : Action {
 			}
 		}
 
-		// TODO: increase edge visibility
+		// Increase edge visibility, whether you win or not
+		connection.triggerEdge(0.5f);
 
+		// Find attacker attack score and defender defense score
 		DefenseSkill[] targetDefenses = target.gameObject.GetComponents<DefenseSkill>();
 		DefenseSkill targetDefense = null;
 		foreach (DefenseSkill d in targetDefenses) {
@@ -68,6 +70,7 @@ public class AttackAction : Action {
 		int min = targetDefense.value / 2;
 		int max = targetDefense.value * 2;
 
+		// Determine if node is captured
 		bool doCapture = false;
 
 		if (attack.value <= min) {
@@ -78,10 +81,14 @@ public class AttackAction : Action {
 			double probability = ((double) (attack.value - min)) / ((double) (max - min));
 			doCapture = gen.NextDouble() <= probability;
 		}
-
+		
+		// Take node
 		if (doCapture) {
-			// Take node
 			otherNode.Owner = thisNode.Owner;
+
+			foreach (EdgeData edge in Graph.instance.getConnectedEdges(otherNode)) {
+				edge.direction = EdgeData.EdgeDirection.Neutral;
+			}
 
 			connection.type = attackType;
 			connection.direction = connection.nodeOne == thisNode ? EdgeData.EdgeDirection.OneToTwo : EdgeData.EdgeDirection.TwoToOne;
