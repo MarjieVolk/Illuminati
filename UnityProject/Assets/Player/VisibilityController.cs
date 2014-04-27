@@ -17,15 +17,6 @@ namespace Assets.Player
 
         public Visibility visibility { get; private set; }
 
-        void OnGUI()
-        {
-            if (GUI.Button(new Rect(110, 10, 100, 90), "Toggle Visibility"))
-            {
-                ToggleVisibility();
-            }
-            GUI.TextArea(new Rect(110, 110, 100, 90), visibility.ToString());
-        }
-
         void Awake()
         {
 			instance = this;
@@ -41,7 +32,7 @@ namespace Assets.Player
             if (newVisibility != visibility) ToggleVisibility();
         }
 
-        private void ToggleVisibility()
+        public void ToggleVisibility()
         {
             if (Visibility.Public == visibility) visibility = Visibility.Private;
             else visibility = Visibility.Public;
