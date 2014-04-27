@@ -58,9 +58,6 @@ public class TemporarySupportAction : Action {
 
 		// Freeze node for duration
 		thisNode.nTurnsUntilAvailable = duration;
-
-		// Increase edge visibility
-		GraphUtility.instance.getConnectingEdge(otherNode, thisNode).triggerEdge(0.6f);
 	}
 
 	private int getIncrease(int value) {
