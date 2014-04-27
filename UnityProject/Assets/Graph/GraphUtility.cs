@@ -40,6 +40,16 @@ public class GraphUtility : MonoBehaviour {
 		return graph[node];
 	}
 
+	public EdgeData getConnectingEdge(NodeData one, NodeData two) {
+		List<EdgeData> thisEdges = GraphUtility.instance.getConnectedEdges(one);
+		foreach (EdgeData edge in thisEdges) {
+			if (edge.nodeOne == two.gameObject || edge.nodeTwo == two.gameObject) {
+				return edge;
+			}
+		}
+		return null;
+	}
+
 	/// <summary>
 	/// Gets nodes connected to this node by any edge type (even neutral edges)
 	/// </summary>

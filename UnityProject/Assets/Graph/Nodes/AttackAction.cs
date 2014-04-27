@@ -39,15 +39,7 @@ public class AttackAction : Action {
 	override protected void doActivate(Targetable target) {
 		NodeData otherNode = target.GetComponent<NodeData>();
 		NodeData thisNode = this.GetComponent<NodeData>();
-		
-		List<EdgeData> thisEdges = GraphUtility.instance.getConnectedEdges(thisNode);
-		EdgeData connection = null;
-		foreach (EdgeData edge in thisEdges) {
-			if (edge.nodeOne == otherNode.gameObject || edge.nodeTwo == otherNode.gameObject) {
-				connection = edge;
-				break;
-			}
-		}
+		EdgeData connection = GraphUtility.instance.getConnectingEdge(otherNode, thisNode);
 
 		// Increase edge visibility, whether you win or not
 		connection.triggerEdge(0.5f);
