@@ -24,7 +24,23 @@ public class TemporarySupportAction : Action {
 	}
 	
 	public override string getAdditionalTextForTarget(Targetable target) {
-		return "";
+		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
+		Array values = Enum.GetValues(typeof(DominationType));
+		
+		string ret = "";
+		foreach (DominationType type in values) {
+			int increase = getIncrease(thisNode.getAttackSkill(type).getWorkingValue());
+			if (increase > 0) {
+				ret += "\n" + type.ToString() + " Attack +" + increase;
+			}
+
+			increase = getIncrease(thisNode.getDefenseSkill(type).getWorkingValue());			
+			if (increase > 0) {
+				ret += "\n" + type.ToString() + " Defense +" + increase;
+			}
+		}
+		
+		return ret.Equals("") ? "--" : (ret + "\n(" + duration + " turns)");
 	}
 	
 	protected override void doActivate(Targetable target) {
@@ -33,11 +49,21 @@ public class TemporarySupportAction : Action {
 		Array values = Enum.GetValues(typeof(DominationType));
 		
 		foreach (DominationType type in values) {
-			int increase = Mathf.CeilToInt(thisNode.getAttackSkill(type).getWorkingValue() / 3.0f);
+			int increase = getIncrease(thisNode.getAttackSkill(type).getWorkingValue());
 			otherNode.getAttackSkill(type).temporaryIncrease(increase, duration);
 
-			increase = Mathf.CeilToInt(thisNode.getDefenseSkill(type).getWorkingValue() / 3.0f);
+			increase = getIncrease(thisNode.getDefenseSkill(type).getWorkingValue());
 			otherNode.getDefenseSkill(type).temporaryIncrease(increase, duration);
 		}
+
+		// Freeze node for duration
+		thisNode.nTurnsUntilAvailable = duration;
+
+		// Increase edge visibility
+		GraphUtility.instance.getConnectingEdge(otherNode, thisNode).triggerEdge(0.6f);
+	}
+
+	private int getIncrease(int value) {
+		return Mathf.CeilToInt(value / 3.0f);
 	}
 }

@@ -9,6 +9,8 @@ public class EdgeData : Targetable {
 	public GameObject nodeOne;
 	public GameObject nodeTwo;
 
+	public GameObject arrowHead;
+
 	public DominationType type {get; set;}
 	public EdgeDirection direction {get; set;}
 

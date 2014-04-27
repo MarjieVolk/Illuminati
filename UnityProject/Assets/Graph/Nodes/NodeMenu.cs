@@ -17,7 +17,7 @@ public class NodeMenu : MonoBehaviour {
 
 		Action[] actions = this.gameObject.GetComponents<Action>();
 		float angle = 90;
-		float dAngle = 360.0f / 5;
+		float dAngle = 360.0f / 6;
 		foreach (Action a in actions) {
 			GameObject button = a.getButton();
 			
@@ -25,7 +25,7 @@ public class NodeMenu : MonoBehaviour {
 			float x = Mathf.Cos((angle * Mathf.PI) / 180.0f);
 			Vector3 offset = new Vector3(x, y, 0);
 			offset.Normalize();
-			offset *= 0.8f;
+			offset *= 1;
 			
 			GameObject realButton = (GameObject) Instantiate(button, transform.position + offset, Quaternion.identity);
 			realButton.transform.parent = this.gameObject.transform;
