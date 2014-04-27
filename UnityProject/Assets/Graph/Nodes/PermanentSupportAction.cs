@@ -28,45 +28,40 @@ public class PermanentSupportAction : Action {
 	}
 
 	public override string getAdditionalTextForTarget(Targetable target) {
-		DominationType bestType = DominationType.Bribe;
-		bool isAttack = true;
-		int maxDifference = 0;
-
 		NodeData node = (NodeData) target;
 		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
 		Array values = Enum.GetValues(typeof(DominationType));
 
+		string ret = null;
 		foreach (DominationType type in values) {
 			AttackSkill targetAttackSkill = node.getAttackSkill(type);
 			AttackSkill thisAttackSkill = thisNode.getAttackSkill(type);
-			int difference = thisAttackSkill.value - targetAttackSkill.value;
+			int difference = thisAttackSkill.getWorkingValue() - targetAttackSkill.getWorkingValue();
 
-			if (difference > maxDifference) {
-				maxDifference = difference;
-				bestType = type;
-				isAttack = true;
+			if (difference > 0) {
+				if (ret == null) {ret = "";} else {ret += "\n";}
+				int increase = getExpectedIncreaseAmount(difference);
+				int min = Math.Max(increase - 1, 0);
+				int max = Math.Min(increase + 1, maxIncrease);
+				string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
+				ret += type.ToString() + " Attack +" + increaseStr;
 			}
 			
 			DefenseSkill targetDefenseSkill = node.getDefenseSkill(type);
 			DefenseSkill thisDefenseSkill = thisNode.getDefenseSkill(type);
-			difference = thisDefenseSkill.value - targetDefenseSkill.value;
+			difference = thisDefenseSkill.getWorkingValue() - targetDefenseSkill.getWorkingValue();
 			
-			if (difference > maxDifference) {
-				maxDifference = difference;
-				bestType = type;
-				isAttack = false;
+			if (difference > 0) {
+				if (ret == null) {ret = "";} else {ret += "\n";}
+				int increase = getExpectedIncreaseAmount(difference);
+				int min = Math.Max(increase - 1, 0);
+				int max = Math.Min(increase + 1, maxIncrease);
+				string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
+				ret += type.ToString() + " Defense +" + increaseStr;
 			}
 		}
 
-		if (maxDifference == 0) {
-			return "--";
-		}
-
-		int increase = getExpectedIncreaseAmount(maxDifference);
-		int min = Math.Max(increase - 1, 0);
-		int max = Math.Min(increase + 1, maxIncrease);
-		string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
-		return "" + bestType.ToString() + (isAttack ? " Attack" : " Defense") + " +" + increaseStr;
+		return ret == null ? "--" : ret;
 	}
 
 	protected override void doActivate(Targetable target) {
@@ -77,12 +72,16 @@ public class PermanentSupportAction : Action {
 		foreach (DominationType type in values) {
 			AttackSkill targetAttackSkill = node.getAttackSkill(type);
 			AttackSkill thisAttackSkill = thisNode.getAttackSkill(type);
-			targetAttackSkill.value += getIncreaseAmount( thisAttackSkill.value - targetAttackSkill.value);
+			targetAttackSkill.value += getIncreaseAmount( thisAttackSkill.getWorkingValue() - targetAttackSkill.getWorkingValue());
 
 			DefenseSkill targetDefenseSkill = node.getDefenseSkill(type);
 			DefenseSkill thisDefenseSkill = thisNode.getDefenseSkill(type);
-			targetDefenseSkill.value += getIncreaseAmount(thisDefenseSkill.value - targetDefenseSkill.value);
+			targetDefenseSkill.value += getIncreaseAmount(thisDefenseSkill.getWorkingValue() - targetDefenseSkill.getWorkingValue());
 		}
+
+		// Increase edge visibility, whether you win or not
+		EdgeData connection = GraphUtility.instance.getConnectingEdge(node, thisNode);
+		connection.triggerEdge(0.6f);
 	}
 
 	private int getIncreaseAmount(int difference) {

@@ -40,7 +40,7 @@ public class AttackAction : Action {
 		EdgeData connection = GraphUtility.instance.getConnectingEdge(otherNode, thisNode);
 
 		// Increase edge visibility, whether you win or not
-		connection.triggerEdge(0.5f);
+		connection.triggerEdge(0.6f);
 		
 		// Take node
 		if (gen.NextDouble() <= getProbabilityOfWin(target)) {

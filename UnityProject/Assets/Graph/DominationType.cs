@@ -3,5 +3,5 @@ using System.Collections;
 
 public enum DominationType
 {
-    Bribe, Blackmail, Threaten, None
+    Bribe, Blackmail, Threaten
 }

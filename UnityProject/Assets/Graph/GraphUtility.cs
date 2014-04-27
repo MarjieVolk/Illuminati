@@ -220,7 +220,6 @@ public class GraphUtility : MonoBehaviour {
             {
                 if (edge.nodeOne.GetComponent<NodeData>().Owner != edge.nodeTwo.GetComponent<NodeData>().Owner)
                 {
-                    edge.type = DominationType.None;
                     edge.direction = EdgeData.EdgeDirection.Neutral;
                 }
             }

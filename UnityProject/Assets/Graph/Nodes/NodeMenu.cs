@@ -47,7 +47,7 @@ public class NodeMenu : MonoBehaviour {
 	}
 
 	public void show() {
-		if (isScheduled) {
+		if (isScheduled || gameObject.GetComponent<NodeData>().nTurnsUntilAvailable > 0) {
 			return;
 		}
 
@@ -59,6 +59,7 @@ public class NodeMenu : MonoBehaviour {
 
 	public void hide() {
 		isShown = false;
+		clear();
 		foreach (GameObject obj in buttons) {
 			obj.SetActive(false);
 		}
@@ -102,11 +103,15 @@ public class NodeMenu : MonoBehaviour {
 	}
 
 	void OnMouseUpAsButton() {
-		RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-		GameObject obj = hit.collider.gameObject;
-		ActionButton button = obj.GetComponent<ActionButton>();
-		if (button != null) {
-			button.OnMouseUpAsButton();
+		RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+		foreach (RaycastHit2D hit in hits) {
+			GameObject obj = hit.collider.gameObject;
+			ActionButton button = obj.GetComponent<ActionButton>();
+			if (button != null) {
+				button.OnMouseUpAsButton();
+				return;
+			}
 		}
 	}
 

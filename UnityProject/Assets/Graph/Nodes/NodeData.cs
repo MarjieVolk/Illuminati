@@ -19,12 +19,13 @@ public class NodeData : Targetable {
 	}
 
 	// Used for freezing the node for a certain number of turns after performing an action
-	private int nTurnsUntilAvailable;
+	public int nTurnsUntilAvailable = 0;
 
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
 		Owner = startingOwner;
+		TurnController.instance.OnTurnEnd += new TurnController.OnTurnEndHandler(onTurnEnd);
 	}
 	
 	// Update is called once per frame
@@ -42,7 +43,7 @@ public class NodeData : Targetable {
 	public int getAttack(DominationType type) {
 		AttackSkill skill = getAttackSkill(type);
 		if (skill == null) return 0;
-		return skill.value;
+		return skill.getWorkingValue();
 	}
 
 	public AttackSkill getAttackSkill(DominationType type) {
@@ -58,7 +59,7 @@ public class NodeData : Targetable {
 	public int getDefense(DominationType type) {
 		DefenseSkill skill = getDefenseSkill(type);
 		if (skill == null) return 0;
-		return skill.value;
+		return skill.getWorkingValue();
 	}
 
 	public DefenseSkill getDefenseSkill(DominationType type) {
@@ -74,5 +75,16 @@ public class NodeData : Targetable {
 	override public bool viewAsOwned(VisibilityController.Visibility vis) {
 		bool isPrivate = vis == VisibilityController.Visibility.Private;
 		return isPrivate && owner == TurnController.instance.CurrentPlayer;
+	}
+
+	public void onTurnEnd() {
+		if (TurnController.instance.CurrentPlayer == Owner) {
+			// Don't decrement at the end of your turn - only at the end of opponent's turn
+			return;
+		}
+
+		if (nTurnsUntilAvailable > 0) {
+			nTurnsUntilAvailable -= 1;
+		}
 	}
 }

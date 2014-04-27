@@ -1,18 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DefenseSkill : MonoBehaviour {
-	
-	public DominationType type;
-	public int value;
+public class DefenseSkill : AttackSkill {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
