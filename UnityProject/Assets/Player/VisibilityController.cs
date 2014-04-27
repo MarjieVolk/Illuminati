@@ -26,7 +26,7 @@ namespace Assets.Player
             GUI.TextArea(new Rect(110, 110, 100, 90), visibility.ToString());
         }
 
-        void Start()
+        void Awake()
         {
 			instance = this;
         }
