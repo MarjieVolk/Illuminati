@@ -15,7 +15,7 @@ public class NodeData : Highlightable {
 			return owner;
 		}
 
-		private set {
+		set {
 			owner = value;
 			updateSprites();
 		}

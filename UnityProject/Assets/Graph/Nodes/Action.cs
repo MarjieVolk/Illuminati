@@ -9,7 +9,7 @@ public abstract class Action : MonoBehaviour {
 	
 	public bool isTargeting { get; set;}
     protected bool isScheduled;
-    protected Highlightable target;
+    private Highlightable target;
 
 	public abstract List<Highlightable> getPossibleTargets();
 
@@ -17,7 +17,12 @@ public abstract class Action : MonoBehaviour {
 		return button;
 	}
 
-    public abstract void Activate();
+    public void Activate() {
+		doActivate(target);
+		target = null;
+	}
+
+	protected abstract void doActivate(Highlightable target);
 
     public bool SetScheduled(Highlightable target)
     {
@@ -25,6 +30,7 @@ public abstract class Action : MonoBehaviour {
         if (!isTargeting && null != target) return false;
         if (isTargeting && !getPossibleTargets().Contains(target)) return false;
 
+		print("Target set to " + target);
         this.target = target;
         isScheduled = true;
 

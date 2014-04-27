@@ -6,8 +6,8 @@ public class EdgeData : Highlightable {
 	public GameObject nodeOne;
 	public GameObject nodeTwo;
 
-	public DominationType type {get; private set;}
-	public EdgeDirection direction {get; private set;}
+	public DominationType type {get; set;}
+	public EdgeDirection direction {get; set;}
 
 	float visibility;
 	
