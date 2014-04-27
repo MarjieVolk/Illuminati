@@ -30,7 +30,8 @@ public class NodeMenu : MonoBehaviour {
 			realButton.transform.parent = this.gameObject.transform;
 
             ActionController actionController = FindObjectOfType<ActionController>();
-            realButton.GetComponent<ActionButton>().OnClick += () => actionController.selectAction(a);
+            Action actionCopy = a;
+            realButton.GetComponent<ActionButton>().OnClick += () => actionController.selectAction(actionCopy);
 			buttons.Add(realButton);
 			
 			angle -= dAngle;
