@@ -141,4 +141,40 @@ public class GraphUtility : MonoBehaviour {
 			return null;
 		}
 	}
+
+    public HashSet<EdgeData> getEdgesBetweenNodes(NodeData source, NodeData target)
+    {
+        HashSet<EdgeData> upstreamEdges = getEdgesReachableFrom(source, false);
+        HashSet<EdgeData> downstreamEdges = getEdgesReachableFrom(target, true);
+
+        upstreamEdges.IntersectWith(downstreamEdges);
+
+        return upstreamEdges;
+    }
+
+    public HashSet<EdgeData> getEdgesReachableFrom(NodeData origin, bool reverseEdgeDirection)
+    {
+        HashSet<EdgeData> ret = new HashSet<EdgeData>();
+
+        recGetEdgesReachableFrom(origin, reverseEdgeDirection, ret);
+
+        return ret;
+    }
+
+    private void recGetEdgesReachableFrom(NodeData origin, bool reverseEdgeDirection, HashSet<EdgeData> visited)
+    {
+        List<NodeData> children;
+        if (!reverseEdgeDirection) children = getInfluencedNodes(origin);
+        else children = getInfluencingNodes(origin);
+
+        foreach (NodeData child in children)
+        {
+            EdgeData connectingEdge = getConnectingEdge(origin, child);
+            //only visit each thing once
+            if (visited.Contains(connectingEdge)) continue;
+
+            visited.Add(connectingEdge);
+            recGetEdgesReachableFrom(child, reverseEdgeDirection, visited);
+        }
+    }
 }
