@@ -30,6 +30,7 @@ public class NodeData : Highlightable {
 		unownedNormal = normalSprite;
 		unownedHighlight = highlightSprite;
 		Owner = startingOwner;
+		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateVisibility);
 	}
 	
 	// Update is called once per frame
@@ -45,9 +46,13 @@ public class NodeData : Highlightable {
 	}
 
 	public void updateSprites() {
-		bool isPrivate = VisibilityController.instance.visibility == VisibilityController.Visibility.Public;
-		bool viewAsOwned = isPrivate && owner == TurnController.instance.CurrentPlayer;
+		updateVisibility(VisibilityController.instance.visibility);
+	}
 
+	private void updateVisibility(VisibilityController.Visibility vis) {
+		bool isPrivate = vis == VisibilityController.Visibility.Private;
+		bool viewAsOwned = isPrivate && owner == TurnController.instance.CurrentPlayer;
+		
 		setNormalSprite(viewAsOwned ? playerOwnedNormal : unownedNormal);
 		setHighlightedSprite(viewAsOwned ? playerOwnedHighlight : unownedHighlight);
 	}
