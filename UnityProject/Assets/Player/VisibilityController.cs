@@ -9,6 +9,8 @@ namespace Assets.Player
 {
     public class VisibilityController : MonoBehaviour
     {
+		public static VisibilityController instance { get; private set; }
+
         public delegate void VisibilityChangeHandler(Visibility visibility);
 
         public event VisibilityChangeHandler VisibilityChanged;
@@ -26,7 +28,7 @@ namespace Assets.Player
 
         void Start()
         {
-
+			instance = this;
         }
 
         void Update()

@@ -17,8 +17,7 @@ public class NodeData : Highlightable {
 
 		private set {
 			owner = value;
-			setNormalSprite(owner == null ? unownedNormal : playerOwnedNormal);
-			setHighlightedSprite(owner == null ? unownedHighlight : playerOwnedHighlight);
+			updateSprites();
 		}
 	}
 
@@ -43,5 +42,13 @@ public class NodeData : Highlightable {
 		if (owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState) {
 			this.gameObject.GetComponent<NodeMenu>().show();
 		}
+	}
+
+	public void updateSprites() {
+		bool isPrivate = VisibilityController.instance.visibility == VisibilityController.Visibility.Public;
+		bool viewAsOwned = isPrivate && owner == TurnController.instance.CurrentPlayer;
+
+		setNormalSprite(viewAsOwned ? playerOwnedNormal : unownedNormal);
+		setHighlightedSprite(viewAsOwned ? playerOwnedHighlight : unownedHighlight);
 	}
 }
