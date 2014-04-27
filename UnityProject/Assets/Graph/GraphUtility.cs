@@ -10,11 +10,7 @@ public class GraphUtility : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		instance = this;
-	}
-
-    void Start()
-    {
+        instance = this;
         graph = new Dictionary<NodeData, List<EdgeData>>();
         EdgeData[] edges = Object.FindObjectsOfType<EdgeData>();
         foreach (EdgeData edge in edges)
@@ -22,6 +18,15 @@ public class GraphUtility : MonoBehaviour {
             addEdge(edge.nodeOne.GetComponent<NodeData>(), edge);
             addEdge(edge.nodeTwo.GetComponent<NodeData>(), edge);
         }
+	}
+
+    void Start()
+    {
+    }
+
+    void Update()
+    {
+
     }
 
 	private void addEdge(NodeData node, EdgeData edge) {
@@ -29,11 +34,6 @@ public class GraphUtility : MonoBehaviour {
 			graph[node] = new List<EdgeData>();
 		}
 		graph[node].Add(edge);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
 	public List<EdgeData> getConnectedEdges(NodeData node) {
@@ -156,25 +156,74 @@ public class GraphUtility : MonoBehaviour {
     {
         HashSet<EdgeData> ret = new HashSet<EdgeData>();
 
-        recGetEdgesReachableFrom(origin, reverseEdgeDirection, ret);
+        recGetNodesAndEdgesReachableFrom(origin, reverseEdgeDirection, new HashSet<NodeData>(), ret);
 
         return ret;
     }
 
-    private void recGetEdgesReachableFrom(NodeData origin, bool reverseEdgeDirection, HashSet<EdgeData> visited)
+    public HashSet<NodeData> getNodesReachableFrom(NodeData origin, bool reverseEdgeDirection)
+    {
+        HashSet<NodeData> ret = new HashSet<NodeData>();
+
+        ret.Add(origin);
+
+        recGetNodesAndEdgesReachableFrom(origin, reverseEdgeDirection, ret, new HashSet<EdgeData>());
+
+        return ret;
+    }
+
+    private void recGetNodesAndEdgesReachableFrom(NodeData origin, bool reverseEdgeDirection, HashSet<NodeData> visitedNodes, HashSet<EdgeData> visitedEdges)
     {
         List<NodeData> children;
         if (!reverseEdgeDirection) children = getInfluencedNodes(origin);
         else children = getInfluencingNodes(origin);
-
         foreach (NodeData child in children)
         {
             EdgeData connectingEdge = getConnectingEdge(origin, child);
-            //only visit each thing once
-            if (visited.Contains(connectingEdge)) continue;
 
-            visited.Add(connectingEdge);
-            recGetEdgesReachableFrom(child, reverseEdgeDirection, visited);
+            //only follow each edge once
+            if (visitedEdges.Contains(connectingEdge)) continue;
+            visitedEdges.Add(connectingEdge);
+
+            //only visit each node once
+            if (visitedNodes.Contains(child)) continue;
+            visitedNodes.Add(child);
+
+            recGetNodesAndEdgesReachableFrom(child, reverseEdgeDirection, visitedNodes, visitedEdges);
+        }
+    }
+
+    /// <summary>
+    /// Fix up the graph by removing orphaned edges and nodes
+    /// </summary>
+    public void TidyGraph()
+    {
+        //remove ownership of nodes that player's can't actually reach
+        foreach(PlayerData player in FindObjectsOfType<PlayerData>())
+        {
+            HashSet<NodeData> reachableNodes = getNodesReachableFrom(player.StartingNode, false);
+            //stop owning nodes you can't reach
+            foreach (NodeData node in graph.Keys)
+            {
+                if (node.Owner == player && !reachableNodes.Contains(node))
+                {
+                    Debug.Log("Trimming unreachable node.");
+                    node.Owner = null;
+                }
+            }
+        }
+
+        //remove directionality and domination type of edges that no longer connect two same-player-owned nodes
+        foreach (EdgeData edge in FindObjectsOfType<EdgeData>())
+        {
+            if (edge.direction != EdgeData.EdgeDirection.Neutral)
+            {
+                if (edge.nodeOne.GetComponent<NodeData>().Owner != edge.nodeTwo.GetComponent<NodeData>().Owner)
+                {
+                    edge.type = DominationType.None;
+                    edge.direction = EdgeData.EdgeDirection.Neutral;
+                }
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ public abstract class Action : MonoBehaviour {
     public void Activate() {
 		doActivate(target);
 		clearScheduled();
+        GraphUtility.instance.TidyGraph();
 	}
 	
 	public abstract List<Targetable> getPossibleTargets();
@@ -29,7 +30,6 @@ public abstract class Action : MonoBehaviour {
         if (!isTargeting && null != target) return false;
         if (isTargeting && !getPossibleTargets().Contains(target)) return false;
 
-		print("Target set to " + target);
         this.target = target;
 
 		gameObject.GetComponent<NodeMenu>().clear();

@@ -8,6 +8,7 @@ public class PlayerData : MonoBehaviour {
     public string Name;
 	private int actionPoints;
     private List<Action> selectedActions;
+    public NodeData StartingNode;
 
 	// Use this for initialization
 	void Start () {
