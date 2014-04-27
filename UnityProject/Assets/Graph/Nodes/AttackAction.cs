@@ -25,9 +25,7 @@ public class AttackAction : Action {
 		List<NodeData> nodes = GraphUtility.instance.getNeutralConnectedNodes(thisNode);
 		List<Targetable> ret = new List<Targetable>();
 		foreach (NodeData node in nodes) {
-			if (this.gameObject.GetComponent<NodeData>().Owner != node.Owner) {
-				ret.Add(node);
-			}
+            ret.Add(node);
 		}
 		return ret;
 	}
@@ -48,8 +46,12 @@ public class AttackAction : Action {
 		if (gen.NextDouble() <= getProbabilityOfWin(target)) {
 			otherNode.Owner = thisNode.Owner;
 
+            //clear only opponent's dominations/connections to this node
 			foreach (EdgeData edge in GraphUtility.instance.getConnectedEdges(otherNode)) {
-				edge.direction = EdgeData.EdgeDirection.Neutral;
+                if (edge.nodeOne.GetComponent<NodeData>().Owner != edge.nodeTwo.GetComponent<NodeData>().Owner)
+                {
+                    edge.direction = EdgeData.EdgeDirection.Neutral;
+                }
 			}
 
 			connection.type = attackType;
