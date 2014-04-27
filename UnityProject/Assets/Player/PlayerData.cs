@@ -22,16 +22,19 @@ public class PlayerData : MonoBehaviour {
     {
         //Make buttons for each selected action (to cancel it, you see), indicate how many action points remain
         int xLocation = 0;
+        List<Action> toCancel = new List<Action>();
         foreach (Action action in selectedActions)
         {
-            if (GUI.Button(new Rect(xLocation, 800, 100, 90), "" + xLocation))
+            if (GUI.Button(new Rect(xLocation, 650, 100, 90), "" + xLocation))
             {
-                cancelAction(action);
+                toCancel.Add(action);
             }
             xLocation += 110;
         }
 
-        GUI.TextArea(new Rect(0, 700, 100, 90), "Action points: " + actionPoints);
+        foreach (Action action in toCancel) cancelAction(action);
+
+        GUI.TextArea(new Rect(0, 550, 100, 90), "Action points: " + actionPoints);
     }
 
     public void cancelAction(Action toCancel)
