@@ -65,7 +65,7 @@ public class AttackAction : Action {
 		
 		// Find attacker attack score and defender defense score
 		int targetDefense = otherNode.getDefense(attackType);
-		int attack = thisNode.getDefense(attackType);
+		int attack = thisNode.getAttack(attackType);
 
 		int min = targetDefense / 2;
 		int max = targetDefense * 2;
