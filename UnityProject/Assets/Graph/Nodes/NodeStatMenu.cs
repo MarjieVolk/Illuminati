@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Influence : MonoBehaviour {
+public class NodeStatMenu : MonoBehaviour {
 
-	public DominationType type;
-
-	// True if from nodeOne to nodeTwo, false if from nodeTwo to nodeOne
-	bool direction;
+	public GameObject menuBackground;
 
 	// Use this for initialization
 	void Start () {
@@ -16,5 +13,15 @@ public class Influence : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	void OnMouseEnter() {
+		if (menuBackground) {
+
+		}
+	}
+
+	void OnMouseExit() {
+
 	}
 }

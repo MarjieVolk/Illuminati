@@ -86,7 +86,7 @@ public class AttackAction : Action {
 		if (doCapture) {
 			otherNode.Owner = thisNode.Owner;
 
-			foreach (EdgeData edge in Graph.instance.getConnectedEdges(otherNode)) {
+			foreach (EdgeData edge in GraphUtility.instance.getConnectedEdges(otherNode)) {
 				edge.direction = EdgeData.EdgeDirection.Neutral;
 			}
 
