@@ -9,6 +9,7 @@ public class NodeMenu : MonoBehaviour {
 	public bool isScheduled = false;
 
 	private List<GameObject> buttons;
+	private ActionButton prev = null;
 
 	// Use this for initialization
 	void Start () {
@@ -74,16 +75,29 @@ public class NodeMenu : MonoBehaviour {
 			hide();
 		}
 		clearChildHighlights();
+		prev = null;
 	}
 
 	void OnMouseOver() {
-		clearChildHighlights();
+		RaycastHit2D[] hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-		RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-		GameObject obj = hit.collider.gameObject;
-		ActionButton button = obj.GetComponent<ActionButton>();
-		if (button != null) {
-			button.OnMouseEnter();
+		foreach (RaycastHit2D hit in hits) {
+			GameObject obj = hit.collider.gameObject;
+			ActionButton button = obj.GetComponent<ActionButton>();
+			if (button != null) {
+				if (prev == button) return;
+
+				if (prev != null) prev.OnMouseExit();
+				button.OnMouseEnter();
+				prev = button;
+				return;
+			}
+		}
+
+		// No button is being hovered over
+		if (prev != null) {
+			prev.GetComponent<ActionButton>().OnMouseExit();
+			prev = null;
 		}
 	}
 

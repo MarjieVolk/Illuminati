@@ -17,6 +17,7 @@ public abstract class Targetable : Highlightable {
 		style.normal.textColor = Color.green;
 		style.fontSize = 16;
 		style.fontStyle = FontStyle.Bold;
+		style.alignment = TextAnchor.UpperCenter;
 	}
 
 	void OnMouseUpAsButton() {
@@ -35,7 +36,7 @@ public abstract class Targetable : Highlightable {
 	void OnGUI() {
 		if (isShowText) {
 			Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-			GUI.Label(new Rect(screenPosition.x - 10, Screen.height - screenPosition.y - 50, 300, 100), text, style);
+			GUI.Label(new Rect(screenPosition.x - 150, Screen.height - screenPosition.y - 50, 300, 100), text, style);
 		}
 	}
 }
