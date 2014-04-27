@@ -12,16 +12,16 @@ public class EdgeData : Highlightable {
 	public DominationType type {get; set;}
 	public EdgeDirection direction {get; set;}
 
-    public float visibility { get; private set; }
+    public float Visibility { get; set; }
 	
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
 		direction = EdgeDirection.Neutral;
 		type = DominationType.Bribe;
-        visibility = 0;
+        Visibility = 0;
 
-        TurnController.instance.OnTurnEnd += () => visibility *= 0.9f;
+        TurnController.instance.OnTurnEnd += () => Visibility *= 0.9f;
 	}
 	
 	// Update is called once per frame
@@ -50,6 +50,23 @@ public class EdgeData : Highlightable {
         float rand = Random.value;
         float visibilityDelta = rand * (maxVisibilityIncrease - minVisibilityIncrease) + minVisibilityIncrease;
 
-        visibility += visibilityDelta;
+        Visibility += visibilityDelta;
+    }
+
+    private bool displayVisibility = false;
+
+    void OnMouseEnter()
+    {
+        displayVisibility = true;
+    }
+
+    void OnMouseExit()
+    {
+        displayVisibility = false;
+    }
+
+    void OnGUI()
+    {
+        if(displayVisibility) GUI.Label(new Rect(500, 0, 100, 20), "Visibility: " + Visibility);
     }
 }
