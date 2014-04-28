@@ -27,6 +27,8 @@ public class ExecuteActionsButton : HUDButton {
 	
 	void OnMouseUpAsButton() {
 		TurnController.instance.ExecuteActions();
+		OnMouseUp();
+
 		GameObject parent = transform.parent.gameObject;
 		ButtonToggler toggler = parent.GetComponent<ButtonToggler>();
 		toggler.toggle(gameObject);
