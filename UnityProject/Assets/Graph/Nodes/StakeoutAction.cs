@@ -21,7 +21,9 @@ namespace Assets.Graph.Nodes
             MinimumTargetVisibility = 0.25f;
             ProbabilityZeroThreshold = 0.25f;
             GuaranteedSuccessThreshold = 0.75f;
+
             PathVisibilityIncreaseProbability = 0.5f;
+            CarryingEdgeVisibilityIncreaseProbability = 1;
         }
 
         public override List<Targetable> getPossibleTargets()
@@ -48,7 +50,36 @@ namespace Assets.Graph.Nodes
 
         protected override void doActivate(Targetable target)
         {
-            throw new NotImplementedException();
+            float randomValue = 1.0f;
+            while(randomValue == 1.0f) randomValue = UnityEngine.Random.value;
+            if(randomValue < getSuccessProbability(target))
+            {
+                //remove all ownership of the edge (and make it unusable)
+                ((EdgeData)target).direction = EdgeData.EdgeDirection.Unusable;
+
+                //set it back to neutral in a few turns
+                TurnController.OnTurnEndHandler directionResetter = null;
+                int numTurnsRemaining = NumTurnsTargetDeactivated;
+                PlayerData currentPlayer = TurnController.instance.CurrentPlayer;
+
+                directionResetter = () =>
+                    {
+                        if (TurnController.instance.CurrentPlayer == currentPlayer)
+                        {
+                            numTurnsRemaining--;
+                        }
+
+                        if (numTurnsRemaining == 0)
+                        {
+                            ((EdgeData)target).direction = EdgeData.EdgeDirection.Neutral;
+                            TurnController.instance.OnTurnEnd -= directionResetter;
+                        }
+                    };
+
+                TurnController.instance.OnTurnEnd += directionResetter;
+
+                //TODO possibly reveal the user of the edge, if any?
+            }
         }
 
         private float getSuccessProbability(Targetable target)
