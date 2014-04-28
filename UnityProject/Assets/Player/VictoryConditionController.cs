@@ -40,7 +40,7 @@ public class VictoryConditionController : MonoBehaviour {
 
 		if (nonLosingPlayers.Count == 1) {
 			winner = nonLosingPlayers[0];
-			GameObject realWinScreen = (GameObject) Instantiate(winScreen, Camera.main.transform.position + new Vector3(0, 0, 1), Quaternion.identity);
+			Instantiate(winScreen, Camera.main.transform.position + new Vector3(0, 0, 1), Quaternion.identity);
 			won = true;
 		}
 	}

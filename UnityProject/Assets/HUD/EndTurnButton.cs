@@ -6,8 +6,8 @@ public class EndTurnButton : HUDButton {
 	bool isClick = false;
 
 	void Awake () {
-		x = 10;
-		y = 155;
+		x = 0.01f;
+		y = 0.135f;
 	}
 	
 	override public bool viewAsOwned(VisibilityController.Visibility visibility) {

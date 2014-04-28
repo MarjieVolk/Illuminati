@@ -9,8 +9,8 @@ public class ViewToggleButton : HUDButton {
 	}
 
 	void Awake() {
-		x = 10;
-		y = 10;
+		x = 0.01f;
+		y = 0.01f;
 	}
 
 	void OnMouseUpAsButton() {
