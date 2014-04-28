@@ -15,6 +15,8 @@ namespace Assets.Player
         public PlayerData CurrentPlayer;
         public PlayerData OtherPlayer;
 
+        public bool BetweenTurns = false;
+
         // Use this for initialization
         void Awake()
         {
@@ -50,14 +52,18 @@ namespace Assets.Player
         {
             CurrentPlayer.endTurn();
 
-            //set visibility to public information only
-            this.GetComponent<VisibilityController>().setVisibility(VisibilityController.Visibility.Public);
-
             if (null != OnTurnEnd) OnTurnEnd();
+
+            BetweenTurns = true;
         }
 
         public void NextTurn()
         {
+            BetweenTurns = false;
+
+            //set visibility to public information only
+            this.GetComponent<VisibilityController>().setVisibility(VisibilityController.Visibility.Public);
+
             //start the next player's turn
             OtherPlayer.startTurn();
 
