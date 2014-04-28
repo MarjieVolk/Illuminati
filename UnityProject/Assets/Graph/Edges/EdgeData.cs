@@ -10,9 +10,11 @@ public class EdgeData : Targetable {
 	public GameObject nodeTwo;
 
 	public GameObject arrowHead;
+	private GameObject realArrowHead;
 
 	public DominationType type {get; set;}
-	public EdgeDirection direction {get; set;}
+	public EdgeDirection direction { get; set; }
+	private EdgeDirection prevDirection;
 
     public float Visibility { get; set; }
 	
@@ -20,11 +22,14 @@ public class EdgeData : Targetable {
 	protected override void Start () {
 		base.Start();
 		direction = EdgeDirection.Neutral;
+		prevDirection = EdgeDirection.Neutral;
 		type = DominationType.Bribe;
         Visibility = 0;
 
         TurnController.instance.OnTurnEnd += () => Visibility *= 0.9f;
-        TurnController.instance.OnTurnEnd += () => triggerEdge(0.1f);
+		TurnController.instance.OnTurnEnd += () => triggerEdge(0.1f);
+
+		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
 	}
 	
 	// Update is called once per frame
@@ -82,5 +87,30 @@ public class EdgeData : Targetable {
 		}
 
 		return false;
+	}
+
+	private void updateArrowHead(VisibilityController.Visibility vis) {
+		if (realArrowHead == null) {
+			realArrowHead = (GameObject) Instantiate(arrowHead, transform.position, Quaternion.identity);
+
+			Vector2 nodeOnePosition = new Vector2(nodeOne.transform.position.x, nodeOne.transform.position.y);
+			Vector2 nodeTwoPosition = new Vector2(nodeTwo.transform.position.x, nodeTwo.transform.position.y);
+			Vector2 edgeVector = nodeTwoPosition - nodeOnePosition;
+			float edgeAngle = Vector2.Angle(Vector2.right, edgeVector);
+			if (Vector3.Cross(Vector2.right, edgeVector).z < 0)
+			{
+				edgeAngle *= -1;
+			}
+			realArrowHead.transform.Rotate(Vector3.forward, edgeAngle);
+		}
+
+		realArrowHead.SetActive(viewAsOwned(vis));
+
+		EdgeDirection simplePrev = (prevDirection == EdgeDirection.TwoToOne ? EdgeDirection.TwoToOne : EdgeDirection.OneToTwo);
+		EdgeDirection simpleDir = (direction == EdgeDirection.TwoToOne ? EdgeDirection.TwoToOne : EdgeDirection.OneToTwo);
+		if (simplePrev != simpleDir) {
+			realArrowHead.transform.Rotate(Vector3.forward, 180);
+			prevDirection = direction;
+		}
 	}
 }
