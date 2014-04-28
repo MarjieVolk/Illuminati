@@ -46,16 +46,18 @@ namespace Assets.Player
             GUI.TextArea(new Rect(x - width, y - height, width, height), CurrentPlayer.Name + "'s Turn");
         }
 
-        public void NextTurn()
+        public void ExecuteActions()
         {
-            //end the current player's turn
             CurrentPlayer.endTurn();
 
-            //set visibility ot public information only
+            //set visibility to public information only
             this.GetComponent<VisibilityController>().setVisibility(VisibilityController.Visibility.Public);
 
             if (null != OnTurnEnd) OnTurnEnd();
+        }
 
+        public void NextTurn()
+        {
             //start the next player's turn
             OtherPlayer.startTurn();
 
