@@ -10,9 +10,30 @@ public class PlayerData : MonoBehaviour {
     private List<Action> selectedActions;
     public NodeData StartingNode;
 
+	private static List<NodeData> startingNodes;
+	private static System.Random gen;
+
 	// Use this for initialization
 	void Start () {
         startTurn();
+
+		if (StartingNode == null) {
+			if (startingNodes == null) {
+				gen = new System.Random();
+				NodeData[] nodes = Object.FindObjectsOfType<NodeData>();
+				startingNodes = new List<NodeData>();
+				foreach (NodeData node in nodes) {
+					if (node.isStartNode) {
+						startingNodes.Add(node);
+					}
+				}
+			}
+
+			NodeData ourStart = startingNodes[gen.Next(startingNodes.Count)];
+			startingNodes.Remove(ourStart);
+			StartingNode = ourStart;
+			ourStart.Owner = this;
+		}
 	}
 	
 	// Update is called once per frame

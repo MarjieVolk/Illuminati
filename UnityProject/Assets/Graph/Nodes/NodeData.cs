@@ -5,6 +5,7 @@ using Assets.Player;
 public class NodeData : Targetable {
 
 	public PlayerData startingOwner;
+	public bool isStartNode = false;
 
 	private PlayerData owner;
 	public PlayerData Owner {

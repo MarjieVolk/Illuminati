@@ -24,9 +24,9 @@ namespace Assets.Player
         // Update is called once per frame
         void Update()
         {
-            //if the end turn key has been pressed
-            //check whether the turn can be ended
-            //and end the turn if so
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				Application.Quit();
+			}
         }
 
         void OnGUI()
