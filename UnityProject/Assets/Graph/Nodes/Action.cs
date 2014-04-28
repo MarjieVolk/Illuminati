@@ -13,7 +13,7 @@ public abstract class Action : MonoBehaviour {
     public float CarryingEdgeVisibilityIncreaseProbability;
 	
 	public bool isTargeting { get; set;}
-    private Targetable target;
+	public Targetable target { get; private set; }
 
 	private GameObject listTag, mapTag;
 
@@ -86,7 +86,6 @@ public abstract class Action : MonoBehaviour {
 		GameObject tag = getMapScheduledTag();
 		tag.SetActive(true);
 		tag.transform.position = gameObject.transform.position + new Vector3(0.5f, 0.3f, -1);
-		Debug.LogError("Map tag pos = " + tag.transform.position);
 
         return true;
     }
