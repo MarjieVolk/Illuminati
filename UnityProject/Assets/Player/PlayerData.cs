@@ -6,12 +6,14 @@ using Assets.Player;
 public class PlayerData : MonoBehaviour {
 
     public string Name;
-	private int actionPoints;
+    public int ActionPointsPerTurn;
+    private int actionPoints;
     private List<Action> selectedActions;
     public NodeData StartingNode;
 
 	// Use this for initialization
 	void Start () {
+        actionPoints = 0;
         startTurn();
 	}
 	
@@ -37,7 +39,7 @@ public class PlayerData : MonoBehaviour {
 
         foreach (Action action in toCancel) cancelAction(action);
 
-        GUI.Label(new Rect(0, 550, 100, 90), "Action points: " + actionPoints);
+        GUI.Label(new Rect(0, 550, 100, 90), "Actions Remaining: " + actionPoints);
     }
 
     public void cancelAction(Action toCancel)
@@ -62,11 +64,17 @@ public class PlayerData : MonoBehaviour {
             action.Activate();
         }
         selectedActions = new List<Action>();
+        actionPoints = 0;
 	}
 
     public void startTurn()
     {
-        actionPoints = 4;
+        actionPoints += ActionPointsPerTurn;
         selectedActions = new List<Action>();
+    }
+
+    public void addActionPoints(int numToAdd)
+    {
+        actionPoints += numToAdd;
     }
 }
