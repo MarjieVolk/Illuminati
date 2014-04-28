@@ -8,7 +8,7 @@ public class ExecuteActionsButton : HUDButton {
 	
 	void Awake () {
 		x = 0.01f;
-		y = 0.135f;
+		y = 0.157f;
 	}
 	
 	override public bool viewAsOwned(VisibilityController.Visibility visibility) {
