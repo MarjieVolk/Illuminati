@@ -28,7 +28,7 @@ public class EdgeData : Targetable {
 
         TurnController.instance.OnTurnEnd += () => Visibility *= 0.9f;
 		TurnController.instance.OnTurnEnd += () => triggerEdge(0.1f);
-
+		TurnController.instance.OnTurnEnd += new TurnController.OnTurnEndHandler(updateVisibilityRendering);
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
 	}
 	
@@ -111,6 +111,16 @@ public class EdgeData : Targetable {
 		if (simplePrev != simpleDir) {
 			realArrowHead.transform.Rotate(Vector3.forward, 180);
 			prevDirection = direction;
+		}
+
+		updateVisibilityRendering();
+	}
+
+	private void updateVisibilityRendering() {
+		if (VisibilityController.instance.visibility == VisibilityController.Visibility.Public) {
+			this.GetComponent<SpriteRenderer>().color = new Color(1.0f - Visibility, 1.0f - Visibility, 1.0f - Visibility);
+		} else {
+			this.GetComponent<SpriteRenderer>().color = Color.white;
 		}
 	}
 }
