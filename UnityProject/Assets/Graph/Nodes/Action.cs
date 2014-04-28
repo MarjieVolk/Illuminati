@@ -8,21 +8,52 @@ using Assets.Player;
 public abstract class Action : MonoBehaviour {
 
 	public GameObject button;
+	public GameObject scheduledTag;
     public float PathVisibilityIncreaseProbability;
     public float CarryingEdgeVisibilityIncreaseProbability;
 	
 	public bool isTargeting { get; set;}
-    private Targetable target;
+	public Targetable target { get; private set; }
+
+	private GameObject listTag, mapTag;
+
+	void Start() {
+	}
 
 	public GameObject getButton() {
 		return button;
 	}
 
+	public GameObject getListScheduledTag() {
+		if (listTag == null) {
+			initTags();
+		}
+		return listTag;
+	}
+
+	public GameObject getMapScheduledTag() {
+		if (mapTag == null) {
+			initTags();
+		}
+		return mapTag;
+	}
+
+	private void initTags() {
+		mapTag = instantiateTag();
+		listTag = instantiateTag();
+		mapTag.GetComponent<ScheduledAction>().setSister(listTag.GetComponent<ScheduledAction>());
+	}
+
+	private GameObject instantiateTag() {
+		GameObject tag = (GameObject) Instantiate(scheduledTag, new Vector3(0, 0, -10), Quaternion.identity);
+		tag.GetComponent<ScheduledAction>().action = this;
+		tag.SetActive(false);
+		return tag;
+	}
+
     public void Activate() {
 		doActivate(target);
-		clearScheduled();
         GraphUtility.instance.TidyGraph();
-
         //do applicable visibility increases
         if (isTargeting && target.GetType() == typeof(NodeData))
         {
@@ -32,6 +63,8 @@ public abstract class Action : MonoBehaviour {
             }
         }
         IncreaseVisibilityBetweenNodes(TurnController.instance.CurrentPlayer.StartingNode, GetComponent<NodeData>(), PathVisibilityIncreaseProbability);
+		
+		clearScheduled();
 	}
 	
 	public abstract List<Targetable> getPossibleTargets();
@@ -49,6 +82,10 @@ public abstract class Action : MonoBehaviour {
 		gameObject.GetComponent<NodeMenu>().clear();
 		gameObject.GetComponent<NodeMenu>().hide();
 		gameObject.GetComponent<NodeMenu>().isScheduled = true;
+
+		GameObject tag = getMapScheduledTag();
+		tag.SetActive(true);
+		tag.transform.position = gameObject.transform.position + new Vector3(0.5f, 0.3f, -1);
 
         return true;
     }
