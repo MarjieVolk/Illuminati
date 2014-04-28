@@ -33,7 +33,7 @@ public class EdgeData : Targetable {
 	}
 
 	public enum EdgeDirection {
-		OneToTwo, TwoToOne, Neutral
+		OneToTwo, TwoToOne, Neutral, Unusable
 	};
 
     public void triggerEdge(float baseTriggerProbability)
