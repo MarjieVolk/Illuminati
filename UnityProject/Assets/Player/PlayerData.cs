@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
+using Assets.Graph.Nodes;
 
 public class PlayerData : MonoBehaviour {
 
@@ -48,6 +49,7 @@ public class PlayerData : MonoBehaviour {
 		style = new GUIStyle();
 		style.normal.textColor = Color.black;
 		style.fontSize = 16;
+		style.normal.background = InvestigateAction.MakeTextureOfColor(Color.gray);
 	}
 	
 	void Update() {
@@ -68,7 +70,7 @@ public class PlayerData : MonoBehaviour {
     {
         if (this != TurnController.instance.CurrentPlayer) return;
 
-        GUI.Label(new Rect(0.01f * Screen.height, Screen.height - (Screen.height * 0.115f), 100, 90), "Actions: <b>" + actionPoints + "</b>", style);
+        GUI.Label(new Rect(0, Screen.height - (Screen.height * 0.115f), 85, 20), "  Actions: <b>" + actionPoints + "</b>", style);
     }
 
     public void cancelAction(Action toCancel)
