@@ -40,9 +40,9 @@ public class PlayerData : MonoBehaviour {
 			NodeData ourStart = startingNodes[gen.Next(startingNodes.Count)];
 			startingNodes.Remove(ourStart);
 			StartingNode = ourStart;
-			ourStart.startingOwner = this;
-			ourStart.Owner = this;
 		}
+		StartingNode.startingOwner = this;
+		StartingNode.Owner = this;
 	}
 	
 	void Update() {

@@ -33,6 +33,7 @@ public class VictoryConditionController : MonoBehaviour {
 			foreach (PlayerData player in players) {
 				if (player == owner) {
 					nonLosingPlayers.Add(owner);
+					players.Remove(owner);
 					break;
 				}
 			}
