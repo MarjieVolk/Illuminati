@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Player;
+using Assets.Graph.Nodes;
 
 public class ActionButton : MonoBehaviour {
 
@@ -21,15 +22,7 @@ public class ActionButton : MonoBehaviour {
 		style.fontSize = 16;
 		style.fontStyle = FontStyle.Bold;
 		style.normal.textColor = Color.black;
-        var tex = new Texture2D(2, 2);
-        var colors = new Color[4];
-        for (int i = 0; i < colors.Length; i++)
-        {
-            colors[i] = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-        }
-        tex.SetPixels(colors);
-        tex.Apply();
-        style.normal.background = tex;
+        style.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.5f, 0.5f, 0.5f, 0.8f));
 	}
 	
 	// Update is called once per frame
