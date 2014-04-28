@@ -36,14 +36,14 @@ namespace Assets.Player
 
         void OnGUI()
         {
-			float x = 0.01f * Screen.currentResolution.height;
-			float y = 0.21f * Screen.currentResolution.height;
+			float x = 0.01f * Screen.height;
+			float y = 0.218f * Screen.height;
             x = Screen.width - x;
 
             float width = 95;
             float height = 20;
 
-            GUI.TextArea(new Rect(x - width, y - height, width, height), CurrentPlayer.Name + "'s Turn");
+            GUI.TextArea(new Rect(x - width, y, width, height), CurrentPlayer.Name + "'s Turn");
         }
 
         public void ExecuteActions()

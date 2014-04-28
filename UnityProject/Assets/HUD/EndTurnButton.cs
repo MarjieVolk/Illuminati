@@ -7,7 +7,7 @@ public class EndTurnButton : HUDButton {
 
 	void Awake () {
 		x = 0.01f;
-		y = 0.135f;
+		y = 0.157f;
 		
 		// Hide this button
 		gameObject.SetActive(false);
