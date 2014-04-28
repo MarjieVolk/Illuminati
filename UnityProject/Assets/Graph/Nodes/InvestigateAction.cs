@@ -11,6 +11,20 @@ namespace Assets.Graph.Nodes
 {
     public class InvestigateAction : Action
     {
+        public static Texture2D MakeTextureOfColor(Color color)
+        {
+            var tex = new Texture2D(2, 2);
+            var colors = new Color[4];
+            for (int i = 0; i < colors.Length; i++)
+            {
+                colors[i] = color;
+            }
+            tex.SetPixels(colors);
+            tex.Apply();
+
+            return tex;
+        }
+
         void Start()
         {
             isTargeting = true;
