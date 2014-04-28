@@ -6,6 +6,13 @@ public class TestWindow : EditorWindow {
 
 	private static NodeData prev;
 
+    private static Dictionary<string, Vector2> pinOffsets = new Dictionary<string, Vector2>
+        {
+            {"corporate", new Vector2(-0.05f, 0.7f)},
+            {"government", new Vector2(-0.1f, 0.7f)},
+            {"media", new Vector2(-0.45f, 0.3f)}
+        };
+
 	[MenuItem("Window/Test")]
 	public static void Init() {
 		TestWindow window = GetWindow<TestWindow>();
@@ -39,6 +46,11 @@ public class TestWindow : EditorWindow {
                 Vector2 nodeTwoPosition = new Vector2(edgeData.nodeTwo.transform.position.x, edgeData.nodeTwo.transform.position.y);
 
                 //TODO adjust for pin location
+                Vector2 nodeOneOffset = pinOffsets[edgeData.nodeOne.GetComponent<NodeData>().archetype];
+                Vector2 nodeTwoOffset = pinOffsets[edgeData.nodeTwo.GetComponent<NodeData>().archetype];
+
+                nodeOnePosition += nodeOneOffset;
+                nodeTwoPosition += nodeTwoOffset;
                 
                 //move the center of the edge to the average of their positions
                 Vector2 avgPosition = (nodeOnePosition + nodeTwoPosition) / 2.0f;
