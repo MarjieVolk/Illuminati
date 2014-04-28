@@ -16,11 +16,14 @@ public class PlayerData : MonoBehaviour {
 
 	private const float WIDTH = 50;
 	private const float MARGIN = 5;
-	
+
+    void Awake()
+    {
+        actionPoints = 0;
+    }
+
 	// Use this for initialization
 	void Start () {
-        actionPoints = 0;
-        startTurn();
 
 		if (StartingNode == null) {
 			if (startingNodes == null) {

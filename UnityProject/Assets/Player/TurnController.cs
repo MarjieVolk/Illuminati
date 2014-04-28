@@ -21,6 +21,11 @@ namespace Assets.Player
 			instance = this;
         }
 
+        void Start()
+        {
+            CurrentPlayer.startTurn();
+        }
+
         // Update is called once per frame
         void Update()
         {
