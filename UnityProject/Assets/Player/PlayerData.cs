@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using Assets.Player;
 using Assets.Graph.Nodes;
 
@@ -30,7 +31,7 @@ public class PlayerData : MonoBehaviour {
 		if (StartingNode == null) {
 			if (startingNodes == null) {
 				gen = new System.Random();
-				NodeData[] nodes = Object.FindObjectsOfType<NodeData>();
+				NodeData[] nodes = UnityEngine.Object.FindObjectsOfType<NodeData>();
 				startingNodes = new List<NodeData>();
 				foreach (NodeData node in nodes) {
 					if (node.isStartNode) {
@@ -45,6 +46,13 @@ public class PlayerData : MonoBehaviour {
 		}
 		StartingNode.startingOwner = this;
 		StartingNode.Owner = this;
+
+		// Increase starting node attacks
+		Array values = Enum.GetValues(typeof(DominationType));
+		foreach (DominationType type in values) {
+			StartingNode.getAttackSkill(type).value += 15;
+			StartingNode.getDefenseSkill(type).value += 10;
+		}
 
 		style = new GUIStyle();
 		style.normal.textColor = Color.black;
