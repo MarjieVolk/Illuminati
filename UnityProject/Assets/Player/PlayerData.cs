@@ -14,6 +14,9 @@ public class PlayerData : MonoBehaviour {
 	private static List<NodeData> startingNodes;
 	private static System.Random gen;
 
+	private const float WIDTH = 50;
+	private const float MARGIN = 5;
+	
 	// Use this for initialization
 	void Start () {
         actionPoints = 0;
@@ -38,27 +41,36 @@ public class PlayerData : MonoBehaviour {
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
+	void Update() {
+		if (this != TurnController.instance.CurrentPlayer) return;
+		float x = MARGIN;
+		foreach (Action a in selectedActions) {
+			GameObject tag = a.getListScheduledTag();
+			tag.SetActive(true);
+			Vector3 screenPos = new Vector3(x + (WIDTH / 2.0f), MARGIN + (WIDTH / 2.0f), 0);
+			Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+			tag.transform.position = new Vector3(worldPos.x, worldPos.y, -5);
+
+			x += WIDTH + MARGIN;
+		}
 	}
 
     void OnGUI()
     {
         if (this != TurnController.instance.CurrentPlayer) return;
-        //Make buttons for each selected action (to cancel it, you see), indicate how many action points remain
-        int xLocation = 0;
-        List<Action> toCancel = new List<Action>();
-        foreach (Action action in selectedActions)
-        {
-            if (GUI.Button(new Rect(xLocation, 650, 100, 90), "" + xLocation))
-            {
-                toCancel.Add(action);
-            }
-            xLocation += 110;
-        }
-
-        foreach (Action action in toCancel) cancelAction(action);
+//        //Make buttons for each selected action (to cancel it, you see), indicate how many action points remain
+//        int xLocation = 0;
+//        List<Action> toCancel = new List<Action>();
+//        foreach (Action action in selectedActions)
+//        {
+//            if (GUI.Button(new Rect(xLocation, 650, 100, 90), "" + xLocation))
+//            {
+//                toCancel.Add(action);
+//            }
+//            xLocation += 110;
+//        }
+//
+//        foreach (Action action in toCancel) cancelAction(action);
 
         GUI.Label(new Rect(0, 550, 100, 90), "Actions Remaining: " + actionPoints);
     }
@@ -67,6 +79,8 @@ public class PlayerData : MonoBehaviour {
     {
         selectedActions.Remove(toCancel);
         toCancel.clearScheduled();
+		toCancel.getListScheduledTag().SetActive(false);
+		toCancel.getMapScheduledTag().SetActive(false);
         actionPoints++;
     }
 
@@ -75,6 +89,9 @@ public class PlayerData : MonoBehaviour {
         if (actionPoints <= 0) return false;
 
         selectedActions.Add(toSelect);
+		toSelect.getListScheduledTag().GetComponent<ScheduledAction>().player = this;
+		toSelect.getMapScheduledTag().GetComponent<ScheduledAction>().player = this;
+
         actionPoints--;
         return true;
     }
@@ -83,7 +100,10 @@ public class PlayerData : MonoBehaviour {
         foreach(Action action in selectedActions)
         {
             action.Activate();
+			action.getListScheduledTag().SetActive(false);
+			action.getMapScheduledTag().SetActive(false);
         }
+
         selectedActions = new List<Action>();
         actionPoints = 0;
 	}
@@ -91,10 +111,10 @@ public class PlayerData : MonoBehaviour {
     public void startTurn()
     {
         actionPoints += ActionPointsPerTurn;
-        selectedActions = new List<Action>();
-    }
-
-    public void addActionPoints(int numToAdd)
+		selectedActions = new List<Action>();
+	}
+	
+	public void addActionPoints(int numToAdd)
     {
         actionPoints += numToAdd;
     }
