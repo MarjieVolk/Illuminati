@@ -36,12 +36,14 @@ namespace Assets.Player
 
         void OnGUI()
         {
-            if (GUI.Button(new Rect(10, 10, 100, 90), "End Turn"))
-            {
-                NextTurn();
-            }
+            float x = 50;
+            float y = 250;
+            x = Screen.width - x;
 
-            GUI.TextArea(new Rect(10, 110, 100, 90), CurrentPlayer.Name);
+            float width = 100;
+            float height = 20;
+
+            GUI.TextArea(new Rect(x - width, y - height, width, height), CurrentPlayer.Name);
         }
 
         public void NextTurn()
