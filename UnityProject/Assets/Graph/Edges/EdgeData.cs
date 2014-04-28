@@ -12,6 +12,9 @@ public class EdgeData : Targetable {
 	public GameObject arrowHead;
 	private GameObject realArrowHead;
 
+    public GameObject ex;
+    private GameObject realEx;
+
 	public DominationType type {get; set;}
 	public EdgeDirection direction { get; set; }
 	private EdgeDirection prevDirection;
@@ -40,7 +43,8 @@ public class EdgeData : Targetable {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        if (realEx == null) realEx = (GameObject)Instantiate(ex, gameObject.transform.position, gameObject.transform.rotation);
+        realEx.SetActive(direction == EdgeDirection.Unusable);
 	}
 
 	public enum EdgeDirection {
