@@ -17,7 +17,6 @@ public class NodeData : Targetable {
 
 		set {
 			owner = value;
-			updateSprites();
 		}
 	}
 

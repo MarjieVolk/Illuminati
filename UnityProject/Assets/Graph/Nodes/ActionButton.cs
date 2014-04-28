@@ -28,8 +28,8 @@ public class ActionButton : MonoBehaviour {
 		if (mouseEnterTime != -1 && (Time.time - mouseEnterTime) >= toolTipTime) {
 			// Show Tooltip
 			GUI.depth = 1;
-			GUI.Label(new Rect(Input.mousePosition.x + 19, Screen.height - Input.mousePosition.y - 4, 100, 30), "<color=#100000ff>" + tooltip + "</color>", style);
-			GUI.Label(new Rect(Input.mousePosition.x + 20, Screen.height - Input.mousePosition.y - 5, 100, 30), tooltip, style);
+			GUI.Label(new Rect(Input.mousePosition.x + 19, Screen.height - Input.mousePosition.y - 4, 100, 30), tooltip, style);
+			GUI.Label(new Rect(Input.mousePosition.x + 20, Screen.height - Input.mousePosition.y - 5, 100, 30), "<color=#aaaaaaff>" + tooltip + "</color>", style);
 		}
 	}
 

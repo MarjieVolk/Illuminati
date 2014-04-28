@@ -30,11 +30,6 @@ public class NodeStatMenu : MonoBehaviour {
 		NodeData data = gameObject.GetComponent<NodeData>();
 		if (canShowMenu(data)) {
 			isShown = true;
-			foreach (NodeData node in GraphUtility.instance.getConnectedNodes(data)) {
-				if (canShowMenu(node)) {
-					node.gameObject.GetComponent<NodeStatMenu>().isShown = true;
-				}
-			}
 		}
 	}
 
@@ -43,10 +38,6 @@ public class NodeStatMenu : MonoBehaviour {
 			// Hide menu background
 		}
 		isShown = false;
-		NodeData data = gameObject.GetComponent<NodeData>();
-		foreach (NodeData node in GraphUtility.instance.getConnectedNodes(data)) {
-			node.gameObject.GetComponent<NodeStatMenu>().isShown = false;
-		}
 	}
 
 	void OnGUI() {
