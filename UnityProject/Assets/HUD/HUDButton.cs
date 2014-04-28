@@ -8,7 +8,7 @@ public abstract class HUDButton : Highlightable {
 	protected float x = 0.01f, y = 0.01f;
 
 	void Update() {
-		Vector3 screenPos = new Vector3(Screen.width - (x * Screen.currentResolution.height), Screen.height - (y * Screen.currentResolution.height), 0);
+		Vector3 screenPos = new Vector3(Screen.width - (x * Screen.height), Screen.height - (y * Screen.height), 0);
 		Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
 		
 		Bounds bounds = gameObject.GetComponent<SpriteRenderer>().bounds;
