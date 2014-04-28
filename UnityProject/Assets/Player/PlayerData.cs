@@ -11,6 +11,8 @@ public class PlayerData : MonoBehaviour {
     private List<Action> selectedActions;
     public NodeData StartingNode;
 
+	private GUIStyle style;
+
 	private static List<NodeData> startingNodes;
 	private static System.Random gen;
 
@@ -24,7 +26,6 @@ public class PlayerData : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
 		if (StartingNode == null) {
 			if (startingNodes == null) {
 				gen = new System.Random();
@@ -43,6 +44,10 @@ public class PlayerData : MonoBehaviour {
 		}
 		StartingNode.startingOwner = this;
 		StartingNode.Owner = this;
+
+		style = new GUIStyle();
+		style.normal.textColor = Color.black;
+		style.fontSize = 16;
 	}
 	
 	void Update() {
@@ -62,21 +67,8 @@ public class PlayerData : MonoBehaviour {
     void OnGUI()
     {
         if (this != TurnController.instance.CurrentPlayer) return;
-//        //Make buttons for each selected action (to cancel it, you see), indicate how many action points remain
-//        int xLocation = 0;
-//        List<Action> toCancel = new List<Action>();
-//        foreach (Action action in selectedActions)
-//        {
-//            if (GUI.Button(new Rect(xLocation, 650, 100, 90), "" + xLocation))
-//            {
-//                toCancel.Add(action);
-//            }
-//            xLocation += 110;
-//        }
-//
-//        foreach (Action action in toCancel) cancelAction(action);
 
-        GUI.Label(new Rect(0, 550, 100, 90), "Actions Remaining: " + actionPoints);
+        GUI.Label(new Rect(0.01f * Screen.height, Screen.height - (Screen.height * 0.115f), 100, 90), "Actions: <b>" + actionPoints + "</b>", style);
     }
 
     public void cancelAction(Action toCancel)

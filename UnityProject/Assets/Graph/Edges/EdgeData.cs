@@ -16,6 +16,8 @@ public class EdgeData : Targetable {
 	public EdgeDirection direction { get; set; }
 	private EdgeDirection prevDirection;
 
+	private GUIStyle visibilityStyle;
+
     public float Visibility { get; set; }
 	
 	// Use this for initialization
@@ -30,6 +32,10 @@ public class EdgeData : Targetable {
 		TurnController.instance.OnTurnEnd += () => triggerEdge(0.1f);
 		TurnController.instance.OnTurnEnd += new TurnController.OnTurnEndHandler(updateVisibilityRendering);
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
+
+		visibilityStyle = new GUIStyle();
+		visibilityStyle.normal.textColor = Color.black;
+		visibilityStyle.fontSize = 14;
 	}
 	
 	// Update is called once per frame
@@ -75,7 +81,10 @@ public class EdgeData : Targetable {
 
     void OnGUI()
     {
-        if (displayVisibility) GUI.Label(new Rect(500, 0, 1000, 20), "Visibility: " + (int)(Visibility * 100) + "%");
+        if (displayVisibility) {
+			float margin = 0.007f * Screen.height;
+			GUI.Label(new Rect(margin, margin, 100, 20), "Visibility: " + (int)(Visibility * 100) + "%", visibilityStyle);
+		}
     }
 	
 	override public bool viewAsOwned(VisibilityController.Visibility vis) {
@@ -118,7 +127,7 @@ public class EdgeData : Targetable {
 
 	private void updateVisibilityRendering() {
 		if (VisibilityController.instance.visibility == VisibilityController.Visibility.Public) {
-			this.GetComponent<SpriteRenderer>().color = new Color(1.0f - Visibility, 1.0f - Visibility, 1.0f - Visibility);
+			this.GetComponent<SpriteRenderer>().color = new Color(1, 1.0f - Visibility, 1.0f - Visibility);
 		} else {
 			this.GetComponent<SpriteRenderer>().color = Color.white;
 		}

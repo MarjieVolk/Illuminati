@@ -16,7 +16,7 @@ namespace Assets.Graph.Nodes
             isTargeting = true;
         }
 
-        public float minVisibilityIncrease, maxVisibilityIncrease;
+        public float minVisIncrease, maxVisIncreaseUnowned, maxVisIncreaseOwned;
 
         //can target any edge that does not belong to you
         public override List<Targetable> getPossibleTargets()
@@ -35,7 +35,10 @@ namespace Assets.Graph.Nodes
         protected override void doActivate(Targetable target)
         {
             //pick a random amount to increase visibility by
-            float visibilityIncreaseAmount = UnityEngine.Random.value * (maxVisibilityIncrease - minVisibilityIncrease) + minVisibilityIncrease;
+			EdgeData.EdgeDirection dir = ((EdgeData) target).direction;
+			bool owned = dir == EdgeData.EdgeDirection.OneToTwo || dir == EdgeData.EdgeDirection.TwoToOne;
+			float max = owned ? maxVisIncreaseOwned : maxVisIncreaseUnowned;
+            float visibilityIncreaseAmount = UnityEngine.Random.value * (max - minVisIncrease) + minVisIncrease;
 
             ((EdgeData)target).Visibility += visibilityIncreaseAmount;
         }
