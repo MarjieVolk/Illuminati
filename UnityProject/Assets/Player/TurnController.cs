@@ -54,6 +54,9 @@ namespace Assets.Player
 
             if (null != OnTurnEnd) OnTurnEnd();
 
+            this.GetComponent<VisibilityController>().ToggleVisibility();
+            this.GetComponent<VisibilityController>().ToggleVisibility();
+
             BetweenTurns = true;
         }
 
