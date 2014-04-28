@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using UnityEngine;
+
 namespace Assets.Graph.Nodes
 {
     //They're too clever to be caught in the act, but maybe we can scare them off...
@@ -24,6 +26,11 @@ namespace Assets.Graph.Nodes
 
             PathVisibilityIncreaseProbability = 0.5f;
             CarryingEdgeVisibilityIncreaseProbability = 1;
+        }
+
+        void Start()
+        {
+            isTargeting = true;
         }
 
         public override List<Targetable> getPossibleTargets()

@@ -89,7 +89,7 @@ public class EdgeData : Targetable {
 	
 	override public bool viewAsOwned(VisibilityController.Visibility vis) {
 		bool isPrivate = vis == VisibilityController.Visibility.Private;
-		bool isOwned = direction != EdgeDirection.Neutral;
+		bool isOwned = (direction == EdgeDirection.OneToTwo || direction == EdgeDirection.TwoToOne);
 
 		if (isPrivate && isOwned) {
 			return nodeOne.GetComponent<NodeData>().Owner == TurnController.instance.CurrentPlayer;

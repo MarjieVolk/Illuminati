@@ -216,7 +216,7 @@ public class GraphUtility : MonoBehaviour {
         //remove directionality and domination type of edges that no longer connect two same-player-owned nodes
         foreach (EdgeData edge in FindObjectsOfType<EdgeData>())
         {
-            if (edge.direction != EdgeData.EdgeDirection.Neutral)
+            if (edge.direction != EdgeData.EdgeDirection.Neutral && edge.direction != EdgeData.EdgeDirection.Unusable)
             {
                 if (edge.nodeOne.GetComponent<NodeData>().Owner != edge.nodeTwo.GetComponent<NodeData>().Owner)
                 {
