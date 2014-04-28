@@ -1,34 +1,34 @@
 ﻿using UnityEngine;
+using System.Collections;
 using Assets.Player;
 
-public class EndTurnButton : HUDButton {
+public class ExecuteActionsButton : HUDButton {
 
 	bool isClick = false;
-
+	
 	void Awake () {
 		x = 0.01f;
 		y = 0.135f;
-		
-		// Hide this button
-		gameObject.SetActive(false);
 	}
 	
 	override public bool viewAsOwned(VisibilityController.Visibility visibility) {
 		return isClick;
 	}
-
+	
 	void OnMouseDown() {
 		isClick = true;
 		updateSprites();
 	}
-
+	
 	void OnMouseUp() {
 		isClick = false;
 		updateSprites();
 	}
-
+	
 	void OnMouseUpAsButton() {
-		TurnController.instance.NextTurn();
-		transform.parent.gameObject.GetComponent<ButtonToggler>().toggle(gameObject);
+		TurnController.instance.ExecuteActions();
+		GameObject parent = transform.parent.gameObject;
+		ButtonToggler toggler = parent.GetComponent<ButtonToggler>();
+		toggler.toggle(gameObject);
 	}
 }

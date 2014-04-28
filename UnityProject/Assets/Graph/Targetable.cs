@@ -14,7 +14,7 @@ public abstract class Targetable : Highlightable {
 		base.Start();
 
 		style = new GUIStyle();
-		style.normal.textColor = Color.green;
+		style.normal.textColor = new Color(0.5f, 0, 0);
 		style.fontSize = 16;
 		style.fontStyle = FontStyle.Bold;
 		style.alignment = TextAnchor.LowerCenter;

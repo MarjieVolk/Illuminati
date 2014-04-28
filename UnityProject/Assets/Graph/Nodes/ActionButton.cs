@@ -20,7 +20,7 @@ public class ActionButton : MonoBehaviour {
 		style = new GUIStyle();
 		style.fontSize = 16;
 		style.fontStyle = FontStyle.Bold;
-		style.normal.textColor = new Color(0.5f, 0, 0);
+		style.normal.textColor = Color.white;
 	}
 	
 	// Update is called once per frame
@@ -29,7 +29,7 @@ public class ActionButton : MonoBehaviour {
 			// Show Tooltip
 			GUI.depth = 1;
 			GUI.Label(new Rect(Input.mousePosition.x + 19, Screen.height - Input.mousePosition.y - 4, 100, 30), tooltip, style);
-			GUI.Label(new Rect(Input.mousePosition.x + 20, Screen.height - Input.mousePosition.y - 5, 100, 30), "<color=#aaaaaaff>" + tooltip + "</color>", style);
+			GUI.Label(new Rect(Input.mousePosition.x + 20, Screen.height - Input.mousePosition.y - 5, 100, 30), "<color=#000000ff>" + tooltip + "</color>", style);
 		}
 	}
 
