@@ -20,7 +20,16 @@ public class ActionButton : MonoBehaviour {
 		style = new GUIStyle();
 		style.fontSize = 16;
 		style.fontStyle = FontStyle.Bold;
-		style.normal.textColor = Color.white;
+		style.normal.textColor = Color.black;
+        var tex = new Texture2D(2, 2);
+        var colors = new Color[4];
+        for (int i = 0; i < colors.Length; i++)
+        {
+            colors[i] = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+        }
+        tex.SetPixels(colors);
+        tex.Apply();
+        style.normal.background = tex;
 	}
 	
 	// Update is called once per frame
@@ -28,8 +37,9 @@ public class ActionButton : MonoBehaviour {
 		if (mouseEnterTime != -1 && (Time.time - mouseEnterTime) >= toolTipTime) {
 			// Show Tooltip
 			GUI.depth = 1;
-			GUI.Label(new Rect(Input.mousePosition.x + 19, Screen.height - Input.mousePosition.y - 4, 100, 30), tooltip, style);
-			GUI.Label(new Rect(Input.mousePosition.x + 20, Screen.height - Input.mousePosition.y - 5, 100, 30), "<color=#000000ff>" + tooltip + "</color>", style);
+            string paddedTooltip = " " + tooltip;
+            Vector2 tooltipSize = style.CalcSize(new GUIContent(paddedTooltip));
+            GUI.Label(new Rect(Input.mousePosition.x + 20, Screen.height - Input.mousePosition.y - 4, tooltipSize.x + 5.0f, tooltipSize.y), paddedTooltip, style);
 		}
 	}
 
