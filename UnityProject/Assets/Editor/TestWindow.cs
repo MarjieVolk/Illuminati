@@ -36,6 +36,8 @@ public class TestWindow : EditorWindow {
 				Object edgePrefab = Resources.Load("Edge");
 				GameObject edge = (GameObject) PrefabUtility.InstantiatePrefab(edgePrefab);
 
+                float zValue = edge.transform.position.z;
+
 				EdgeData edgeData = edge.GetComponent<EdgeData>();
 				edgeData.nodeOne = prev.gameObject;
 				edgeData.nodeTwo = cur.gameObject;
@@ -74,6 +76,8 @@ public class TestWindow : EditorWindow {
                     edgeAngle *= -1;
                 }
                 edge.transform.Rotate(Vector3.forward, edgeAngle);
+
+                edge.transform.position = new Vector3(edge.transform.position.x, edge.transform.position.y, zValue);
 
 				prev = null;
 			}
