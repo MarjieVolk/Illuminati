@@ -4,6 +4,8 @@ using Assets.Player;
 
 public class NodeData : Targetable {
 
+    public string archetype;
+
 	public PlayerData startingOwner;
 	public bool isStartNode = false;
 
