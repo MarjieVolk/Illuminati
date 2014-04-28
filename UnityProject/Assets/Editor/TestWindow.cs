@@ -30,8 +30,8 @@ public class TestWindow : EditorWindow {
 				GameObject edge = (GameObject) PrefabUtility.InstantiatePrefab(edgePrefab);
 
 				EdgeData edgeData = edge.GetComponent<EdgeData>();
-				edgeData.nodeOne = prev;
-				edgeData.nodeTwo = cur;
+				edgeData.nodeOne = prev.gameObject;
+				edgeData.nodeTwo = cur.gameObject;
 
 				// Here goes the stuff
 
