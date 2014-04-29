@@ -44,7 +44,7 @@ public class NodeStatMenu : MonoBehaviour {
 
 	void OnGUI() {
 		if (isShown) {
-			GUI.depth = 10;
+			GUI.depth = -9001;
 			NodeData data = gameObject.GetComponent<NodeData>();
 			string text = " \t\t\t\tAtt  Def\n" +
 					" Bribe\t\t <color=maroon>" + data.getAttack(DominationType.Bribe) + "  " + data.getDefense(DominationType.Bribe) + "</color>\n" +
