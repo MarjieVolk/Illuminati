@@ -15,9 +15,12 @@ namespace Assets.Player
 
         private Dictionary<Targetable, Targetable.OnClickHandler> clickHandlers;
 
+		private bool isFirstFrameAfterSelected = false;
+
         public void selectAction(Action selected)
         {
             inSelectionState = true;
+			isFirstFrameAfterSelected = true;
 			this.selected = selected;
 
             //if the action is targeted
@@ -42,7 +45,7 @@ namespace Assets.Player
         }
 
         void scheduleAction(Action toSchedule, Targetable target)
-        {
+		{
             PlayerData currentPlayer = this.GetComponent<TurnController>().CurrentPlayer;
 			if (currentPlayer.scheduleAction(toSchedule)) {
 				toSchedule.SetScheduled(target);
@@ -62,11 +65,12 @@ namespace Assets.Player
         // Update is called once per frame
         void Update()
         {
-			if (inSelectionState && Input.GetMouseButtonDown(1)) {
+			if (inSelectionState && !isFirstFrameAfterSelected && (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0))) {
 				// Clicked on something else with action selected -- cancel selection
 				clearSelectionState(selected);
 				selected.gameObject.GetComponent<NodeMenu>().hide();
 			}
+			isFirstFrameAfterSelected = false;
         }
 
 		/// <summary>
