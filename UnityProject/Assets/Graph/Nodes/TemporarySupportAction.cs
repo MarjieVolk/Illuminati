@@ -31,16 +31,16 @@ public class TemporarySupportAction : Action {
 		foreach (DominationType type in values) {
 			int increase = getIncrease(thisNode.getAttackSkill(type).getWorkingValue());
 			if (increase > 0) {
-				ret += "\n" + type.ToString() + " Attack +" + increase;
+				ret += type.ToString() + " Attack +" + increase + "\n";
 			}
 
 			increase = getIncrease(thisNode.getDefenseSkill(type).getWorkingValue());			
 			if (increase > 0) {
-				ret += "\n" + type.ToString() + " Defense +" + increase;
+				ret += type.ToString() + " Defense +" + increase + "\n";
 			}
 		}
 		
-		return ret.Equals("") ? "--" : (ret + "\n(" + duration + " turns)");
+		return ret.Equals("") ? "--" : (ret + "(" + duration + " turns)");
 	}
 	
 	protected override void doActivate(Targetable target) {

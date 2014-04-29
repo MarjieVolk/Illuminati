@@ -42,7 +42,8 @@ public class PermanentSupportAction : Action {
 				int min = (int) (difference * minProportion);
 				int max = (int) (difference * maxProportion);
 				string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
-				ret += "\n" + type.ToString() + " Attack +" + increaseStr;
+                if ("" != ret) ret += "\n";
+				ret += type.ToString() + " Attack +" + increaseStr;
 			}
 			
 			DefenseSkill targetDefenseSkill = node.getDefenseSkill(type);
@@ -52,8 +53,9 @@ public class PermanentSupportAction : Action {
 			if (difference > 0) {
 				int min = (int) (difference * minProportion);
 				int max = (int) (difference * maxProportion);
-				string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
-				ret += "\n" + type.ToString() + " Defense +" + increaseStr;
+                string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
+                if ("" != ret) ret += "\n";
+				ret += type.ToString() + " Defense +" + increaseStr;
 			}
 		}
 
