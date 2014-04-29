@@ -5,8 +5,8 @@ using System;
 
 public class PermanentSupportAction : Action {
 
-	private const int maxIncrease = 3;
-	private const int maxDifference = 10;
+	private const float minProportion = 0.2f;
+	private const float maxProportion = 0.6f;
 
 	private static System.Random gen;
 
@@ -32,19 +32,17 @@ public class PermanentSupportAction : Action {
 		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
 		Array values = Enum.GetValues(typeof(DominationType));
 
-		string ret = null;
+		string ret = "";
 		foreach (DominationType type in values) {
 			AttackSkill targetAttackSkill = node.getAttackSkill(type);
 			AttackSkill thisAttackSkill = thisNode.getAttackSkill(type);
 			int difference = thisAttackSkill.getWorkingValue() - targetAttackSkill.getWorkingValue();
 
 			if (difference > 0) {
-				if (ret == null) {ret = "";} else {ret += "\n";}
-				int increase = getExpectedIncreaseAmount(difference);
-				int min = Math.Max(increase - 1, 0);
-				int max = Math.Min(increase + 1, maxIncrease);
+				int min = (int) (difference * minProportion);
+				int max = (int) (difference * maxProportion);
 				string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
-				ret += type.ToString() + " Attack +" + increaseStr;
+				ret += "\n" + type.ToString() + " Attack +" + increaseStr;
 			}
 			
 			DefenseSkill targetDefenseSkill = node.getDefenseSkill(type);
@@ -52,12 +50,10 @@ public class PermanentSupportAction : Action {
 			difference = thisDefenseSkill.getWorkingValue() - targetDefenseSkill.getWorkingValue();
 			
 			if (difference > 0) {
-				if (ret == null) {ret = "";} else {ret += "\n";}
-				int increase = getExpectedIncreaseAmount(difference);
-				int min = Math.Max(increase - 1, 0);
-				int max = Math.Min(increase + 1, maxIncrease);
+				int min = (int) (difference * minProportion);
+				int max = (int) (difference * maxProportion);
 				string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
-				ret += type.ToString() + " Defense +" + increaseStr;
+				ret += "\n" + type.ToString() + " Defense +" + increaseStr;
 			}
 		}
 
@@ -81,25 +77,9 @@ public class PermanentSupportAction : Action {
 	}
 
 	private int getIncreaseAmount(int difference) {
-		int avg = getExpectedIncreaseAmount(difference);
+		float min = difference * minProportion;
+		float max = difference * maxProportion;
 		double randomness = gen.NextDouble();
-		if (randomness >= 0.8) {
-			avg += 1;
-		} else if (randomness <= 0.2) {
-			avg -= 1;
-		}
-
-		// Bind avg to range 0-maxDifference
-		return Math.Max(Math.Min(maxDifference, avg), 0);
-	}
-
-	private int getExpectedIncreaseAmount(int difference) {
-		if (difference <= 0) {
-			return 0;
-		} else if (difference >= maxDifference) {
-			return maxIncrease;
-		} else {
-			return difference / maxDifference;
-		}
+		return (int) (((max - min) * randomness) + min);
 	}
 }
