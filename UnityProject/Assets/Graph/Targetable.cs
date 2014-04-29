@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Graph.Nodes;
 
 public abstract class Targetable : Highlightable {
 	
@@ -18,6 +19,7 @@ public abstract class Targetable : Highlightable {
 		style.fontSize = 16;
 		style.fontStyle = FontStyle.Bold;
 		style.alignment = TextAnchor.LowerCenter;
+        style.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.5f, 0.5f, 0.5f, 0.9f));
 	}
 
 	void OnMouseUpAsButton() {
@@ -35,8 +37,11 @@ public abstract class Targetable : Highlightable {
 
 	void OnGUI() {
 		if (isShowText) {
-			Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-			GUI.Label(new Rect(screenPosition.x - 150, Screen.height - screenPosition.y - 240, 300, 200), text, style);
+            Vector2 textSize = style.CalcSize(new GUIContent(text));
+            Vector3 worldPosition = transform.position;
+            worldPosition.y += GetComponent<CircleCollider2D>().radius;
+			Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+			GUI.Label(new Rect(screenPosition.x - textSize.x / 2.0f, Screen.height - screenPosition.y - textSize.y, textSize.x, textSize.y), text, style);
 		}
 	}
 }
