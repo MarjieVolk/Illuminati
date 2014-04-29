@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
+using Assets.Graph.Nodes;
 
 public class NodeStatMenu : MonoBehaviour {
 
@@ -15,6 +16,7 @@ public class NodeStatMenu : MonoBehaviour {
 		style = new GUIStyle();
 		style.normal.textColor = Color.black;
 		style.fontStyle = FontStyle.Bold;
+        style.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.5f, 0.5f, 0.5f, 0.9f));
 	}
 	
 	// Update is called once per frame
@@ -44,14 +46,18 @@ public class NodeStatMenu : MonoBehaviour {
 		if (isShown) {
 			GUI.depth = 10;
 			NodeData data = gameObject.GetComponent<NodeData>();
-			string text = "\t\t\t Att\tDef\n" +
-					"Bribe\t\t<color=maroon>" + data.getAttack(DominationType.Bribe) + "\t" + data.getDefense(DominationType.Bribe) + "</color>\n" +
-					"Blackmail\t<color=maroon>" + data.getAttack(DominationType.Blackmail) + "\t" + data.getDefense(DominationType.Blackmail) + "</color>\n" +
-					"Threaten\t<color=maroon>" + data.getAttack(DominationType.Threaten) + "\t" + data.getDefense(DominationType.Threaten) + "</color>\n";
+			string text = " \t\t\t\tAtt  Def\n" +
+					" Bribe\t\t <color=maroon>" + data.getAttack(DominationType.Bribe) + "  " + data.getDefense(DominationType.Bribe) + "</color>\n" +
+					" Blackmail <color=maroon>" + data.getAttack(DominationType.Blackmail) + "  " + data.getDefense(DominationType.Blackmail) + "</color>\n" +
+					" Threaten\t <color=maroon>" + data.getAttack(DominationType.Threaten) + "  " + data.getDefense(DominationType.Threaten) + "</color>";
 
+            Vector2 textSize = style.CalcSize(new GUIContent(text));
+
+            float radius = GetComponent<CircleCollider2D>().radius;
+            Vector3 leftEdgeScreenPosition = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x - radius - 0.5f, transform.position.y, transform.position.z));
 			Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
 
-			GUI.Label(new Rect(screenPosition.x - 150, Screen.height - screenPosition.y - 30, 300, 100), text, style);
+            GUI.Label(new Rect(leftEdgeScreenPosition.x - textSize.x, Screen.height - screenPosition.y - textSize.y / 2.0f, textSize.x + 5, textSize.y), text, style);
 		}
 	}
 
