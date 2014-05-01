@@ -59,7 +59,7 @@ public class ActionButton : MonoBehaviour {
 
 	public void OnMouseUpAsButton() {
 		if (ActionController.instance.inSelectionState) {
-			return;
+            ActionController.instance.clearSelectionState();
 		}
 
 		if (selected != null) {
