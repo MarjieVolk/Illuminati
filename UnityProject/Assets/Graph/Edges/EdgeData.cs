@@ -33,7 +33,7 @@ public class EdgeData : Targetable {
 
         TurnController.instance.OnTurnEnd += () => Visibility *= 0.9f;
 		TurnController.instance.OnTurnEnd += () => triggerEdge(0.1f);
-		TurnController.instance.OnTurnEnd += new TurnController.OnTurnEndHandler(updateVisibilityRendering);
+		TurnController.instance.OnTurnEnd += updateVisibilityRendering;
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
 
 		visibilityStyle = new GUIStyle();

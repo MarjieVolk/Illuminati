@@ -13,7 +13,7 @@ public class AttackSkill : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		increases = new List<TemporaryIncrease>();
-		TurnController.instance.OnTurnEnd += new TurnController.OnTurnEndHandler(onTurnEnd);
+        TurnController.instance.OnTurnEnd += onTurnEnd;
 	}
 	
 	// Update is called once per frame

@@ -28,7 +28,7 @@ namespace Assets.Graph.Nodes
             //two turns from now, give the current player some extra actions to play with
             PlayerData playerOfInterest = TurnController.instance.CurrentPlayer;
             int numTurnsDelay = duration;
-            TurnController.OnTurnEndHandler handler = null;
+            System.Action handler = null;
             handler = () =>
             {
                 if (TurnController.instance.CurrentPlayer == playerOfInterest)

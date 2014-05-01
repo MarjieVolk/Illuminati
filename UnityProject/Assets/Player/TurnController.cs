@@ -8,9 +8,8 @@ namespace Assets.Player
     {
 		public static TurnController instance { get; private set; }
 
-        public delegate void OnTurnEndHandler();
-
-        public event OnTurnEndHandler OnTurnEnd;
+        public event System.Action OnTurnEnd;
+        public event System.Action OnTurnStart;
 
         public PlayerData CurrentPlayer;
         public PlayerData OtherPlayer;

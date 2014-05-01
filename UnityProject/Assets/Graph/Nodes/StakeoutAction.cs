@@ -65,7 +65,7 @@ namespace Assets.Graph.Nodes
                 ((EdgeData)target).direction = EdgeData.EdgeDirection.Unusable;
 
                 //set it back to neutral in a few turns
-                TurnController.OnTurnEndHandler directionResetter = null;
+                System.Action directionResetter = null;
                 int numTurnsRemaining = NumTurnsTargetDeactivated;
                 PlayerData currentPlayer = TurnController.instance.CurrentPlayer;
 

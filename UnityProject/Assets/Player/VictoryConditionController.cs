@@ -14,7 +14,7 @@ public class VictoryConditionController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		TurnController.instance.OnTurnEnd += new TurnController.OnTurnEndHandler(checkVictoryCondition);
+		TurnController.instance.OnTurnEnd += checkVictoryCondition;
 		style = new GUIStyle();
 		style.fontSize = 32;
 		style.fontStyle = FontStyle.Bold;

@@ -27,7 +27,7 @@ public class NodeData : Targetable {
 	protected override void Start () {
 		base.Start();
 		Owner = startingOwner;
-		TurnController.instance.OnTurnEnd += new TurnController.OnTurnEndHandler(onTurnEnd);
+		TurnController.instance.OnTurnEnd += onTurnEnd;
 	}
 	
 	// Update is called once per frame
