@@ -32,7 +32,7 @@ namespace Assets.Player
 				possibleTargets.ForEach((x) => { x.setHighlighted(true); x.showTargetInfoText(selected.getAdditionalTextForTarget(x)); });
 
                 //attach event handlers to the possible targets so they're selected when they're clicked
-                possibleTargets.ForEach((x) => { clickHandlers[x] = () => scheduleAction(selected, x); x.OnClicked += clickHandlers[x]; });
+                possibleTargets.ForEach((x) => { clickHandlers[x] = () => scheduleAction(x); x.OnClicked += clickHandlers[x]; });
 
                 // TODO make a cancel button, attach an event handler to it
 
@@ -41,17 +41,17 @@ namespace Assets.Player
             
             //no target needed
             //add the action to the player
-            scheduleAction(selected, null);
+            scheduleAction(null);
         }
 
-        void scheduleAction(Action toSchedule, Targetable target)
+        void scheduleAction(Targetable target)
 		{
             PlayerData currentPlayer = this.GetComponent<TurnController>().CurrentPlayer;
-			if (currentPlayer.scheduleAction(toSchedule)) {
-				toSchedule.SetScheduled(target);
+			if (currentPlayer.scheduleAction(selected)) {
+				selected.SetScheduled(target);
 			}
 
-			clearSelectionState(toSchedule);
+			clearSelectionState();
         }
 
         // Use this for initialization
@@ -66,9 +66,9 @@ namespace Assets.Player
         void Update()
         {
 			if (inSelectionState && !isFirstFrameAfterSelected && (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0))) {
-				// Clicked on something else with action selected -- cancel selection
-				clearSelectionState(selected);
-				selected.gameObject.GetComponent<NodeMenu>().hide();
+                // Clicked on something else with action selected -- cancel selection
+                selected.gameObject.GetComponent<NodeMenu>().hide();
+                clearSelectionState();
 			}
 			isFirstFrameAfterSelected = false;
         }
@@ -76,7 +76,7 @@ namespace Assets.Player
 		/// <summary>
 		/// Called after a selected action is either scheduled or cancelled.
 		/// </summary>
-		private void clearSelectionState(Action selected) {
+		public void clearSelectionState() {
 			//the other targets should not be highlighted now
 			foreach (Targetable noLongerATarget in selected.getPossibleTargets())
 			{
@@ -84,6 +84,8 @@ namespace Assets.Player
 				noLongerATarget.OnClicked -= clickHandlers[noLongerATarget];
 				noLongerATarget.hideTargetInfoText();
 			}
+
+            selected.gameObject.GetComponent<NodeMenu>().clear();
 
 			inSelectionState = false;
 			selected = null;

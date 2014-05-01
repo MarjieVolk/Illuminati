@@ -6,9 +6,11 @@ public class ExecuteActionsButton : HUDButton {
 
 	bool isClick = false;
 	
-	void Awake () {
+	protected override void Start() {
+        base.Start();
 		x = 0.01f;
-		y = 0.157f;
+        y = 0.157f;
+        TurnController.instance.OnTurnEnd += toggleButton;
 	}
 	
 	override public bool viewAsOwned(VisibilityController.Visibility visibility) {
@@ -26,11 +28,13 @@ public class ExecuteActionsButton : HUDButton {
 	}
 	
 	void OnMouseUpAsButton() {
-		TurnController.instance.ExecuteActions();
 		OnMouseUp();
-
-		GameObject parent = transform.parent.gameObject;
-		ButtonToggler toggler = parent.GetComponent<ButtonToggler>();
-		toggler.toggle(gameObject);
+        TurnController.instance.ExecuteActions();
 	}
+
+    private void toggleButton() {
+        GameObject parent = transform.parent.gameObject;
+        ButtonToggler toggler = parent.GetComponent<ButtonToggler>();
+        toggler.toggle(gameObject);
+    }
 }

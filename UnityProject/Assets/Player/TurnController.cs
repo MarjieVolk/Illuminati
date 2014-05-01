@@ -15,6 +15,8 @@ namespace Assets.Player
         public PlayerData OtherPlayer;
 
         public bool BetweenTurns = false;
+        private bool showNextTurnPopup = false;
+        private bool isDoActionCheck = false;
 
         // Use this for initialization
         void Awake()
@@ -45,10 +47,37 @@ namespace Assets.Player
             float height = 20;
 
             GUI.TextArea(new Rect(x - width, y, width, height), CurrentPlayer.Name + "'s Turn");
+
+            float buttonWidth = Screen.width / 10.0f;
+            float buttonHeight = Screen.width / 20.0f;
+
+            if (showNextTurnPopup) {
+                GUI.Box(new Rect(Screen.width / 4.0f, Screen.height / 4.0f, Screen.width / 2.0f, Screen.height / 2.0f), "" + CurrentPlayer.name + "'s Turn");
+                if (GUI.Button(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f), (Screen.height / 2.0f) - (buttonHeight / 2.0f), buttonWidth, buttonHeight), "Okay")) {
+                    showNextTurnPopup = false;
+                    ScreenBlocker.instance.setBlocking(false);
+                }
+            }
+
+            if (isDoActionCheck) {
+                GUI.Box(new Rect(Screen.width / 4.0f, Screen.height / 4.0f, Screen.width / 2.0f, Screen.height / 2.0f), "You have " + CurrentPlayer.actionPointsRemaining() + " action points left. Execute anyways?");
+                if (GUI.Button(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f) - (Screen.width * 0.2f), (Screen.height / 2.0f) - (buttonHeight / 2.0f), buttonWidth, buttonHeight), "Execute")) {
+                    ExecuteActions();
+                }
+
+                if (GUI.Button(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f) + (Screen.width * 0.2f), (Screen.height / 2.0f) - (buttonHeight / 2.0f), buttonWidth, buttonHeight), "Cancel")) {
+                    isDoActionCheck = false;
+                }
+            }
         }
 
         public void ExecuteActions()
         {
+            if (!isDoActionCheck && CurrentPlayer.actionPointsRemaining() > 0) {
+                isDoActionCheck = true;
+                return;
+            }
+
             CurrentPlayer.endTurn();
 
             if (null != OnTurnEnd) OnTurnEnd();
@@ -57,6 +86,7 @@ namespace Assets.Player
             this.GetComponent<VisibilityController>().ToggleVisibility();
 
             BetweenTurns = true;
+            isDoActionCheck = false;
         }
 
         public void NextTurn()
@@ -76,6 +106,10 @@ namespace Assets.Player
             PlayerData temp = OtherPlayer;
             OtherPlayer = CurrentPlayer;
             CurrentPlayer = temp;
+
+            // Next turn popup
+            ScreenBlocker.instance.setBlocking(true);
+            showNextTurnPopup = true;
         }
     }
 }
