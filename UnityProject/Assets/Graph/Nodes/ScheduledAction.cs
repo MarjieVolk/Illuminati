@@ -20,19 +20,19 @@ public class ScheduledAction : Highlightable {
 
 	void OnMouseUpAsButton() {
 		// Cancel action
-		if (action.target != null) action.target.setHighlighted(false);
+		if (action.Target != null) action.Target.setHighlighted(false);
 		player.cancelAction(action);
 	}
 
 	void OnMouseEnter() {
 		setHighlighted(true);
 		sister.setHighlighted(true);
-		if (action.target != null) action.target.setHighlighted(true);
+		if (action.Target != null) action.Target.setHighlighted(true);
 	}
 
 	void OnMouseExit() {
 		setHighlighted(false);
 		sister.setHighlighted(false);
-		if (action.target != null) action.target.setHighlighted(false);
+		if (action.Target != null) action.Target.setHighlighted(false);
 	}
 }

@@ -31,7 +31,7 @@ public class VictoryConditionController : MonoBehaviour {
 		foreach (NodeData node in nodes) {
 			PlayerData owner = node.Owner;
 			foreach (PlayerData player in players) {
-				if (player == owner) {
+				if (player == owner && !(player.StartingNode == node)) {
 					nonLosingPlayers.Add(owner);
 					players.Remove(owner);
 					break;
