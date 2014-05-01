@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Text;
 
 public class PermanentSupportAction : Action {
 
@@ -27,61 +28,74 @@ public class PermanentSupportAction : Action {
 		return targets;
 	}
 
-	public override string getAdditionalTextForTarget(Targetable target) {
-		NodeData node = (NodeData) target;
-		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
-		Array values = Enum.GetValues(typeof(DominationType));
-
-		string ret = "";
-		foreach (DominationType type in values) {
-			AttackSkill targetAttackSkill = node.getAttackSkill(type);
-			AttackSkill thisAttackSkill = thisNode.getAttackSkill(type);
-			int difference = thisAttackSkill.getWorkingValue() - targetAttackSkill.getWorkingValue();
-
-			if (difference > 0) {
-				int min = (int) (difference * minProportion);
-				int max = (int) (difference * maxProportion);
-				string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
-                if ("" != ret) ret += "\n";
-				ret += type.ToString() + " Attack +" + increaseStr;
-			}
-			
-			DefenseSkill targetDefenseSkill = node.getDefenseSkill(type);
-			DefenseSkill thisDefenseSkill = thisNode.getDefenseSkill(type);
-			difference = thisDefenseSkill.getWorkingValue() - targetDefenseSkill.getWorkingValue();
-			
-			if (difference > 0) {
-				int min = (int) (difference * minProportion);
-				int max = (int) (difference * maxProportion);
+    private Action<DominationType, AttackSkill, int> getDisplayTextHandler(String typeLabel, StringBuilder ret)
+    {
+        return (type, skill, diff) =>
+        {
+            if (diff > 0)
+            {
+                int min = (int)(diff * minProportion);
+                int max = (int)(diff * maxProportion);
                 string increaseStr = min == max ? ("" + min) : ("" + min + "-" + max);
-                if ("" != ret) ret += "\n";
-				ret += type.ToString() + " Defense +" + increaseStr;
-			}
-		}
+                if (ret.Length != 0) ret.Append("\n");
+                ret.Append(type.ToString() + " " + typeLabel + " +" + increaseStr);
+            }
+        };
+    }
 
-		return ret == null ? "--" : ret;
+    public override string getAdditionalTextForTarget(Targetable target)
+    {
+        StringBuilder ret = new StringBuilder();
+
+        ForEachDifference(target, getDisplayTextHandler("Attack", ret), getDisplayTextHandler("Defense", ret));
+
+        return ret.Length == 0 ? "--" : ret.ToString();
 	}
 
 	protected override void doActivate(Targetable target) {
-		NodeData node = (NodeData) target;
-		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
-
-		Array values = Enum.GetValues(typeof(DominationType));
-		foreach (DominationType type in values) {
-			AttackSkill targetAttackSkill = node.getAttackSkill(type);
-			AttackSkill thisAttackSkill = thisNode.getAttackSkill(type);
-			targetAttackSkill.value += getIncreaseAmount( thisAttackSkill.getWorkingValue() - targetAttackSkill.getWorkingValue());
-
-			DefenseSkill targetDefenseSkill = node.getDefenseSkill(type);
-			DefenseSkill thisDefenseSkill = thisNode.getDefenseSkill(type);
-			targetDefenseSkill.value += getIncreaseAmount(thisDefenseSkill.getWorkingValue() - targetDefenseSkill.getWorkingValue());
-		}
+        Action<DominationType, AttackSkill, int> handler = (type, skill, diff) => 
+            {
+                if (diff > 0) skill.value += getIncreaseAmount(diff);
+            };
+        ForEachDifference(target, handler, handler);
 	}
 
+    private void ForEachDifference(Targetable target, Action<DominationType, AttackSkill, int> attackHandler, Action<DominationType, AttackSkill, int> defenseHandler)
+    {
+        NodeData node = (NodeData)target;
+        NodeData thisNode = this.gameObject.GetComponent<NodeData>();
+
+        Array values = Enum.GetValues(typeof(DominationType));
+        foreach (DominationType type in values)
+        {
+            AttackSkill targetAttackSkill = node.getAttackSkill(type);
+            AttackSkill thisAttackSkill = thisNode.getAttackSkill(type);
+            int difference = thisAttackSkill.getWorkingValue() - targetAttackSkill.getWorkingValue();
+
+            attackHandler(type, targetAttackSkill, difference);
+
+            DefenseSkill targetDefenseSkill = node.getDefenseSkill(type);
+            DefenseSkill thisDefenseSkill = thisNode.getDefenseSkill(type);
+            difference = thisDefenseSkill.getWorkingValue() - targetDefenseSkill.getWorkingValue();
+
+            defenseHandler(type, targetDefenseSkill, difference);
+        }
+    }
+
 	private int getIncreaseAmount(int difference) {
-		float min = difference * minProportion;
-		float max = difference * maxProportion;
+        float min = getMinIncreaseAmount(difference);
+        float max = getMaxIncreaseAmount(difference);
 		double randomness = gen.NextDouble();
 		return (int) (((max - min) * randomness) + min);
 	}
+
+    private float getMinIncreaseAmount(int difference)
+    {
+        return difference * minProportion;
+    }
+
+    private float getMaxIncreaseAmount(int difference)
+    {
+        return difference * maxProportion;
+    }
 }
