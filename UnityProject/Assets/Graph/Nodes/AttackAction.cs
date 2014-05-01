@@ -25,7 +25,9 @@ public class AttackAction : Action {
 		List<NodeData> nodes = GraphUtility.instance.getNeutralConnectedNodes(thisNode);
 		List<Targetable> ret = new List<Targetable>();
 		foreach (NodeData node in nodes) {
-            ret.Add(node);
+            //if this capture can't create a cycle
+            if(!GraphUtility.instance.getNodesReachableFrom(node, false).Contains(thisNode))
+                ret.Add(node);
 		}
 		return ret;
 	}
