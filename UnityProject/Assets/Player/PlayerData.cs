@@ -81,6 +81,10 @@ public class PlayerData : MonoBehaviour {
         GUI.Label(new Rect(0, Screen.height - (Screen.height * 0.115f), 85, 20), "  Actions: <b>" + actionPoints + "</b>", style);
     }
 
+    public int actionPointsRemaining() {
+        return actionPoints;
+    }
+
     public void cancelAction(Action toCancel)
     {
         selectedActions.Remove(toCancel);
