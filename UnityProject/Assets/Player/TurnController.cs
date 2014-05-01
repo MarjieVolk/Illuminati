@@ -15,6 +15,7 @@ namespace Assets.Player
         public PlayerData OtherPlayer;
 
         public bool BetweenTurns = false;
+        private bool showNextTurnPopup = false;
 
         // Use this for initialization
         void Awake()
@@ -45,6 +46,16 @@ namespace Assets.Player
             float height = 20;
 
             GUI.TextArea(new Rect(x - width, y, width, height), CurrentPlayer.Name + "'s Turn");
+
+            if (showNextTurnPopup) {
+                GUI.Box(new Rect(Screen.width / 4.0f, Screen.height / 4.0f, Screen.width / 2.0f, Screen.height / 2.0f), "" + CurrentPlayer.name + "'s Turn");
+                float buttonWidth = Screen.width / 10.0f;
+                float buttonHeight = Screen.width / 20.0f;
+                if (GUI.Button(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f), (Screen.height / 2.0f) - (buttonHeight / 2.0f), buttonWidth, buttonHeight), "Okay")) {
+                    showNextTurnPopup = false;
+                    ScreenBlocker.instance.setBlocking(false);
+                }
+            }
         }
 
         public void ExecuteActions()
@@ -76,6 +87,10 @@ namespace Assets.Player
             PlayerData temp = OtherPlayer;
             OtherPlayer = CurrentPlayer;
             CurrentPlayer = temp;
+
+            // Next turn popup
+            ScreenBlocker.instance.setBlocking(true);
+            showNextTurnPopup = true;
         }
     }
 }

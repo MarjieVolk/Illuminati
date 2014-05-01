@@ -31,8 +31,8 @@ public class EdgeData : Targetable {
 		type = DominationType.Bribe;
         Visibility = 0;
 
-        TurnController.instance.OnTurnEnd += () => Visibility *= 0.9f;
-		TurnController.instance.OnTurnEnd += () => triggerEdge(0.1f);
+        TurnController.instance.OnTurnEnd += () => Visibility *= 0.95f;
+		TurnController.instance.OnTurnEnd += () => triggerEdge(0.07f);
 		TurnController.instance.OnTurnEnd += updateVisibilityRendering;
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
 
