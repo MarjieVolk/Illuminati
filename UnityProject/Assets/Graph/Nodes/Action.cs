@@ -13,7 +13,7 @@ public abstract class Action : MonoBehaviour {
     public float CarryingEdgeVisibilityIncreaseProbability;
 	
 	public bool isTargeting { get; set;}
-	public Targetable target { get; private set; }
+	public Targetable Target { get; private set; }
 
 	private GameObject listTag, mapTag;
 
@@ -52,14 +52,14 @@ public abstract class Action : MonoBehaviour {
 	}
 
     public void Activate() {
-		doActivate(target);
+		doActivate(Target);
         GraphUtility.instance.TidyGraph();
         //do applicable visibility increases
-        if (isTargeting && target.GetType() == typeof(NodeData))
+        if (isTargeting && Target.GetType() == typeof(NodeData))
         {
-            if (GraphUtility.instance.getConnectedNodes(GetComponent<NodeData>()).Contains((NodeData)target))
+            if (GraphUtility.instance.getConnectedNodes(GetComponent<NodeData>()).Contains((NodeData)Target))
             {
-                GraphUtility.instance.getConnectingEdge(GetComponent<NodeData>(), (NodeData)target).triggerEdge(CarryingEdgeVisibilityIncreaseProbability);
+                GraphUtility.instance.getConnectingEdge(GetComponent<NodeData>(), (NodeData)Target).triggerEdge(CarryingEdgeVisibilityIncreaseProbability);
             }
         }
         IncreaseVisibilityBetweenNodes(TurnController.instance.CurrentPlayer.StartingNode, GetComponent<NodeData>(), PathVisibilityIncreaseProbability);
@@ -77,7 +77,7 @@ public abstract class Action : MonoBehaviour {
         if (!isTargeting && null != target) return false;
         if (isTargeting && !getPossibleTargets().Contains(target)) return false;
 
-        this.target = target;
+        this.Target = target;
 
 		gameObject.GetComponent<NodeMenu>().clear();
 		gameObject.GetComponent<NodeMenu>().hide();
@@ -92,7 +92,7 @@ public abstract class Action : MonoBehaviour {
 
     public void clearScheduled()
     {
-        target = null;
+        Target = null;
 		gameObject.GetComponent<NodeMenu>().isScheduled = false;
 	}
 
