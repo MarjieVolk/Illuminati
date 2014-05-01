@@ -35,13 +35,19 @@ public abstract class Targetable : Highlightable {
 		isShowText = false;
 	}
 
-	void OnGUI() {
+	public virtual void OnGUI() {
 		if (isShowText) {
             Vector2 textSize = style.CalcSize(new GUIContent(text));
             Vector3 worldPosition = transform.position;
-            worldPosition.y += GetComponent<CircleCollider2D>().radius;
+            worldPosition += getTipTextOffset();
 			Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
 			GUI.Label(new Rect(screenPosition.x - textSize.x / 2.0f, Screen.height - screenPosition.y - textSize.y, textSize.x, textSize.y), text, style);
 		}
 	}
+
+    /// <summary>
+    /// The world space offset from the transform.position to the bottom middle of the desired text location
+    /// </summary>
+    /// <returns></returns>
+    protected abstract Vector3 getTipTextOffset();
 }

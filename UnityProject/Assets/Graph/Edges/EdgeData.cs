@@ -83,8 +83,9 @@ public class EdgeData : Targetable {
         displayVisibility = false;
     }
 
-    void OnGUI()
+    public override void OnGUI()
     {
+        base.OnGUI();
         if (displayVisibility) {
 			float margin = 0.007f * Screen.height;
 			GUI.Label(new Rect(margin, margin, 100, 20), "Visibility: " + (int)(Visibility * 100) + "%", visibilityStyle);
@@ -136,4 +137,9 @@ public class EdgeData : Targetable {
 			this.GetComponent<SpriteRenderer>().color = Color.white;
 		}
 	}
+
+    protected override Vector3 getTipTextOffset()
+    {
+        return new Vector3(0, 0.15f, 0);
+    }
 }

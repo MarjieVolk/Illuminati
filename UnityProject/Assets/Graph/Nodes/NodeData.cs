@@ -89,4 +89,9 @@ public class NodeData : Targetable {
 			nTurnsUntilAvailable -= 1;
 		}
 	}
+
+    protected override Vector3 getTipTextOffset()
+    {
+        return new Vector3(0, GetComponent<CircleCollider2D>().radius, 0);
+    }
 }
