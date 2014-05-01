@@ -34,16 +34,16 @@ namespace Assets.Graph.Nodes
                 if (TurnController.instance.CurrentPlayer == playerOfInterest)
                 {
                     numTurnsDelay--;
-                }
 
-                if (0 == numTurnsDelay)
-                {
-                    TurnController.instance.CurrentPlayer.addActionPoints(ActionsPayoff);
-                    TurnController.instance.OnTurnEnd -= handler;
+                    if (0 == numTurnsDelay)
+                    {
+                        TurnController.instance.CurrentPlayer.addActionPoints(ActionsPayoff);
+                        TurnController.instance.OnTurnEnd -= handler;
+                    }
                 }
             };
 
-            TurnController.instance.OnTurnEnd += handler;
+            TurnController.instance.OnTurnStart += handler;
 
             //but we aren't available until that day comes
             GetComponent<NodeData>().nTurnsUntilAvailable = duration;
