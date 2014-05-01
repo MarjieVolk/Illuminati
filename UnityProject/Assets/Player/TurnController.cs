@@ -69,6 +69,8 @@ namespace Assets.Player
             //start the next player's turn
             OtherPlayer.startTurn();
 
+            if (null != OnTurnStart) OnTurnStart();
+
             //announce the turn change ('Player 2's turn' pops up on the screen or something)
 
             PlayerData temp = OtherPlayer;
