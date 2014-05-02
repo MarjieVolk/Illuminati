@@ -255,4 +255,22 @@ public class GraphUtility : MonoBehaviour {
 
         result.Push(origin);
     }
+
+    public void CaptureNode(NodeData defender, NodeData attacker, DominationType attackType)
+    {
+        EdgeData connection = getConnectingEdge(defender, attacker);
+        defender.Owner = attacker.Owner;
+
+        //clear only opponent's dominations/connections to this node
+        foreach (EdgeData edge in getConnectedEdges(defender))
+        {
+            if (edge.nodeOne.GetComponent<NodeData>().Owner != edge.nodeTwo.GetComponent<NodeData>().Owner)
+            {
+                edge.direction = EdgeData.EdgeDirection.Neutral;
+            }
+        }
+
+        connection.type = attackType;
+        connection.direction = connection.nodeOne.GetComponent<NodeData>() == attacker ? EdgeData.EdgeDirection.OneToTwo : EdgeData.EdgeDirection.TwoToOne;
+    }
 }

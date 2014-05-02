@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using Assets.Player;
 using Assets.Graph.Nodes;
+using System.Linq;
 
 public class PlayerData : MonoBehaviour {
 
@@ -12,14 +13,20 @@ public class PlayerData : MonoBehaviour {
     private int actionPoints;
     private List<Action> selectedActions;
     public NodeData StartingNode;
+    public int NumStartingNodes;
 
 	private GUIStyle style;
 
 	private static List<NodeData> startingNodes;
-	private static System.Random gen;
+	private static System.Random gen = new System.Random();
 
 	private const float WIDTH = 50;
 	private const float MARGIN = 5;
+
+    void Reset()
+    {
+        NumStartingNodes = 2;
+    }
 
     void Awake()
     {
@@ -28,24 +35,9 @@ public class PlayerData : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if (StartingNode == null) {
-			if (startingNodes == null) {
-				gen = new System.Random();
-				NodeData[] nodes = UnityEngine.Object.FindObjectsOfType<NodeData>();
-				startingNodes = new List<NodeData>();
-				foreach (NodeData node in nodes) {
-					if (node.isStartNode) {
-						startingNodes.Add(node);
-					}
-				}
-			}
+        selectStartingNode();
 
-			NodeData ourStart = startingNodes[gen.Next(startingNodes.Count)];
-			startingNodes.Remove(ourStart);
-			StartingNode = ourStart;
-		}
-		StartingNode.startingOwner = this;
-		StartingNode.Owner = this;
+        selectSecondaryStartingNodes();
 
 		// Increase starting node attacks
 		Array values = Enum.GetValues(typeof(DominationType));
@@ -59,6 +51,56 @@ public class PlayerData : MonoBehaviour {
 		style.fontSize = 16;
 		style.normal.background = InvestigateAction.MakeTextureOfColor(Color.gray);
 	}
+
+    private void selectSecondaryStartingNodes()
+    {
+        List<NodeData> adjacentNodes = GraphUtility.instance.getConnectedNodes(StartingNode)
+            .Where<NodeData>((node) => node.isSecondaryStartNode)
+            .ToList<NodeData>();
+        List<NodeData> toCapture = new List<NodeData>();
+        foreach (NodeData node in adjacentNodes)
+        {
+            if (node.Owner == null)
+            {
+                toCapture.Add(node);
+                if (toCapture.Count >= NumStartingNodes)
+                {
+                    break;
+                }
+            }
+        }
+
+        foreach (NodeData node in toCapture)
+        {
+            GraphUtility.instance.CaptureNode(node, StartingNode, DominationType.Bribe);
+            node.startingOwner = this;
+        }
+    }
+
+    private void selectStartingNode()
+    {
+        if (StartingNode == null)
+        {
+            if (startingNodes == null)
+            {
+                NodeData[] nodes = UnityEngine.Object.FindObjectsOfType<NodeData>();
+                startingNodes = new List<NodeData>();
+                foreach (NodeData node in nodes)
+                {
+                    if (node.isStartNode)
+                    {
+                        startingNodes.Add(node);
+                    }
+                }
+            }
+
+            NodeData ourStart = startingNodes[gen.Next(startingNodes.Count)];
+            startingNodes.Remove(ourStart);
+            StartingNode = ourStart;
+        }
+        StartingNode.startingOwner = this;
+        StartingNode.Owner = this;
+    }
 	
 	void Update() {
 		if (this != TurnController.instance.CurrentPlayer) return;

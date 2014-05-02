@@ -22,23 +22,29 @@ public class EdgeData : Targetable {
 	private GUIStyle visibilityStyle;
 
     public float Visibility { get; set; }
-	
-	// Use this for initialization
-	protected override void Start () {
-		base.Start();
-		direction = EdgeDirection.Neutral;
-		prevDirection = EdgeDirection.Neutral;
-		type = DominationType.Bribe;
+
+    protected void Awake()
+    {
+        direction = EdgeDirection.Neutral;
+        prevDirection = EdgeDirection.Neutral;
+        type = DominationType.Bribe;
         Visibility = 0;
 
+        visibilityStyle = new GUIStyle();
+        visibilityStyle.normal.textColor = Color.black;
+        visibilityStyle.fontSize = 14;
+    }
+
+	// Use this for initialization
+    protected override void Start()
+    {
+        base.Start();
+        TurnController.instance.OnTurnEnd += () => Visibility *= 0.9f;
+		TurnController.instance.OnTurnEnd += () => triggerEdge(0.1f);
         TurnController.instance.OnTurnEnd += () => Visibility *= 0.95f;
 		TurnController.instance.OnTurnEnd += () => triggerEdge(0.07f);
 		TurnController.instance.OnTurnEnd += updateVisibilityRendering;
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
-
-		visibilityStyle = new GUIStyle();
-		visibilityStyle.normal.textColor = Color.black;
-		visibilityStyle.fontSize = 14;
 	}
 	
 	// Update is called once per frame
