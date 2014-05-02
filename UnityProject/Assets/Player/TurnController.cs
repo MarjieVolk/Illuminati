@@ -11,6 +11,7 @@ namespace Assets.Player
         public event System.Action OnTurnEnd;
         public event System.Action OnTurnStart;
 
+        public GUISkin skin;
         public PlayerData CurrentPlayer;
         public PlayerData OtherPlayer;
 
@@ -39,34 +40,44 @@ namespace Assets.Player
 
         void OnGUI()
         {
+            GUI.skin = skin;
 			float x = 0.01f * Screen.height;
 			float y = 0.218f * Screen.height;
             x = Screen.width - x;
 
             float width = 95;
-            float height = 20;
+            float height = 50;
 
-            GUI.TextArea(new Rect(x - width, y, width, height), CurrentPlayer.Name + "'s Turn");
+            GUIStyle playerTurnStyle = new GUIStyle();
+            playerTurnStyle.fontSize = 14;
+            playerTurnStyle.alignment = TextAnchor.UpperRight;
+            GUI.Label(new Rect(x - width, y, width, height), CurrentPlayer.Name + "'s Turn", playerTurnStyle);
 
-            float buttonWidth = Screen.width / 10.0f;
-            float buttonHeight = Screen.width / 20.0f;
+            float buttonWidth = 150;
+            float buttonHeight = 50;
+            float windowWidth = 550;
+            float windowHeight = 150;
+            float buttonYOffset = windowHeight * 0.1f;
+            float buttonXOffset = buttonWidth * 0.8f;
 
             if (showNextTurnPopup) {
-                GUI.Box(new Rect(Screen.width / 4.0f, Screen.height / 4.0f, Screen.width / 2.0f, Screen.height / 2.0f), "" + CurrentPlayer.name + "'s Turn");
-                if (GUI.Button(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f), (Screen.height / 2.0f) - (buttonHeight / 2.0f), buttonWidth, buttonHeight), "Okay")) {
+                GUI.Box(getRect(windowWidth, windowHeight), "" + CurrentPlayer.name + "'s Turn");
+                if (GUI.Button(getRect(buttonWidth, buttonHeight, 0, buttonYOffset), "Okay")) {
                     showNextTurnPopup = false;
                     ScreenBlocker.instance.setBlocking(false);
                 }
             }
 
             if (isDoActionCheck) {
-                GUI.Box(new Rect(Screen.width / 4.0f, Screen.height / 4.0f, Screen.width / 2.0f, Screen.height / 2.0f), "You have " + CurrentPlayer.actionPointsRemaining() + " action points left. Execute anyways?");
-                if (GUI.Button(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f) - (Screen.width * 0.2f), (Screen.height / 2.0f) - (buttonHeight / 2.0f), buttonWidth, buttonHeight), "Execute")) {
+                GUI.Box(getRect(windowWidth, windowHeight), "You have " + CurrentPlayer.actionPointsRemaining() + " action points left. Execute anyways?");
+                if (GUI.Button(getRect(buttonWidth, buttonHeight, -buttonXOffset, buttonYOffset), "Execute")) {
                     ExecuteActions();
+                    ScreenBlocker.instance.setBlocking(false);
                 }
 
-                if (GUI.Button(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f) + (Screen.width * 0.2f), (Screen.height / 2.0f) - (buttonHeight / 2.0f), buttonWidth, buttonHeight), "Cancel")) {
+                if (GUI.Button(getRect(buttonWidth, buttonHeight, buttonXOffset, buttonYOffset), "Cancel")) {
                     isDoActionCheck = false;
+                    ScreenBlocker.instance.setBlocking(false);
                 }
             }
         }
@@ -75,6 +86,7 @@ namespace Assets.Player
         {
             if (!isDoActionCheck && CurrentPlayer.actionPointsRemaining() > 0) {
                 isDoActionCheck = true;
+                ScreenBlocker.instance.setBlocking(true);
                 return;
             }
 
@@ -110,6 +122,14 @@ namespace Assets.Player
             // Next turn popup
             ScreenBlocker.instance.setBlocking(true);
             showNextTurnPopup = true;
+        }
+
+        private Rect getRect(float width, float height) {
+            return getRect(width, height, 0, 0);
+        }
+
+        private Rect getRect(float width, float height, float xOffset, float yOffset) {
+            return new Rect((Screen.width / 2.0f) - (width / 2.0f) + xOffset, (Screen.height / 2.0f) - (height / 2.0f) + yOffset, width, height);
         }
     }
 }
