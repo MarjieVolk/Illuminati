@@ -55,21 +55,21 @@ public class AttackAction : Action {
 		NodeData thisNode = this.GetComponent<NodeData>();
 		
 		// Find attacker attack score and defender defense score
-		int targetDefense = otherNode.getDefense(attackType);
+		int defense = otherNode.getDefense(attackType);
 		int attack = thisNode.getAttack(attackType);
 
-		int min = targetDefense / 2;
-		int max = targetDefense * 2;
+		int minAttack = attack / 2;
+		int maxAttack = attack * 2;
 		
 		// Determine if node is captured
 		double probability = 0;
 		
-		if (attack <= min) {
-			probability = 0;
-		} else if (attack >= max) {
+		if (defense <= minAttack) {
 			probability = 1;
+		} else if (defense >= maxAttack) {
+			probability = 0;
 		} else {
-			probability = ((double) (attack - min)) / ((double) (max - min));
+			probability = ((double) (maxAttack - defense)) / ((double) (maxAttack - minAttack));
 		}
 
 		return probability;
