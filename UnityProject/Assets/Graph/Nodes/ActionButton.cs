@@ -9,11 +9,29 @@ public class ActionButton : MonoBehaviour {
 
     public event Targetable.OnClickHandler OnClick;
 
-	public Sprite normal, hover, selected;
+    public Sprite normal, hover, selected;
 	public string tooltip;
 
 	private float mouseEnterTime = -1;
 	private GUIStyle style;
+
+    private bool _actionEnabled = true;
+
+    public bool ActionEnabled
+    {
+        get
+        {
+            return _actionEnabled;
+        }
+        set
+        {
+            _actionEnabled = value;
+            if (!_actionEnabled)
+                GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f);
+            if (_actionEnabled)
+                GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +45,7 @@ public class ActionButton : MonoBehaviour {
 	
 	// Update is called once per frame
 	void OnGUI () {
+        if (!ActionEnabled) return;
 		if (mouseEnterTime != -1 && (Time.time - mouseEnterTime) >= toolTipTime) {
 			// Show Tooltip
 			GUI.depth = 1;
@@ -43,21 +62,27 @@ public class ActionButton : MonoBehaviour {
 		this.gameObject.GetComponent<SpriteRenderer>().sprite = normal;
 	}
 
-	public void OnMouseEnter() {
+    public void OnMouseEnter()
+    {
+        if (!ActionEnabled) return;
 		mouseEnterTime = Time.time;
 		if (!ActionController.instance.inSelectionState && hover != null) {
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = hover;
 		}
 	}
 
-	public void OnMouseExit() {
+    public void OnMouseExit()
+    {
+        if (!ActionEnabled) return;
 		mouseEnterTime = -1;
 		if (!ActionController.instance.inSelectionState && normal != null) {
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = normal;
 		}
 	}
 
-	public void OnMouseUpAsButton() {
+    public void OnMouseUpAsButton()
+    {
+        if (!ActionEnabled) return;
 		if (ActionController.instance.inSelectionState) {
             ActionController.instance.clearSelectionState();
 		}

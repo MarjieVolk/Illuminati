@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.Graph.Nodes
 {
@@ -25,6 +26,10 @@ namespace Assets.Graph.Nodes
 
         protected override void doActivate(Targetable target)
         {
+            //first, disable this action's button (aka put this on cooldown)
+            ActionButton realButton = GetComponent<NodeMenu>().buttons[this].GetComponent<ActionButton>();
+            realButton.ActionEnabled = false;
+
             //two turns from now, give the current player some extra actions to play with
             PlayerData playerOfInterest = TurnController.instance.CurrentPlayer;
             int numTurnsDelay = duration;
@@ -38,15 +43,13 @@ namespace Assets.Graph.Nodes
                     if (0 == numTurnsDelay)
                     {
                         TurnController.instance.CurrentPlayer.addActionPoints(ActionsPayoff);
+                        realButton.ActionEnabled = true;
                         TurnController.instance.OnTurnEnd -= handler;
                     }
                 }
             };
 
             TurnController.instance.OnTurnStart += handler;
-
-            //but we aren't available until that day comes
-            GetComponent<NodeData>().nTurnsUntilAvailable = duration;
         }
 
         public override List<Targetable> getPossibleTargets()
