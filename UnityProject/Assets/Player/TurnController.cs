@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Assets.HUD;
 
 namespace Assets.Player
 {
@@ -55,27 +56,27 @@ namespace Assets.Player
 
             float buttonWidth = 150;
             float buttonHeight = 50;
-            float windowWidth = 550;
-            float windowHeight = 150;
+            float windowWidth = 600;
+            float windowHeight = 180;
             float buttonYOffset = windowHeight * 0.1f;
             float buttonXOffset = buttonWidth * 0.8f;
 
             if (showNextTurnPopup) {
-                GUI.Box(getRect(windowWidth, windowHeight), "" + CurrentPlayer.name + "'s Turn");
-                if (GUI.Button(getRect(buttonWidth, buttonHeight, 0, buttonYOffset), "Okay")) {
+                GUI.Box(GUIUtilities.getRect(windowWidth, windowHeight), "" + CurrentPlayer.name + "'s Turn");
+                if (GUI.Button(GUIUtilities.getRect(buttonWidth, buttonHeight, 0, buttonYOffset), "Okay")) {
                     showNextTurnPopup = false;
                     ScreenBlocker.instance.setBlocking(false);
                 }
             }
 
             if (isDoActionCheck) {
-                GUI.Box(getRect(windowWidth, windowHeight), "You have " + CurrentPlayer.actionPointsRemaining() + " action points left. Execute anyways?");
-                if (GUI.Button(getRect(buttonWidth, buttonHeight, -buttonXOffset, buttonYOffset), "Execute")) {
+                GUI.Box(GUIUtilities.getRect(windowWidth, windowHeight), "You have " + CurrentPlayer.actionPointsRemaining() + " action points left. Execute anyways?");
+                if (GUI.Button(GUIUtilities.getRect(buttonWidth, buttonHeight, -buttonXOffset, buttonYOffset), "Execute")) {
                     ExecuteActions();
                     ScreenBlocker.instance.setBlocking(false);
                 }
 
-                if (GUI.Button(getRect(buttonWidth, buttonHeight, buttonXOffset, buttonYOffset), "Cancel")) {
+                if (GUI.Button(GUIUtilities.getRect(buttonWidth, buttonHeight, buttonXOffset, buttonYOffset), "Cancel")) {
                     isDoActionCheck = false;
                     ScreenBlocker.instance.setBlocking(false);
                 }
@@ -122,14 +123,6 @@ namespace Assets.Player
             // Next turn popup
             ScreenBlocker.instance.setBlocking(true);
             showNextTurnPopup = true;
-        }
-
-        private Rect getRect(float width, float height) {
-            return getRect(width, height, 0, 0);
-        }
-
-        private Rect getRect(float width, float height, float xOffset, float yOffset) {
-            return new Rect((Screen.width / 2.0f) - (width / 2.0f) + xOffset, (Screen.height / 2.0f) - (height / 2.0f) + yOffset, width, height);
         }
     }
 }
