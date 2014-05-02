@@ -8,12 +8,12 @@ public class NodeMenu : MonoBehaviour {
 	public bool isShown { get; private set; }
 	public bool isScheduled = false;
 
-	private List<GameObject> buttons;
+	public Dictionary<Action, GameObject> buttons;
 	private ActionButton prev = null;
 
 	// Use this for initialization
 	void Start () {
-		buttons = new List<GameObject>();
+        buttons = new Dictionary<Action, GameObject>();
 
 		Action[] actions = this.gameObject.GetComponents<Action>();
 		float angle = 90;
@@ -33,7 +33,7 @@ public class NodeMenu : MonoBehaviour {
             ActionController actionController = FindObjectOfType<ActionController>();
             Action actionCopy = a;
             realButton.GetComponent<ActionButton>().OnClick += () => actionController.selectAction(actionCopy);
-			buttons.Add(realButton);
+			buttons[a] = realButton;
 			
 			angle -= dAngle;
 		}
@@ -52,7 +52,7 @@ public class NodeMenu : MonoBehaviour {
 		}
 
 		isShown = true;
-		foreach (GameObject obj in buttons) {
+		foreach (GameObject obj in buttons.Values) {
 			obj.SetActive(true);
 		}
 	}
@@ -60,13 +60,13 @@ public class NodeMenu : MonoBehaviour {
 	public void hide() {
 		isShown = false;
 		clear();
-		foreach (GameObject obj in buttons) {
+		foreach (GameObject obj in buttons.Values) {
 			obj.SetActive(false);
 		}
 	}
 
 	public void clear() {
-		foreach (GameObject obj in buttons) {
+		foreach (GameObject obj in buttons.Values) {
 			obj.GetComponent<ActionButton>().clear();
 		}
 	}
@@ -116,7 +116,7 @@ public class NodeMenu : MonoBehaviour {
 	}
 
 	private void clearChildHighlights() {
-		foreach (GameObject obj in buttons) {
+		foreach (GameObject obj in buttons.Values) {
 			obj.GetComponent<ActionButton>().OnMouseExit();
 		}
 	}
