@@ -34,6 +34,8 @@ public class ExecuteActionsButton : HUDButton {
 
     private void toggleButton() {
         GameObject parent = transform.parent.gameObject;
+        OnMouseUp();
+        OnMouseExit();
         ButtonToggler toggler = parent.GetComponent<ButtonToggler>();
         toggler.toggle(gameObject);
     }

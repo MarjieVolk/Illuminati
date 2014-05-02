@@ -18,11 +18,11 @@ public abstract class HUDButton : Highlightable {
 		transform.position = new Vector3(worldPos.x - width, worldPos.y - height, -5);
 	}
 	
-	void OnMouseEnter() {
+	public void OnMouseEnter() {
 		setHighlighted(true);
 	}
 	
-	void OnMouseExit() {
+	public void OnMouseExit() {
 		setHighlighted(false);
 	}
 }

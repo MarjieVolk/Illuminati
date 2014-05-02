@@ -29,7 +29,8 @@ public class EndTurnButton : HUDButton {
 
 	void OnMouseUpAsButton() {
 		TurnController.instance.NextTurn();
-		OnMouseUp();
+        OnMouseUp();
+        OnMouseExit();
 		transform.parent.gameObject.GetComponent<ButtonToggler>().toggle(gameObject);
 	}
 }

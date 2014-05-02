@@ -46,7 +46,7 @@ namespace Assets.Player
 			float y = 0.218f * Screen.height;
             x = Screen.width - x;
 
-            float width = 95;
+            float width = 2000;
             float height = 50;
 
             GUIStyle playerTurnStyle = new GUIStyle();
