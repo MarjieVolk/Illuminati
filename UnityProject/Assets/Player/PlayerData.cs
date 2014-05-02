@@ -37,7 +37,7 @@ public class PlayerData : MonoBehaviour {
 	void Start () {
         selectStartingNode();
 
-        selectOtherStartingNodes();
+        selectSecondaryStartingNodes();
 
 		// Increase starting node attacks
 		Array values = Enum.GetValues(typeof(DominationType));
@@ -52,9 +52,11 @@ public class PlayerData : MonoBehaviour {
 		style.normal.background = InvestigateAction.MakeTextureOfColor(Color.gray);
 	}
 
-    private void selectOtherStartingNodes()
+    private void selectSecondaryStartingNodes()
     {
-        List<NodeData> adjacentNodes = GraphUtility.instance.getConnectedNodes(StartingNode);
+        List<NodeData> adjacentNodes = GraphUtility.instance.getConnectedNodes(StartingNode)
+            .Where<NodeData>((node) => node.isSecondaryStartNode)
+            .ToList<NodeData>();
         List<NodeData> toCapture = new List<NodeData>();
         foreach (NodeData node in adjacentNodes)
         {

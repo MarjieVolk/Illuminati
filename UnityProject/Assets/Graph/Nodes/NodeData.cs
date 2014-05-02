@@ -8,6 +8,7 @@ public class NodeData : Targetable {
 
 	public PlayerData startingOwner;
 	public bool isStartNode = false;
+    public bool isSecondaryStartNode = false;
 
 	private PlayerData owner;
 	public PlayerData Owner {
