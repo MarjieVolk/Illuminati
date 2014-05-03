@@ -6,7 +6,7 @@ using System;
 public class TestWindow : EditorWindow {
 
 	private static NodeData prev;
-    private static GraphUtility util;
+    private static Dictionary<NodeData, Vector3> previousPositions = new Dictionary<NodeData, Vector3>();
 
     private static Dictionary<string, Vector2> pinOffsets = new Dictionary<string, Vector2>
         {
@@ -19,16 +19,10 @@ public class TestWindow : EditorWindow {
 	public static void Init() {
 		TestWindow window = GetWindow<TestWindow>();
 		window.title = "Enlightened Graph";
-        util = new GraphUtility();
-        util.Awake();
 	}
 
 	void OnEnable() {
 		SceneView.onSceneGUIDelegate += OnScene;
-        if (util == null) {
-            util = new GraphUtility();
-            util.Awake();
-        }
 	}
 	
 	void OnDisable() {
@@ -91,9 +85,14 @@ public class TestWindow : EditorWindow {
         foreach (GameObject obje in Selection.gameObjects) {
             NodeData node = obje.GetComponent<NodeData>();
             if (node != null) {
-                foreach (EdgeData edge in util.getConnectedEdges(node)) {
-                    positionEdge(edge);
+                if (previousPositions.ContainsKey(node) && previousPositions[node] != node.transform.position) {
+                    foreach (EdgeData edge in UnityEngine.Object.FindObjectsOfType<EdgeData>()) {
+                        if (edge.nodeOne == node.gameObject || edge.nodeTwo == node.gameObject) {
+                            positionEdge(edge);
+                        }
+                    }
                 }
+                previousPositions[node] = node.transform.position;
             }
         }
 	}
