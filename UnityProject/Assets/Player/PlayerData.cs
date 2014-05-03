@@ -5,6 +5,7 @@ using System;
 using Assets.Player;
 using Assets.Graph.Nodes;
 using System.Linq;
+using Assets.AI;
 
 public class PlayerData : MonoBehaviour {
 
@@ -15,6 +16,7 @@ public class PlayerData : MonoBehaviour {
     public NodeData StartingNode;
     public int NumStartingNodes;
     public bool IsLocalHumanPlayer; //true if this player is human and sitting at this computer, false if it's a human not at this computer or an AI
+    public EnlightenedAI AI;
 
 	private GUIStyle style;
 
@@ -183,10 +185,20 @@ public class PlayerData : MonoBehaviour {
         action.getMapScheduledTag().SetActive(false);
     }
 
-    public void startTurn()
+    public bool startTurn()
     {
         actionPoints += ActionPointsPerTurn;
 		selectedActions = new List<Action>();
+
+        if (AI != null)
+        {
+            List<Action> decisions = AI.scheduleActions(actionPoints);
+            selectedActions = decisions.GetRange(0, Math.Min(actionPoints, decisions.Count));
+
+            return true;
+        }
+
+        return false;
 	}
 	
 	public void addActionPoints(int numToAdd)
