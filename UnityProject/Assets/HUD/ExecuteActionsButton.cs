@@ -18,18 +18,27 @@ public class ExecuteActionsButton : HUDButton {
 	}
 	
 	void OnMouseDown() {
-		isClick = true;
-		updateSprites();
+        if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
+        {
+            isClick = true;
+            updateSprites();
+        }
 	}
 	
 	void OnMouseUp() {
-		isClick = false;
-		updateSprites();
+        if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
+        {
+            isClick = false;
+            updateSprites();
+        }
 	}
 	
 	void OnMouseUpAsButton() {
-		OnMouseUp();
-        TurnController.instance.ExecuteActions();
+        if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
+        {
+            OnMouseUp();
+            TurnController.instance.ExecuteActions();
+        }
 	}
 
     private void toggleButton() {

@@ -78,14 +78,17 @@ public abstract class Action : MonoBehaviour {
         if (isTargeting && !getPossibleTargets().Contains(target)) return false;
 
         this.Target = target;
+        gameObject.GetComponent<NodeMenu>().isScheduled = true;
 
-		gameObject.GetComponent<NodeMenu>().clear();
-		gameObject.GetComponent<NodeMenu>().hide();
-		gameObject.GetComponent<NodeMenu>().isScheduled = true;
+        if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
+        {
+            gameObject.GetComponent<NodeMenu>().clear();
+            gameObject.GetComponent<NodeMenu>().hide();
 
-		GameObject tag = getMapScheduledTag();
-		tag.SetActive(true);
-		tag.transform.position = gameObject.transform.position + new Vector3(0.5f, 0.3f, -1);
+            GameObject tag = getMapScheduledTag();
+            tag.SetActive(true);
+            tag.transform.position = gameObject.transform.position + new Vector3(0.5f, 0.3f, -1);
+        }
 
         return true;
     }
