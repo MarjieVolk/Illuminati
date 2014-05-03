@@ -14,6 +14,7 @@ public class PlayerData : MonoBehaviour {
     private List<Action> selectedActions;
     public NodeData StartingNode;
     public int NumStartingNodes;
+    public bool IsLocalHumanPlayer; //true if this player is human and sitting at this computer, false if it's a human not at this computer or an AI
 
 	private GUIStyle style;
 
@@ -103,17 +104,23 @@ public class PlayerData : MonoBehaviour {
     }
 	
 	void Update() {
-		if (this != TurnController.instance.CurrentPlayer) return;
-		float x = MARGIN;
-		foreach (Action a in selectedActions) {
-			GameObject tag = a.getListScheduledTag();
-			tag.SetActive(true);
-			Vector3 screenPos = new Vector3(x + (WIDTH / 2.0f), MARGIN + (WIDTH / 2.0f), 0);
-			Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
-			tag.transform.position = new Vector3(worldPos.x, worldPos.y, -5);
+        if (this == TurnController.instance.CurrentPlayer)
+        {
+            if (IsLocalHumanPlayer)
+            {
+                float x = MARGIN;
+                foreach (Action a in selectedActions)
+                {
+                    GameObject tag = a.getListScheduledTag();
+                    tag.SetActive(true);
+                    Vector3 screenPos = new Vector3(x + (WIDTH / 2.0f), MARGIN + (WIDTH / 2.0f), 0);
+                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+                    tag.transform.position = new Vector3(worldPos.x, worldPos.y, -5);
 
-			x += WIDTH + MARGIN;
-		}
+                    x += WIDTH + MARGIN;
+                }
+            }
+        }
 	}
 
     void OnGUI()
@@ -131,9 +138,12 @@ public class PlayerData : MonoBehaviour {
     {
         selectedActions.Remove(toCancel);
         toCancel.clearScheduled();
-		toCancel.getListScheduledTag().SetActive(false);
-		toCancel.getMapScheduledTag().SetActive(false);
         actionPoints++;
+
+        if (IsLocalHumanPlayer)
+        {
+            disableScheduledTagsForAction(toCancel);
+        }
     }
 
     public bool scheduleAction(Action toSelect)
@@ -141,10 +151,14 @@ public class PlayerData : MonoBehaviour {
         if (actionPoints <= 0) return false;
 
         selectedActions.Add(toSelect);
-		toSelect.getListScheduledTag().GetComponent<ScheduledAction>().player = this;
-		toSelect.getMapScheduledTag().GetComponent<ScheduledAction>().player = this;
-
         actionPoints--;
+
+        if (IsLocalHumanPlayer)
+        {
+            toSelect.getListScheduledTag().GetComponent<ScheduledAction>().player = this;
+            toSelect.getMapScheduledTag().GetComponent<ScheduledAction>().player = this;
+        }
+
         return true;
     }
 
@@ -152,13 +166,22 @@ public class PlayerData : MonoBehaviour {
         foreach(Action action in selectedActions)
         {
             action.Activate();
-			action.getListScheduledTag().SetActive(false);
-			action.getMapScheduledTag().SetActive(false);
+            if (IsLocalHumanPlayer)
+            {
+                disableScheduledTagsForAction(action);
+            }
         }
 
         selectedActions = new List<Action>();
         actionPoints = 0;
 	}
+
+    private static void disableScheduledTagsForAction(Action action)
+    {
+
+        action.getListScheduledTag().SetActive(false);
+        action.getMapScheduledTag().SetActive(false);
+    }
 
     public void startTurn()
     {

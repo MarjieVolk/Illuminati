@@ -14,6 +14,7 @@ public class ViewToggleButton : HUDButton {
 	}
 
 	void OnMouseUpAsButton() {
-		VisibilityController.instance.ToggleVisibility();
+        if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
+            VisibilityController.instance.ToggleVisibility();
 	}
 }

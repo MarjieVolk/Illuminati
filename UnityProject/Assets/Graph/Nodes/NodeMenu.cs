@@ -47,7 +47,7 @@ public class NodeMenu : MonoBehaviour {
 	}
 
 	public void show() {
-		if (isScheduled || gameObject.GetComponent<NodeData>().nTurnsUntilAvailable > 0 || TurnController.instance.BetweenTurns) {
+		if (isScheduled || gameObject.GetComponent<NodeData>().nTurnsUntilAvailable > 0 || TurnController.instance.BetweenTurns || !TurnController.instance.CurrentPlayer.IsLocalHumanPlayer) {
 			return;
 		}
 

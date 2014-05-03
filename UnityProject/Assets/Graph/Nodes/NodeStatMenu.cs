@@ -62,6 +62,7 @@ public class NodeStatMenu : MonoBehaviour {
 	}
 
 	private bool canShowMenu(NodeData node) {
+        if (!TurnController.instance.CurrentPlayer.IsLocalHumanPlayer) return false;
 		if (node.Owner == TurnController.instance.CurrentPlayer) {
 			return true;
 		}

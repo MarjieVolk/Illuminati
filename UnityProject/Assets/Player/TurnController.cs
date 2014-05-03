@@ -109,20 +109,21 @@ namespace Assets.Player
             //set visibility to public information only
             this.GetComponent<VisibilityController>().setVisibility(VisibilityController.Visibility.Public);
 
-            //start the next player's turn
-            OtherPlayer.startTurn();
-
             if (null != OnTurnStart) OnTurnStart();
-
-            //announce the turn change ('Player 2's turn' pops up on the screen or something)
 
             PlayerData temp = OtherPlayer;
             OtherPlayer = CurrentPlayer;
             CurrentPlayer = temp;
 
             // Next turn popup
-            ScreenBlocker.instance.setBlocking(true);
-            showNextTurnPopup = true;
+            if (CurrentPlayer.IsLocalHumanPlayer)
+            {
+                ScreenBlocker.instance.setBlocking(true);
+                showNextTurnPopup = true;
+            }
+
+            //start the next player's turn, ready for things like AI actions now
+            CurrentPlayer.startTurn();
         }
     }
 }
