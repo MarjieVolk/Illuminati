@@ -123,7 +123,11 @@ namespace Assets.Player
             }
 
             //start the next player's turn, ready for things like AI actions now
-            CurrentPlayer.startTurn();
+            //if this player was an AI, go ahead and start the next turn right away
+            if (CurrentPlayer.startTurn())
+            {
+                ExecuteActions(); NextTurn();
+            }
         }
     }
 }
