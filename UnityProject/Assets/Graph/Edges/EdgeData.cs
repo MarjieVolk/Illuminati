@@ -146,6 +146,6 @@ public class EdgeData : Targetable {
 
     protected override Vector3 getTipTextOffset()
     {
-        return new Vector3(0, 0.15f, 0);
+        return new Vector3(0, 0, 0);
     }
 }

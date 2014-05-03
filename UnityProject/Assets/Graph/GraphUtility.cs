@@ -9,7 +9,7 @@ public class GraphUtility : MonoBehaviour {
 	private Dictionary<NodeData, List<EdgeData>> graph;
 
 	// Use this for initialization
-	void Awake () {
+	public void Awake () {
         instance = this;
         graph = new Dictionary<NodeData, List<EdgeData>>();
         EdgeData[] edges = Object.FindObjectsOfType<EdgeData>();
@@ -19,15 +19,6 @@ public class GraphUtility : MonoBehaviour {
             addEdge(edge.nodeTwo.GetComponent<NodeData>(), edge);
         }
 	}
-
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-
-    }
 
 	private void addEdge(NodeData node, EdgeData edge) {
 		if (!graph.ContainsKey(node)) {

@@ -29,18 +29,17 @@ public class NodeData : Targetable {
 		base.Start();
 		Owner = startingOwner;
 		TurnController.instance.OnTurnEnd += onTurnEnd;
+        this.OnHover += () => {
+            // Show node menu
+            if (owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState) {
+                this.gameObject.GetComponent<NodeMenu>().show();
+            }
+        };
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
-	}
-
-	void OnMouseEnter() {
-		// Show node menu
-		if (owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState) {
-			this.gameObject.GetComponent<NodeMenu>().show();
-		}
 	}
 
 	public int getAttack(DominationType type) {

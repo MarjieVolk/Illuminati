@@ -7,7 +7,7 @@ public class ActionButton : MonoBehaviour {
 
 	private const float toolTipTime = 0.7f;
 
-    public event Targetable.OnClickHandler OnClick;
+    public event System.Action OnClick;
 
     public Sprite normal, hover, selected;
 	public string tooltip;

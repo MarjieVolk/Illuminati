@@ -62,7 +62,8 @@ public abstract class Action : MonoBehaviour {
                 GraphUtility.instance.getConnectingEdge(GetComponent<NodeData>(), (NodeData)Target).triggerEdge(CarryingEdgeVisibilityIncreaseProbability);
             }
         }
-        IncreaseVisibilityBetweenNodes(TurnController.instance.CurrentPlayer.StartingNode, GetComponent<NodeData>(), PathVisibilityIncreaseProbability);
+        VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, GetComponent<NodeData>(), PathVisibilityIncreaseProbability,
+            (edge, increaseProbability) => { edge.triggerEdge(increaseProbability); });
 		
 		clearScheduled();
 	}
@@ -96,7 +97,15 @@ public abstract class Action : MonoBehaviour {
 		gameObject.GetComponent<NodeMenu>().isScheduled = false;
 	}
 
-    public static void IncreaseVisibilityBetweenNodes(NodeData source, NodeData target, float baseIncreaseProbability)
+    /// <summary>
+    /// Visit each player controlled edge along all possible paths from source to target.  For each edge, the visitor will recieve (1) the EdgeData for
+    /// the edge being visited and (2) the probability for a visibility increase on that edge.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="baseIncreaseProbability"></param>
+    /// <param name="doStuffHere"></param>
+    public static void VisitEdgesBetweenNodesWithVisibility(NodeData source, NodeData target, float baseIncreaseProbability, System.Action<EdgeData, float> visitor)
     {
         //find all the edges that are between the source and target nodes
         HashSet<EdgeData> betwixtEdgesClosure = GraphUtility.instance.getEdgesBetweenNodes(source, target);
@@ -117,21 +126,15 @@ public abstract class Action : MonoBehaviour {
             //go ahead and apply this visibility, it's safe b/c we've accumulated everything from all this guy's ancestors (yay topo sort!)
             foreach (EdgeData edge in futureNodes.Select<NodeData, EdgeData>((x) => GraphUtility.instance.getConnectingEdge(currentNode, x)))
             {
-                edge.triggerEdge(increaseProbability);
+                visitor(edge, increaseProbability);
             }
 
             //propagate visibility to descendants
             foreach (NodeData node in futureNodes)
             {
-                Debug.Log(increaseProbability + " likelihood of visibility increase for edge from " + currentNode + " to " + node);
                 if (!increaseProbabilities.ContainsKey(node)) increaseProbabilities[node] = 0.0f;
                 increaseProbabilities[node] += increaseProbability;
             }
         }
-    }
-
-    private static void recIncreaseVisibilityBetweenNodes(NodeData origin, HashSet<EdgeData> validEdges, float increaseProbability, Dictionary<NodeData, float> increaseProbabilities)
-    {
-
     }
 }

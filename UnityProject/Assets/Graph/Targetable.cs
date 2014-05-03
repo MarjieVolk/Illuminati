@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Graph.Nodes;
+using System;
 
 public abstract class Targetable : Highlightable {
-	
-	public delegate void OnClickHandler();
-	public event OnClickHandler OnClicked;
+
+    public event System.Action OnClicked;
+    public event System.Action OnHover;
+    public event System.Action OnEndHover;
 
 	private bool isShowText = false;
 	private string text = "";
@@ -25,6 +27,14 @@ public abstract class Targetable : Highlightable {
 	void OnMouseUpAsButton() {
 		if (OnClicked != null) OnClicked();
 	}
+
+    void OnMouseEnter() {
+        if (OnHover != null) OnHover();
+    }
+
+    void OnMouseExit() {
+        if (OnEndHover != null) OnEndHover();
+    }
 
 	public void showTargetInfoText(string text) {
 		isShowText = true;
