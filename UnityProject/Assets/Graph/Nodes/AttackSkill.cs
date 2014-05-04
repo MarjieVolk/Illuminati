@@ -13,7 +13,7 @@ public class AttackSkill : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		increases = new List<TemporaryIncrease>();
-        TurnController.instance.OnTurnEnd += onTurnEnd;
+        TurnController.instance.OnTurnStart += onTurnStart;
 	}
 	
 	// Update is called once per frame
@@ -29,9 +29,9 @@ public class AttackSkill : MonoBehaviour {
 		return val;
 	}
 
-	private void onTurnEnd() {
-		if (TurnController.instance.CurrentPlayer == gameObject.GetComponent<NodeData>().Owner) {
-			// Don't decrement at the end of your turn - only at the end of opponent's turn
+	private void onTurnStart() {
+		if (TurnController.instance.CurrentPlayer != gameObject.GetComponent<NodeData>().Owner) {
+			// Only decrement at the start of your turn
 			return;
 		}
 

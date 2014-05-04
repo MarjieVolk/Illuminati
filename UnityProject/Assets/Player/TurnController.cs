@@ -116,9 +116,11 @@ namespace Assets.Player
             //set visibility to public information only
             this.GetComponent<VisibilityController>().setVisibility(VisibilityController.Visibility.Public);
 
-            if (null != OnTurnStart) OnTurnStart();
-
+            // Set to next player
             current = (current + 1) % players.Count;
+
+            // Trigger event
+            if (null != OnTurnStart) OnTurnStart();
 
             // Next turn popup
             if (CurrentPlayer.IsLocalHumanPlayer)
