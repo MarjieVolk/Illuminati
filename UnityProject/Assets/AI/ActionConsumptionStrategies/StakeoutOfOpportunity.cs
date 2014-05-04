@@ -23,10 +23,13 @@ namespace Assets.AI.ActionConsumptionStrategies
                     && !node.GetComponent<NodeMenu>().isScheduled)
                 .ToList<NodeData>();
 
-            //fetch all the edges that aren't mine
+            //fetch all the edges
             IEnumerable<EdgeData> candidateTargets = FindObjectsOfType<EdgeData>()
+                // that aren't mine
                 .Where<EdgeData>((edge) => edge.nodeOne.GetComponent<NodeData>().Owner != me || edge.nodeTwo.GetComponent<NodeData>().Owner != me)
-                //and sort by visibility
+                // and aren't already blocked
+                .Where<EdgeData>((edge)=> edge.direction != EdgeData.EdgeDirection.Unusable)
+                // sorted by visibility
                 .OrderByDescending<EdgeData, float>((edge) => edge.Visibility);
 
             //target from highest to lowest vis until they're too low or we have no more gov't nodes
