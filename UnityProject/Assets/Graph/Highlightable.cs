@@ -8,7 +8,7 @@ public abstract class Highlightable : MonoBehaviour {
 	public Sprite normalSprite, highlightSprite, ownedNormalSprite, ownedHighlightSprite;
 
 	private SpriteRenderer spriteRenderer;
-	private bool isHighlighted = false;
+	private int highlightRequests = 0;
 	private Sprite curNormal, curHighlight;
 
 	// Use this for initialization
@@ -24,19 +24,24 @@ public abstract class Highlightable : MonoBehaviour {
 	}
 
 	public void setNormalSprite(Sprite newNormal) {
-		curNormal = newNormal;
-		setHighlighted(isHighlighted);
+        curNormal = newNormal;
+        updateHighlight();
 	}
 
 	public void setHighlightedSprite(Sprite newHighlight) {
 		curHighlight = newHighlight;
-		setHighlighted(isHighlighted);
+        updateHighlight();
 	}
 	
 	public void setHighlighted(bool isHighlighted) {
-		this.isHighlighted = isHighlighted;
-		spriteRenderer.sprite = isHighlighted ? curHighlight : curNormal;
+        if (isHighlighted) highlightRequests++; else highlightRequests--;
+        if (highlightRequests < 0) highlightRequests = 0;
+        updateHighlight();
 	}
+
+    private void updateHighlight() {
+        spriteRenderer.sprite = highlightRequests > 0 ? curHighlight : curNormal;
+    }
 	
 	public void updateSprites() {
 		updateVisibility(VisibilityController.instance.visibility);
