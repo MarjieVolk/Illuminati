@@ -89,7 +89,7 @@ namespace Assets.Graph.Nodes
             }
         }
 
-        private float getSuccessProbability(Targetable target)
+        public float getSuccessProbability(Targetable target)
         {
             float targetVisibility = ((EdgeData)target).Visibility;
 
