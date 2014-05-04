@@ -12,10 +12,12 @@ public class MainMenu : MonoBehaviour {
     private GUIStyle titleStyle;
     private string title = "Enlightened";
     private string play = "<size=32>New Game</size>";
+    private string instructText = "Instructions";
 
     private bool showMenu = false;
+    private Instructions instructions;
 
-    private int nPlayers = 2;
+    private int nPlayers;
     private List<int> playerVals;
     private List<string> playerNames;
     private string[] playerOptions = { "Human", "Computer" };
@@ -27,8 +29,10 @@ public class MainMenu : MonoBehaviour {
         titleStyle.normal.textColor = new Color(0.15f, 0.3f, 0.05f);
         titleStyle.alignment = TextAnchor.LowerCenter;
 
-        playerVals = new List<int>();
-        playerNames = new List<string>();
+        instructions = gameObject.GetComponent<Instructions>();
+        instructions.enabled = false;
+
+        resetDefaults();
 	}
 
     private void startGame() {
@@ -43,6 +47,12 @@ public class MainMenu : MonoBehaviour {
         }
 
         Application.LoadLevel("Map");
+    }
+
+    private void resetDefaults() {
+        playerVals = new List<int>();
+        playerNames = new List<string>();
+        nPlayers = 2;
     }
 
     private void createHumanPlayer(string name, int index) {
@@ -65,15 +75,24 @@ public class MainMenu : MonoBehaviour {
 
     void OnGUI() {
         GUI.skin = skin;
-        Vector2 textSize = titleStyle.CalcSize(new GUIContent(title));
-        GUI.Label(new Rect((Screen.width / 2.0f) - (textSize.x / 2.0f), (Screen.height * 0.05f), textSize.x, textSize.y), title, titleStyle);
-        
-        if (!showMenu) {
+
+        if (!showMenu && !instructions.enabled) {
+            Vector2 textSize = titleStyle.CalcSize(new GUIContent(title));
+            GUI.Label(new Rect((Screen.width / 2.0f) - (textSize.x / 2.0f), (Screen.height * 0.05f), textSize.x, textSize.y), title, titleStyle);
+
             textSize = skin.button.CalcSize(new GUIContent(play));
-            if (GUI.Button(new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.9f - textSize.y), textSize.x + 40, textSize.y), play)) {
+            Rect newGameRect = new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.9f - textSize.y), textSize.x + 40, textSize.y);
+            if (GUI.Button(newGameRect, play)) {
                 showMenu = true;
             }
-        } else {
+
+            textSize = skin.button.CalcSize(new GUIContent(instructText));
+            Rect instructRect = new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.95f - textSize.y), textSize.x + 40, textSize.y);
+            if (GUI.Button(instructRect, instructText)) {
+                instructions.enabled = true;
+            }
+
+        } else if (showMenu) {
             float width = Screen.width * 0.6f;
             float height = Screen.height * 0.9f;
             GUI.Window(0, GUIUtilities.getRect(width, height), layoutWindow, "New Game");
@@ -132,6 +151,11 @@ public class MainMenu : MonoBehaviour {
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("<size=32>Play!</size>")) {
             startGame();
+        }
+
+        if (GUILayout.Button("Cancel")) {
+            resetDefaults();
+            showMenu = false;
         }
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
