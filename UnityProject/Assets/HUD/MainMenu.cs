@@ -95,8 +95,8 @@ public class MainMenu : MonoBehaviour {
             }
 
         } else if (showMenu) {
-            float width = Screen.width * 0.6f;
-            float height = Screen.height * 0.9f;
+            float width = 700; //Screen.width * 0.6f;
+            float height = 500; //Screen.height * 0.9f;
             GUI.Window(0, GUIUtilities.getRect(width, height), layoutWindow, "New Game");
         }
     }
