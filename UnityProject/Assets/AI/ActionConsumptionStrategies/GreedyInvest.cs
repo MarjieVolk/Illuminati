@@ -22,6 +22,7 @@ namespace Assets.AI.ActionConsumptionStrategies
                     InvestAction action = node.gameObject.GetComponent<InvestAction>();
                     if (action != null && !action.IsOnCooldown)
                     {
+                        action.SetScheduled(null);
                         ret.Add(action);
                     }
                 }
