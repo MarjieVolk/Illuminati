@@ -83,11 +83,9 @@ namespace Assets.AI.ActionConsumptionStrategies
 
             foreach (NodeData myNode in myNodes)
             {
-                IEnumerable<NodeData> adjacentNotMyNodes = GraphUtility.instance.getNeutralConnectedNodes(myNode)
-                    .Where<NodeData>((node) => node.Owner != me);
-                foreach (NodeData notMyNode in adjacentNotMyNodes)
+                foreach (AttackAction attackAction in myNode.GetComponents<AttackAction>())
                 {
-                    foreach (AttackAction attackAction in myNode.GetComponents<AttackAction>())
+                    foreach (NodeData notMyNode in attackAction.getPossibleTargets())
                     {
                         double successProbability = attackAction.getProbabilityOfWin(notMyNode);
                         attackPossibilities.Add(new Tuple<NodeData, NodeData, AttackAction, double>(myNode, notMyNode, attackAction, successProbability));
