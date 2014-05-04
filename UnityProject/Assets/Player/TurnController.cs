@@ -95,7 +95,7 @@ namespace Assets.Player
 
         public void ExecuteActions()
         {
-            if (!isDoActionCheck && CurrentPlayer.actionPointsRemaining() > 0 && CurrentPlayer.IsLocalHumanPlayer) {
+            if (!isDoActionCheck && CurrentPlayer.actionPointsRemaining() > 0 && !CurrentPlayer.IsLocalHumanPlayer) {
                 isDoActionCheck = true;
                 ScreenBlocker.instance.setBlocking(true);
                 return;
