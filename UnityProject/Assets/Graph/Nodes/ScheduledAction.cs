@@ -20,7 +20,9 @@ public class ScheduledAction : Highlightable {
 
 	void OnMouseUpAsButton() {
 		// Cancel action
-		if (action.Target != null) action.Target.setHighlighted(false);
+        if (action.Target != null) action.Target.setHighlighted(false);
+        setHighlighted(false);
+        sister.setHighlighted(false);
 		player.cancelAction(action);
 	}
 
