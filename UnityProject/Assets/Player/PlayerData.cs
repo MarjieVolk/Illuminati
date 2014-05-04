@@ -45,8 +45,8 @@ public class PlayerData : MonoBehaviour {
 		// Increase starting node attacks
 		Array values = Enum.GetValues(typeof(DominationType));
 		foreach (DominationType type in values) {
-			StartingNode.getAttackSkill(type).value += 15;
-			StartingNode.getDefenseSkill(type).value += 10;
+			StartingNode.getAttackSkill(type).value += 10;
+			StartingNode.getDefenseSkill(type).value += 5;
 		}
 
 		style = new GUIStyle();

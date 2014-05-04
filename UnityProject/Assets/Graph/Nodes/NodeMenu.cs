@@ -17,7 +17,7 @@ public class NodeMenu : MonoBehaviour {
 
 		Action[] actions = this.gameObject.GetComponents<Action>();
 		float angle = 90;
-		float dAngle = 360.0f / 6;
+		float dAngle = 360.0f / actions.Length;
 		foreach (Action a in actions) {
 			GameObject button = a.getButton();
 			
