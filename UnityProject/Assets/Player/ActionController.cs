@@ -109,31 +109,35 @@ namespace Assets.Player
 
         private void startHoverForTarget(Targetable target) {
             NodeData actionNode = selected.gameObject.GetComponent<NodeData>();
-
-            float carryingEdgeMax = 0;
+            float carryingEdgeMax = selected.maxVisibilityModifier();
+            float carryingEdgeMin = selected.minVisibilityModifier();
             EdgeData carryingEdge = null;
-            if (GraphUtility.instance.getConnectedNodes(actionNode).Contains((NodeData)target)) {
-                carryingEdge = GraphUtility.instance.getConnectingEdge(actionNode, (NodeData)target);
-                carryingEdgeMax = carryingEdge.maxVisibilityIncrease;
-            }
-            bool didCarryingEdge = false;
 
+            if (target is NodeData) {
+                if (GraphUtility.instance.getConnectedNodes(actionNode).Contains((NodeData)target)) {
+                    carryingEdge = GraphUtility.instance.getConnectingEdge(actionNode, (NodeData)target);
+                    carryingEdgeMax += selected.CarryingEdgeVisibilityIncreaseProbability > 0 ? carryingEdge.maxVisibilityIncrease : 0;
+                }
+            }
+            bool didCarryingEdge = !actionNode;
+
+            Debug.LogError("Starting visit for " + TurnController.instance.CurrentPlayer.StartingNode + " to " + actionNode);
             Action.VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, actionNode, selected.PathVisibilityIncreaseProbability,
                 (edge, increaseProbability) => {
+                    Debug.LogError("Visiting " + edge);
                     float max = increaseProbability > 0 ? edge.maxVisibilityIncrease : 0;
-                    if (edge != null && edge == carryingEdge) {
+                    bool isCarryingEdge = edge != null && edge == carryingEdge;
+                    if (isCarryingEdge) {
                         max += carryingEdgeMax;
                         didCarryingEdge = true;
                     }
 
-                    if (max > 0) {
-                        showEdgeText(edge, max);
-                    }
+                    showEdgeText(edge, max, isCarryingEdge ? carryingEdgeMin : 0);
                 }
             );
 
-            if (!didCarryingEdge) {
-                showEdgeText(carryingEdge, carryingEdgeMax);
+            if (carryingEdge != null && !didCarryingEdge) {
+                showEdgeText(carryingEdge, carryingEdgeMax, carryingEdgeMin);
             }
         }
 
@@ -144,13 +148,28 @@ namespace Assets.Player
                 edge.hideTargetInfoText();
             }
 
-            if (GraphUtility.instance.getConnectedNodes(actionNode).Contains((NodeData)target)) {
+            if (target is NodeData && GraphUtility.instance.getConnectedNodes(actionNode).Contains((NodeData)target)) {
                 GraphUtility.instance.getConnectingEdge(actionNode, (NodeData)target).hideTargetInfoText();
             }
         }
 
-        private void showEdgeText(EdgeData edge, float maxIncrease) {
-            edge.showTargetInfoText("<size=12>+0-" + (int) (maxIncrease * 100) + "% visibility</size>");
+        private void showEdgeText(EdgeData edge, float maxIncrease, float minIncrease) {
+            if (maxIncrease == 0 && minIncrease == 0) {
+                return;
+            }
+
+            string val = "<size=12>";
+            if (minIncrease >= 0) {
+                val += "+ " + (int)(minIncrease * 100) + (maxIncrease == minIncrease ? "" : "-" + (int)(maxIncrease * 100));
+            } else if (maxIncrease <= 0) {
+                val += "- " + (int)(maxIncrease * -100) + (maxIncrease == minIncrease ? "" : "-" + (int)(minIncrease * -100));
+            } else {
+                // This is probably hideous, but it should never happen as of right now
+                val += (int)(minIncrease * 100) + " to +" + (int)(maxIncrease * 100);
+            }
+
+            val += "% visibility</size>";
+            edge.showTargetInfoText(val);
         }
 
         private class EventHandlers {

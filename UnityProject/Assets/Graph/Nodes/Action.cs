@@ -72,6 +72,14 @@ public abstract class Action : MonoBehaviour {
 	public abstract string getAdditionalTextForTarget(Targetable target);
 	protected abstract void doActivate(Targetable target);
 
+    public virtual float maxVisibilityModifier() {
+        return 0;
+    }
+
+    public virtual float minVisibilityModifier() {
+        return 0;
+    }
+
     public bool SetScheduled(Targetable target)
     {
         if (isTargeting && null == target) return false;

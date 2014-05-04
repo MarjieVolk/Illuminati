@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Player;
+using Assets.Graph.Nodes;
 
 public class EdgeData : Targetable {
 
@@ -21,7 +22,16 @@ public class EdgeData : Targetable {
 
 	private GUIStyle visibilityStyle;
 
-    public float Visibility { get; set; }
+    private float vis;
+    public float Visibility {
+        get {
+            return vis;
+        }
+
+        set {
+            vis = Mathf.Min(Mathf.Max(0, value), 1);
+        }
+    }
 
     protected void Awake()
     {
@@ -32,7 +42,9 @@ public class EdgeData : Targetable {
 
         visibilityStyle = new GUIStyle();
         visibilityStyle.normal.textColor = Color.black;
-        visibilityStyle.fontSize = 14;
+        visibilityStyle.fontStyle = FontStyle.Bold;
+        visibilityStyle.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.5f, 0.5f, 0.5f, 0.9f));
+        visibilityStyle.alignment = TextAnchor.MiddleCenter;
     }
 
 	// Use this for initialization
@@ -45,6 +57,8 @@ public class EdgeData : Targetable {
 		TurnController.instance.OnTurnEnd += () => triggerEdge(0.07f);
 		TurnController.instance.OnTurnEnd += updateVisibilityRendering;
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
+        OnHover += () => displayVisibility = true;
+        OnEndHover += () => displayVisibility = false;
 	}
 	
 	// Update is called once per frame
@@ -79,22 +93,15 @@ public class EdgeData : Targetable {
 
     private bool displayVisibility = false;
 
-    void OnMouseEnter()
-    {
-        displayVisibility = true;
-    }
-
-    void OnMouseExit()
-    {
-        displayVisibility = false;
-    }
-
     public override void OnGUI()
     {
         base.OnGUI();
         if (displayVisibility) {
-			float margin = 0.007f * Screen.height;
-			GUI.Label(new Rect(margin, margin, 100, 20), "Visibility: " + (int)(Visibility * 100) + "%", visibilityStyle);
+			float margin = 10;
+            string text = "Visibility: " + (int)(Visibility * 100) + "%";
+            Vector2 textSize = visibilityStyle.CalcSize(new GUIContent(text));
+
+			GUI.Label(new Rect(Screen.width - textSize.x - margin - 5, Screen.height - textSize.y - margin - 2.5f, textSize.x + 10, textSize.y + 5), text, visibilityStyle);
 		}
     }
 	

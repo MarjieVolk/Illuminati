@@ -5,10 +5,15 @@ using System;
 
 public class TemporarySupportAction : Action {
 
+    private static System.Random gen;
+
+    public float maxVisDecrease, minVisDecrease;
+
 	private const int duration = 2;
 
 	void Start () {
 		isTargeting = true;
+        if (gen == null) gen = new System.Random();
 	}
 	
 	public override List<Targetable> getPossibleTargets() {
@@ -56,6 +61,8 @@ public class TemporarySupportAction : Action {
 			otherNode.getDefenseSkill(type).temporaryIncrease(increase, duration);
 		}
 
+        // Decrease edge visibility
+
 		// Freeze node for duration
 		thisNode.nTurnsUntilAvailable = duration;
 	}
@@ -63,4 +70,12 @@ public class TemporarySupportAction : Action {
 	private int getIncrease(int value) {
 		return Mathf.CeilToInt(value / 3.0f);
 	}
+
+    public override float maxVisibilityModifier() {
+        return -minVisDecrease;
+    }
+
+    public override float minVisibilityModifier() {
+        return -maxVisDecrease;
+    }
 }
