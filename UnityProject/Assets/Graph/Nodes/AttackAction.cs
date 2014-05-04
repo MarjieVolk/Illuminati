@@ -50,7 +50,7 @@ public class AttackAction : Action {
 		}
 	}
 
-	private double getProbabilityOfWin(Targetable target) {
+	public double getProbabilityOfWin(Targetable target) {
 		NodeData otherNode = target.GetComponent<NodeData>();
 		NodeData thisNode = this.GetComponent<NodeData>();
 		
