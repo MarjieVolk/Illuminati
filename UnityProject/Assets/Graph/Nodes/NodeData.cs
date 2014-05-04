@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Player;
+using System;
 
 public class NodeData : Targetable {
+
+    private static System.Random gen;
 
     public string archetype;
 
@@ -35,6 +38,21 @@ public class NodeData : Targetable {
                 this.gameObject.GetComponent<NodeMenu>().show();
             }
         };
+
+        if (gen == null) gen = new System.Random();
+
+        Array values = Enum.GetValues(typeof(DominationType));
+        foreach (DominationType type in values) {
+            AttackSkill attack = getAttackSkill(type);
+            double range = attack.value / 10;
+            double diff = (gen.NextDouble() * range) - (range / 2.0);
+            attack.value += (int) Math.Round(diff);
+
+            DefenseSkill defense = getDefenseSkill(type);
+            range = defense.value / 10;
+            diff = (gen.NextDouble() * range) - (range / 2.0);
+            defense.value += (int) Math.Round(diff);
+        }
 	}
 	
 	// Update is called once per frame
