@@ -62,6 +62,8 @@ public class TemporarySupportAction : Action {
 		}
 
         // Decrease edge visibility
+        float visDecrease = (float) (gen.NextDouble() * (maxVisDecrease - minVisDecrease)) + minVisDecrease;
+        GraphUtility.instance.getConnectingEdge(otherNode, thisNode).Visibility -= visDecrease;
 
 		// Freeze node for duration
 		thisNode.nTurnsUntilAvailable = duration;

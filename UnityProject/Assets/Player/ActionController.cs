@@ -121,10 +121,8 @@ namespace Assets.Player
             }
             bool didCarryingEdge = !actionNode;
 
-            Debug.LogError("Starting visit for " + TurnController.instance.CurrentPlayer.StartingNode + " to " + actionNode);
             Action.VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, actionNode, selected.PathVisibilityIncreaseProbability,
                 (edge, increaseProbability) => {
-                    Debug.LogError("Visiting " + edge);
                     float max = increaseProbability > 0 ? edge.maxVisibilityIncrease : 0;
                     bool isCarryingEdge = edge != null && edge == carryingEdge;
                     if (isCarryingEdge) {
@@ -154,6 +152,9 @@ namespace Assets.Player
         }
 
         private void showEdgeText(EdgeData edge, float maxIncrease, float minIncrease) {
+            maxIncrease = Mathf.Max(Mathf.Min(maxIncrease, 1 - edge.Visibility), -edge.Visibility);
+            minIncrease = Mathf.Max(Mathf.Min(minIncrease, 1 - edge.Visibility), -edge.Visibility);
+
             if (maxIncrease == 0 && minIncrease == 0) {
                 return;
             }
