@@ -56,7 +56,7 @@ namespace Assets.Player
             scheduleAction(null);
         }
 
-        void scheduleAction(Targetable target)
+        public void scheduleAction(Targetable target)
 		{
             endHoverForTarget(target);
 
