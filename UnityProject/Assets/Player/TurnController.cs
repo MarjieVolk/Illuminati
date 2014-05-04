@@ -85,7 +85,7 @@ namespace Assets.Player
 
         public void ExecuteActions()
         {
-            if (!isDoActionCheck && CurrentPlayer.actionPointsRemaining() > 0) {
+            if (!isDoActionCheck && CurrentPlayer.actionPointsRemaining() > 0 && CurrentPlayer.IsLocalHumanPlayer) {
                 isDoActionCheck = true;
                 ScreenBlocker.instance.setBlocking(true);
                 return;
@@ -126,7 +126,7 @@ namespace Assets.Player
             //if this player was an AI, go ahead and start the next turn right away
             if (CurrentPlayer.startTurn())
             {
-                //ExecuteActions(); NextTurn();
+                ExecuteActions(); NextTurn();
             }
         }
     }
