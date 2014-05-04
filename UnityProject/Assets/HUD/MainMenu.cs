@@ -61,6 +61,7 @@ public class MainMenu : MonoBehaviour {
         PlayerData player = obj.GetComponent<PlayerData>();
         player.PlayerName = name;
         player.turnOrder = index;
+        player.IsLocalHumanPlayer = true;
         DontDestroyOnLoad(obj);
     }
 
@@ -70,6 +71,7 @@ public class MainMenu : MonoBehaviour {
         PlayerData player = obj.GetComponent<PlayerData>();
         player.PlayerName = name;
         player.turnOrder = index;
+        player.IsLocalHumanPlayer = false;
         DontDestroyOnLoad(obj);
     }
 

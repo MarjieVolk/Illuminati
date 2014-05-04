@@ -15,8 +15,13 @@ namespace Assets.Player
 
         public GUISkin skin;
 
-        public PlayerData CurrentPlayer;
-        public PlayerData OtherPlayer;
+        public PlayerData CurrentPlayer {
+            get {
+                return players[current];
+            }
+        }
+        private PlayerData[] players;
+        private int current = 0;
 
         public bool BetweenTurns = false;
         private bool showNextTurnPopup = false;
@@ -30,13 +35,12 @@ namespace Assets.Player
 
         void Start()
         {
-            PlayerData[] players = UnityEngine.Object.FindObjectsOfType<PlayerData>();
-            PlayerData[] sorted = players.OrderBy<PlayerData, int>((player) => player.turnOrder).ToArray<PlayerData>();
-            CurrentPlayer = sorted[0];
-            OtherPlayer = sorted[1];
+            players = UnityEngine.Object.FindObjectsOfType<PlayerData>();
+            players = players.OrderBy<PlayerData, int>((player) => player.turnOrder).ToArray<PlayerData>();
 
-            CurrentPlayer.init();
-            OtherPlayer.init();
+            foreach (PlayerData player in players) {
+                player.init();
+            }
 
             CurrentPlayer.startTurn();
         }
@@ -87,7 +91,7 @@ namespace Assets.Player
 
         public void ExecuteActions()
         {
-            if (!isDoActionCheck && CurrentPlayer.actionPointsRemaining() > 0 && !CurrentPlayer.IsLocalHumanPlayer) {
+            if (!isDoActionCheck && CurrentPlayer.actionPointsRemaining() > 0 && CurrentPlayer.IsLocalHumanPlayer) {
                 isDoActionCheck = true;
                 ScreenBlocker.instance.setBlocking(true);
                 return;
@@ -113,9 +117,7 @@ namespace Assets.Player
 
             if (null != OnTurnStart) OnTurnStart();
 
-            PlayerData temp = OtherPlayer;
-            OtherPlayer = CurrentPlayer;
-            CurrentPlayer = temp;
+            current = (current + 1) % players.Length;
 
             // Next turn popup
             if (CurrentPlayer.IsLocalHumanPlayer)
