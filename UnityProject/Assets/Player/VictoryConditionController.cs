@@ -54,15 +54,18 @@ public class VictoryConditionController : MonoBehaviour {
 
 		if (nonLosingPlayers.Count == 1) {
 			winner = nonLosingPlayers[0];
-			Instantiate(winScreen, Camera.main.transform.position + new Vector3(0, 0, 1), Quaternion.identity);
 			won = true;
+            ScreenBlocker.instance.setBlocking(true);
 		}
 	}
 
 	void OnGUI() {
         GUI.skin = skin;
         if (won) {
-            GUI.Label(new Rect(Screen.width / 2.0f - 300, Screen.height / 2.0f - 300, 600, 600), "" + winner.PlayerName + " wins!", style);
+            GUI.Box(new Rect(Screen.width / 2.0f - 200, Screen.height / 2.0f - 100, 400, 200), "" + winner.PlayerName + " Wins!");
+            if (GUI.Button(new Rect(Screen.width / 2.0f - 75, Screen.height / 2.0f - 20 + 30, 150, 40), "Main Menu")) {
+                Application.LoadLevel("MainMenu");
+            }
         } else if (lossMessage != null) {
             Vector2 size = GUI.skin.label.CalcSize(new GUIContent(lossMessage));
             GUI.Window(0, GUIUtilities.getRect(300, size.y + 150), layoutWindow, "Breaking News!");

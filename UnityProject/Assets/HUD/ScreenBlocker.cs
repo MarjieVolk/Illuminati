@@ -5,6 +5,8 @@ public class ScreenBlocker : MonoBehaviour {
 
     public static ScreenBlocker instance { get; private set; }
 
+    private int requestCounter = 0;
+
 	// Use this for initialization
 	void Start () {
         instance = this;
@@ -17,6 +19,7 @@ public class ScreenBlocker : MonoBehaviour {
 	}
 
     public void setBlocking(bool block) {
-        gameObject.collider2D.enabled = block;
+        if (block) requestCounter++; else requestCounter--;
+        gameObject.collider2D.enabled = requestCounter > 0;
     }
 }
