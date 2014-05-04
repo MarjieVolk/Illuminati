@@ -15,6 +15,8 @@ public abstract class Action : MonoBehaviour {
 	public bool isTargeting { get; set;}
 	public Targetable Target { get; private set; }
 
+    public bool IsOnCooldown = false;
+
 	private GameObject listTag, mapTag;
 
 	void Start() {

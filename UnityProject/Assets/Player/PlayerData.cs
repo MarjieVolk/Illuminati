@@ -193,7 +193,16 @@ public class PlayerData : MonoBehaviour {
         if (AI != null)
         {
             List<Action> decisions = AI.scheduleActions(actionPoints);
-            selectedActions = decisions.GetRange(0, Math.Min(actionPoints, decisions.Count));
+            decisions = decisions.GetRange(0, Math.Min(actionPoints, decisions.Count));
+
+            foreach (Action toSchedule in decisions)
+            {
+                ActionController.instance.selectAction(toSchedule);
+                if (toSchedule.isTargeting)
+                {
+                    ActionController.instance.scheduleAction(toSchedule.Target);
+                }
+            }
 
             return true;
         }

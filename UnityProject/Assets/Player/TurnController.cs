@@ -126,7 +126,7 @@ namespace Assets.Player
             //if this player was an AI, go ahead and start the next turn right away
             if (CurrentPlayer.startTurn())
             {
-                ExecuteActions(); NextTurn();
+                //ExecuteActions(); NextTurn();
             }
         }
     }
