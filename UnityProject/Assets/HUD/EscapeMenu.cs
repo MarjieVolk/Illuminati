@@ -41,6 +41,10 @@ public class EscapeMenu : MonoBehaviour {
             instruct.enabled = true;
         }
 
+        if (GUILayout.Button("Main Menu")) {
+            Application.LoadLevel("MainMenu");
+        }
+
         if (GUILayout.Button("Exit")) {
             Application.Quit();
         }
