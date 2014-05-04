@@ -48,7 +48,7 @@ public class VictoryConditionController : MonoBehaviour {
 
 	void OnGUI() {
 		if (won) {
-			GUI.Label(new Rect(Screen.width / 2.0f - 300, Screen.height / 2.0f - 300, 600, 600), "" + winner.Name + " wins!", style);
+			GUI.Label(new Rect(Screen.width / 2.0f - 300, Screen.height / 2.0f - 300, 600, 600), "" + winner.PlayerName + " wins!", style);
 		}
 	}
 }

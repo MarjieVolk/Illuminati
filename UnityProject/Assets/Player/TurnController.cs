@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using Assets.HUD;
+using System.Linq;
 
 namespace Assets.Player
 {
@@ -13,6 +14,7 @@ namespace Assets.Player
         public event System.Action OnTurnStart;
 
         public GUISkin skin;
+
         public PlayerData CurrentPlayer;
         public PlayerData OtherPlayer;
 
@@ -28,6 +30,14 @@ namespace Assets.Player
 
         void Start()
         {
+            PlayerData[] players = UnityEngine.Object.FindObjectsOfType<PlayerData>();
+            PlayerData[] sorted = players.OrderBy<PlayerData, int>((player) => player.turnOrder).ToArray<PlayerData>();
+            CurrentPlayer = sorted[0];
+            OtherPlayer = sorted[1];
+
+            CurrentPlayer.init();
+            OtherPlayer.init();
+
             CurrentPlayer.startTurn();
         }
 
@@ -52,7 +62,7 @@ namespace Assets.Player
             GUIStyle playerTurnStyle = new GUIStyle();
             playerTurnStyle.fontSize = 14;
             playerTurnStyle.alignment = TextAnchor.UpperRight;
-            GUI.Label(new Rect(x - width, y, width, height), CurrentPlayer.Name + "'s Turn", playerTurnStyle);
+            GUI.Label(new Rect(x - width, y, width, height), CurrentPlayer.PlayerName + "'s Turn", playerTurnStyle);
 
             float buttonWidth = 150;
             float buttonHeight = 50;
@@ -62,7 +72,7 @@ namespace Assets.Player
             float buttonXOffset = buttonWidth * 0.8f;
 
             if (showNextTurnPopup) {
-                GUI.Box(GUIUtilities.getRect(windowWidth, windowHeight), "" + CurrentPlayer.name + "'s Turn");
+                GUI.Box(GUIUtilities.getRect(windowWidth, windowHeight), "" + CurrentPlayer.PlayerName + "'s Turn");
                 if (GUI.Button(GUIUtilities.getRect(buttonWidth, buttonHeight, 0, buttonYOffset), "Okay")) {
                     showNextTurnPopup = false;
                     ScreenBlocker.instance.setBlocking(false);

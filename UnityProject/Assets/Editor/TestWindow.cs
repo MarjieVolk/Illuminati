@@ -53,7 +53,8 @@ public class TestWindow : EditorWindow {
 	
 	private static void OnScene(SceneView sceneView) {
 		Event e = Event.current;
-		GameObject obj = (GameObject) Selection.activeObject;
+        GameObject obj = null;
+        if (Selection.activeObject is GameObject) obj = (GameObject) Selection.activeObject;
 		NodeData cur = obj == null ? null : obj.GetComponent<NodeData>();
 
 		if (e.control) {

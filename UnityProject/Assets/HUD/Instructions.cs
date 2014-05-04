@@ -7,19 +7,19 @@ public class Instructions : MonoBehaviour {
 
     public GUISkin skin;
 
-    private string defaultOne = "Player 1";
-    private string defaultTwo = "Player 2";
+    //private string defaultOne = "Player 1";
+    //private string defaultTwo = "Player 2";
 
-    private string playerOne = "";
-	private string playerTwo = "";
+    //private string playerOne = "";
+    //private string playerTwo = "";
 
     private Vector2 scrollPosition = Vector2.zero;
 
 	// Use this for initialization
 	void Start () {
         transform.position = new Vector3(transform.position.x, transform.position.y, - 12);
-        defaultOne = TurnController.instance.CurrentPlayer.Name;
-        defaultTwo = TurnController.instance.OtherPlayer.Name;
+        //defaultOne = TurnController.instance.CurrentPlayer.Name;
+        //defaultTwo = TurnController.instance.OtherPlayer.Name;
 	}
 	
 	// Update is called once per frame
@@ -48,27 +48,25 @@ public class Instructions : MonoBehaviour {
         float buttonYBase = windowBox.y + windowBox.height - buttonHeight;
         float fieldOffset = windowBox.width * 0.28f;
 
-        GUI.SetNextControlName("playerOne");
-        playerOne = GUI.TextArea(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f) - fieldOffset, buttonYBase - (windowBox.height * 0.07f), buttonWidth, buttonHeight), playerOne);
-        GUI.SetNextControlName("playerTwo");
-        playerTwo = GUI.TextArea(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f) + fieldOffset, buttonYBase - (windowBox.height * 0.07f), buttonWidth, buttonHeight), playerTwo);
+        //GUI.SetNextControlName("playerOne");
+        //playerOne = GUI.TextArea(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f) - fieldOffset, buttonYBase - (windowBox.height * 0.07f), buttonWidth, buttonHeight), playerOne);
+        //GUI.SetNextControlName("playerTwo");
+        //playerTwo = GUI.TextArea(new Rect((Screen.width / 2.0f) - (buttonWidth / 2.0f) + fieldOffset, buttonYBase - (windowBox.height * 0.07f), buttonWidth, buttonHeight), playerTwo);
 
-        if (UnityEngine.Event.current.type == EventType.Repaint) {
-            if (GUI.GetNameOfFocusedControl() == "playerOne") {
-                if (playerOne == defaultOne) playerOne = "";
-                if (playerTwo == "") playerTwo = defaultTwo;
-            } else if (GUI.GetNameOfFocusedControl() == "playerTwo") {
-                if (playerTwo == defaultTwo) playerTwo = "";
-                if (playerOne == "") playerOne = defaultOne;
-            } else {
-                if (playerOne == "") playerOne = defaultOne;
-                if (playerTwo == "") playerTwo = defaultTwo;
-            }
-        }
+        //if (UnityEngine.Event.current.type == EventType.Repaint) {
+        //    if (GUI.GetNameOfFocusedControl() == "playerOne") {
+        //        if (playerOne == defaultOne) playerOne = "";
+        //        if (playerTwo == "") playerTwo = defaultTwo;
+        //    } else if (GUI.GetNameOfFocusedControl() == "playerTwo") {
+        //        if (playerTwo == defaultTwo) playerTwo = "";
+        //        if (playerOne == "") playerOne = defaultOne;
+        //    } else {
+        //        if (playerOne == "") playerOne = defaultOne;
+        //        if (playerTwo == "") playerTwo = defaultTwo;
+        //    }
+        //}
 
         if (GUI.Button(new Rect((Screen.width / 2.0f) - 50, buttonYBase - (windowBox.height * 0.05f), 100, buttonHeight), "Start!")) {
-            TurnController.instance.CurrentPlayer.Name = playerOne;
-            TurnController.instance.OtherPlayer.Name = playerTwo;
 			Destroy(gameObject);
 		}
 	}

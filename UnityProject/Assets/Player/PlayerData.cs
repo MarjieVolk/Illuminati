@@ -9,8 +9,10 @@ using Assets.AI;
 
 public class PlayerData : MonoBehaviour {
 
-    public string Name;
+    public string PlayerName;
     public int ActionPointsPerTurn;
+    public int turnOrder = 0;
+
     private int actionPoints;
     private List<Action> selectedActions;
     public NodeData StartingNode;
@@ -34,26 +36,25 @@ public class PlayerData : MonoBehaviour {
     void Awake()
     {
         actionPoints = 0;
+
+        style = new GUIStyle();
+        style.normal.textColor = Color.black;
+        style.fontSize = 16;
+        style.normal.background = InvestigateAction.MakeTextureOfColor(Color.gray);
     }
 
-	// Use this for initialization
-	void Start () {
+    public void init() {
         selectStartingNode();
 
         selectSecondaryStartingNodes();
 
-		// Increase starting node attacks
-		Array values = Enum.GetValues(typeof(DominationType));
-		foreach (DominationType type in values) {
-			StartingNode.getAttackSkill(type).value += 10;
-			StartingNode.getDefenseSkill(type).value += 5;
-		}
-
-		style = new GUIStyle();
-		style.normal.textColor = Color.black;
-		style.fontSize = 16;
-		style.normal.background = InvestigateAction.MakeTextureOfColor(Color.gray);
-	}
+        // Increase starting node attacks
+        Array values = Enum.GetValues(typeof(DominationType));
+        foreach (DominationType type in values) {
+            StartingNode.getAttackSkill(type).value += 10;
+            StartingNode.getDefenseSkill(type).value += 5;
+        }
+    }
 
     private void selectSecondaryStartingNodes()
     {
@@ -106,7 +107,7 @@ public class PlayerData : MonoBehaviour {
     }
 	
 	void Update() {
-        if (this == TurnController.instance.CurrentPlayer)
+        if (TurnController.instance != null && this == TurnController.instance.CurrentPlayer)
         {
             if (IsLocalHumanPlayer)
             {
@@ -127,7 +128,7 @@ public class PlayerData : MonoBehaviour {
 
     void OnGUI()
     {
-        if (this != TurnController.instance.CurrentPlayer) return;
+        if (TurnController.instance == null || this != TurnController.instance.CurrentPlayer) return;
 
         GUI.Label(new Rect(0, Screen.height - (Screen.height * 0.115f), 85, 20), "  Actions: <b>" + actionPoints + "</b>", style);
     }
