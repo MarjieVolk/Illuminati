@@ -116,14 +116,15 @@ namespace Assets.Player
             if (target is NodeData) {
                 if (GraphUtility.instance.getConnectedNodes(actionNode).Contains((NodeData)target)) {
                     carryingEdge = GraphUtility.instance.getConnectingEdge(actionNode, (NodeData)target);
-                    carryingEdgeMax += selected.CarryingEdgeVisibilityIncreaseProbability > 0 ? carryingEdge.maxVisibilityIncrease : 0;
+                    float maxTriggerIncrease = carryingEdge.maxVisibilityIncrease * carryingEdge.visIncreaseModifier;
+                    carryingEdgeMax += selected.CarryingEdgeVisibilityIncreaseProbability > 0 ? maxTriggerIncrease : 0;
                 }
             }
             bool didCarryingEdge = !actionNode;
 
             Action.VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, actionNode, selected.PathVisibilityIncreaseProbability,
                 (edge, increaseProbability) => {
-                    float max = increaseProbability > 0 ? edge.maxVisibilityIncrease : 0;
+                    float max = increaseProbability > 0 ? edge.maxVisibilityIncrease * edge.visIncreaseModifier : 0;
                     bool isCarryingEdge = edge != null && edge == carryingEdge;
                     if (isCarryingEdge) {
                         max += carryingEdgeMax;

@@ -22,6 +22,8 @@ public class EdgeData : Targetable {
 
 	private GUIStyle visibilityStyle;
 
+    public float visIncreaseModifier { get; set; }
+
     private float vis;
     public float Visibility {
         get {
@@ -39,6 +41,7 @@ public class EdgeData : Targetable {
         prevDirection = EdgeDirection.Neutral;
         type = DominationType.Bribe;
         Visibility = 0;
+        visIncreaseModifier = 1.0f;
 
         visibilityStyle = new GUIStyle();
         visibilityStyle.normal.textColor = Color.black;
@@ -86,7 +89,9 @@ public class EdgeData : Targetable {
     private void triggerEdge()
     {
         float rand = Random.value;
-        float visibilityDelta = rand * (maxVisibilityIncrease - minVisibilityIncrease) + minVisibilityIncrease;
+        float max = maxVisibilityIncrease * visIncreaseModifier;
+        float min = minVisibilityIncrease * visIncreaseModifier;
+        float visibilityDelta = rand * (max - min) + min;
 
         Visibility += visibilityDelta;
     }
@@ -99,6 +104,11 @@ public class EdgeData : Targetable {
         if (displayVisibility) {
 			float margin = 10;
             string text = "Visibility: " + (int)(Visibility * 100) + "%";
+
+            bool isOwned = direction == EdgeDirection.OneToTwo || direction == EdgeDirection.TwoToOne;
+            if (isOwned && nodeOne.GetComponent<NodeData>().Owner == TurnController.instance.CurrentPlayer) {
+                text += "\nIncrease Rate: " + Mathf.Round(100 * visIncreaseModifier) + "%";
+            }
             Vector2 textSize = visibilityStyle.CalcSize(new GUIContent(text));
 
 			GUI.Label(new Rect(Screen.width - textSize.x - margin - 5, Screen.height - textSize.y - margin - 2.5f, textSize.x + 10, textSize.y + 5), text, visibilityStyle);

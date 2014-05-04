@@ -6,6 +6,8 @@ using System.Text;
 
 public class PermanentSupportAction : Action {
 
+    public float edgeVisModifierMultiplier = 0.9f;
+
 	private const float minProportion = 0.2f;
 	private const float maxProportion = 0.6f;
 
@@ -58,6 +60,9 @@ public class PermanentSupportAction : Action {
                 if (diff > 0) skill.value += getIncreaseAmount(diff);
             };
         ForEachDifference(target, handler, handler);
+
+        // Decrease edge visibility modifier
+        GraphUtility.instance.getConnectingEdge(gameObject.GetComponent<NodeData>(), (NodeData) target).visIncreaseModifier *= edgeVisModifierMultiplier;
 	}
 
     private void ForEachDifference(Targetable target, Action<DominationType, AttackSkill, int> attackHandler, Action<DominationType, AttackSkill, int> defenseHandler)
