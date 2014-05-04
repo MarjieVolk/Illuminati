@@ -59,7 +59,8 @@ namespace Assets.AI.ActionConsumptionStrategies
                 }
             }
 
-            return ret;
+            if (ret.Count == 0) return ret;
+            return ret.GetRange(0, Math.Max(ret.Count, numActionsRemaining));
         }
     }
 }
