@@ -26,7 +26,7 @@ public class Instructions : MonoBehaviour {
         GUI.Box(windowBox, "Welcome to Enlightened!");
 
         float margin = windowBox.height * 0.07f;
-        Rect textBox = new Rect(windowBox.x + margin, windowBox.y + 60, windowBox.width - (margin * 2), windowBox.height * 0.7f);
+        Rect textBox = new Rect(windowBox.x + margin, windowBox.y + 60, windowBox.width - (margin * 2), windowBox.height * 0.75f);
 
         float height = skin.FindStyle("Label").CalcHeight(new GUIContent(text), textBox.width - 20);
         Rect insideBox = new Rect(0, 0, textBox.width - 20, height);

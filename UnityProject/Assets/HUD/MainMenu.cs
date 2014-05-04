@@ -26,7 +26,7 @@ public class MainMenu : MonoBehaviour {
 	void Start () {
         titleStyle = new GUIStyle();
         titleStyle.fontSize = 120;
-        titleStyle.normal.textColor = new Color(0.15f, 0.3f, 0.05f);
+        //titleStyle.normal.textColor = new Color(0.15f, 0.3f, 0.05f);
         titleStyle.alignment = TextAnchor.LowerCenter;
 
         instructions = gameObject.GetComponent<Instructions>();
@@ -78,7 +78,7 @@ public class MainMenu : MonoBehaviour {
 
         if (!showMenu && !instructions.enabled) {
             Vector2 textSize = titleStyle.CalcSize(new GUIContent(title));
-            GUI.Label(new Rect((Screen.width / 2.0f) - (textSize.x / 2.0f), (Screen.height * 0.05f), textSize.x, textSize.y), title, titleStyle);
+            GUI.Label(new Rect((Screen.width / 2.0f) - (textSize.x / 2.0f), (Screen.height * 0.03f), textSize.x, textSize.y), title, titleStyle);
 
             textSize = skin.button.CalcSize(new GUIContent(play));
             Rect newGameRect = new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.9f - textSize.y), textSize.x + 40, textSize.y);

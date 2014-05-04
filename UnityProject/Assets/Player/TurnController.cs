@@ -41,14 +41,6 @@ namespace Assets.Player
             CurrentPlayer.startTurn();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-			if (Input.GetKeyDown(KeyCode.Escape)) {
-				Application.Quit();
-			}
-        }
-
         void OnGUI()
         {
             GUI.skin = skin;
