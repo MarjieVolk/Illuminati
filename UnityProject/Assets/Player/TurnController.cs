@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using Assets.HUD;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Assets.Player
                 return players[current];
             }
         }
-        private PlayerData[] players;
+        private List<PlayerData> players;
         private int current = 0;
 
         public bool BetweenTurns = false;
@@ -35,8 +36,8 @@ namespace Assets.Player
 
         void Start()
         {
-            players = UnityEngine.Object.FindObjectsOfType<PlayerData>();
-            players = players.OrderBy<PlayerData, int>((player) => player.turnOrder).ToArray<PlayerData>();
+            players = UnityEngine.Object.FindObjectsOfType<PlayerData>().ToList<PlayerData>();
+            players = players.OrderBy<PlayerData, int>((player) => player.turnOrder).ToList<PlayerData>();
 
             foreach (PlayerData player in players) {
                 player.init();
@@ -117,7 +118,7 @@ namespace Assets.Player
 
             if (null != OnTurnStart) OnTurnStart();
 
-            current = (current + 1) % players.Length;
+            current = (current + 1) % players.Count;
 
             // Next turn popup
             if (CurrentPlayer.IsLocalHumanPlayer)
@@ -132,6 +133,16 @@ namespace Assets.Player
             {
                 ExecuteActions(); NextTurn();
             }
+        }
+
+        public void removePlayer(PlayerData player) {
+            int removeIndex = players.IndexOf(player);
+            if (current >= removeIndex) {
+                current -= 1;
+            }
+
+            players.Remove(player);
+            Destroy(player);
         }
     }
 }

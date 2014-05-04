@@ -47,7 +47,8 @@ public class NodeMenu : MonoBehaviour {
 	}
 
 	public void show() {
-		if (isScheduled || gameObject.GetComponent<NodeData>().nTurnsUntilAvailable > 0 || TurnController.instance.BetweenTurns || !TurnController.instance.CurrentPlayer.IsLocalHumanPlayer) {
+		if (isScheduled || gameObject.GetComponent<NodeData>().nTurnsUntilAvailable > 0 || TurnController.instance.BetweenTurns ||
+            !TurnController.instance.CurrentPlayer.IsLocalHumanPlayer || TurnController.instance.CurrentPlayer.actionPointsRemaining() <= 0) {
 			return;
 		}
 

@@ -19,6 +19,7 @@ public class EscapeMenu : MonoBehaviour {
 	void Update () {
 	    if (Input.GetKeyDown(KeyCode.Escape)) {
             show = true;
+            ScreenBlocker.instance.setBlocking(true);
         }
 	}
 
@@ -32,11 +33,12 @@ public class EscapeMenu : MonoBehaviour {
     private void layoutWindow(int id) {
         if (GUILayout.Button("Continue")) {
             show = false;
+            ScreenBlocker.instance.setBlocking(false);
         }
 
         if (GUILayout.Button("Instructions")) {
-            instruct.enabled = true;
             show = false;
+            instruct.enabled = true;
         }
 
         if (GUILayout.Button("Exit")) {

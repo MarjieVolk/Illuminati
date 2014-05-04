@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
+using Assets.HUD;
 
 public class VictoryConditionController : MonoBehaviour {
 
 	public GameObject winScreen;
+    public GUISkin skin;
 
 	private bool won = false;
+    private string lossMessage = null;
 	private PlayerData winner;
 
 	private GUIStyle style;
@@ -39,6 +42,16 @@ public class VictoryConditionController : MonoBehaviour {
 			}
 		}
 
+        if (players.Count > 0) {
+            // We have a loser!
+            ScreenBlocker.instance.setBlocking(true);
+            lossMessage = "";
+            foreach (PlayerData losingPlayer in players) {
+                lossMessage += losingPlayer.PlayerName + " Lost!\n";
+                TurnController.instance.removePlayer(losingPlayer);
+            }
+        }
+
 		if (nonLosingPlayers.Count == 1) {
 			winner = nonLosingPlayers[0];
 			Instantiate(winScreen, Camera.main.transform.position + new Vector3(0, 0, 1), Quaternion.identity);
@@ -47,8 +60,25 @@ public class VictoryConditionController : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		if (won) {
-			GUI.Label(new Rect(Screen.width / 2.0f - 300, Screen.height / 2.0f - 300, 600, 600), "" + winner.PlayerName + " wins!", style);
-		}
+        GUI.skin = skin;
+        if (won) {
+            GUI.Label(new Rect(Screen.width / 2.0f - 300, Screen.height / 2.0f - 300, 600, 600), "" + winner.PlayerName + " wins!", style);
+        } else if (lossMessage != null) {
+            Vector2 size = GUI.skin.label.CalcSize(new GUIContent(lossMessage));
+            GUI.Window(0, GUIUtilities.getRect(300, size.y + 150), layoutWindow, "Breaking News!");
+        }
 	}
+
+    private void layoutWindow(int id) {
+        GUILayout.Label(lossMessage);
+        GUILayout.FlexibleSpace();
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("Okay")) {
+            lossMessage = null;
+            ScreenBlocker.instance.setBlocking(false);
+        }
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+    }
 }

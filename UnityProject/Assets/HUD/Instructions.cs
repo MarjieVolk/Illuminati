@@ -19,7 +19,7 @@ public class Instructions : MonoBehaviour {
 	
 	}
 
-	void OnGUI() {
+    void OnGUI() {
         GUI.skin = skin;
 
         Rect windowBox = GUIUtilities.getRect(Screen.width * 0.6f, Screen.height * 0.9f);
@@ -39,6 +39,7 @@ public class Instructions : MonoBehaviour {
         float buttonYBase = windowBox.y + windowBox.height - buttonHeight;
 
         if (GUI.Button(new Rect((Screen.width / 2.0f) - 50, buttonYBase - (windowBox.height * 0.05f), 100, buttonHeight), "Okay")) {
+            if (ScreenBlocker.instance != null) ScreenBlocker.instance.setBlocking(false);
             enabled = false;
 		}
 	}

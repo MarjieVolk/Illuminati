@@ -154,13 +154,18 @@ public class MainMenu : MonoBehaviour {
         if (GUILayout.Button("<size=32>Play!</size>")) {
             startGame();
         }
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
 
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
         if (GUILayout.Button("Cancel")) {
             resetDefaults();
             showMenu = false;
         }
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
+
 
         updateDefaultNames();
     }
