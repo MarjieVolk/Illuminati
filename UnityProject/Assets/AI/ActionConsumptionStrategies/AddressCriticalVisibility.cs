@@ -20,6 +20,8 @@ namespace Assets.AI.ActionConsumptionStrategies
             IEnumerable<EdgeData> myEdges = FindObjectsOfType<EdgeData>()
                 //that are mine
                 .Where<EdgeData>((edge) => edge.nodeOne.GetComponent<NodeData>().Owner == me && edge.nodeTwo.GetComponent<NodeData>().Owner == me)
+                //and, you know, are actually really mine
+                .Where<EdgeData>((edge) => edge.direction != EdgeData.EdgeDirection.Unusable && edge.direction != EdgeData.EdgeDirection.Neutral)
                 //and order them by visibility
                 .OrderByDescending<EdgeData, float>((edge) => edge.Visibility);
 
@@ -48,10 +50,14 @@ namespace Assets.AI.ActionConsumptionStrategies
 
                 //and schedule the assist action
                 Action supportAction = UseTemporarySupportActions ? (Action) assistant.GetComponent<TemporarySupportAction>() : (Action) assistant.GetComponent<PermanentSupportAction>();
-                supportAction.SetScheduled(assistee);
-                ret.Add(supportAction);
-                numActionsRemaining--;
-                if (numActionsRemaining <= 0) return ret;
+                bool success = supportAction.SetScheduled(assistee);
+                if (success)
+                {
+                    ret.Add(supportAction);
+                    numActionsRemaining--;
+                    if (numActionsRemaining <= 0) return ret;
+                }
+                else Debug.Log("Avoided terrible failure trying to instruct " + assistee + " with " + assistant);
             }
 
             return ret;
