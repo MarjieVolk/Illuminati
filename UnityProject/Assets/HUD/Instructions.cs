@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.HUD;
+using Assets.Player;
 
 public class Instructions : MonoBehaviour {
 
@@ -17,6 +18,8 @@ public class Instructions : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         transform.position = new Vector3(transform.position.x, transform.position.y, - 12);
+        defaultOne = TurnController.instance.CurrentPlayer.Name;
+        defaultTwo = TurnController.instance.OtherPlayer.Name;
 	}
 	
 	// Update is called once per frame
@@ -64,8 +67,8 @@ public class Instructions : MonoBehaviour {
         }
 
         if (GUI.Button(new Rect((Screen.width / 2.0f) - 50, buttonYBase - (windowBox.height * 0.05f), 100, buttonHeight), "Start!")) {
-			GameObject.Find("Player1").GetComponent<PlayerData>().Name = playerOne;
-			GameObject.Find("Player2").GetComponent<PlayerData>().Name = playerTwo;
+            TurnController.instance.CurrentPlayer.Name = playerOne;
+            TurnController.instance.OtherPlayer.Name = playerTwo;
 			Destroy(gameObject);
 		}
 	}
