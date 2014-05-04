@@ -22,7 +22,7 @@ namespace Assets.AI
                 ret.AddRange(actions);
                 numActionsToSchedule -= actions.Count;
 
-                if (numActionsToSchedule == 0) break;
+                if (numActionsToSchedule <= 0) break;
             }
 
             return ret;
