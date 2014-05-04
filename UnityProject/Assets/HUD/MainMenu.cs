@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour {
 
     private int nPlayers = 2;
     private List<int> playerVals;
+    private List<string> playerNames;
     private string[] playerOptions = { "Human", "Computer" };
 
 	// Use this for initialization
@@ -27,16 +28,17 @@ public class MainMenu : MonoBehaviour {
         titleStyle.alignment = TextAnchor.LowerCenter;
 
         playerVals = new List<int>();
+        playerNames = new List<string>();
 	}
 
     private void startGame() {
         for (int i = 0; i < playerVals.Count; i++) {
             if (playerVals[i] == 0) {
                 // Human
-                createHumanPlayer("Player " + i, i);
+                createHumanPlayer(playerNames[i], i);
             } else {
                 // Computer
-                createComputerPlayer("Bot " + i, i);
+                createComputerPlayer(playerNames[i], i);
             }
         }
 
@@ -89,11 +91,20 @@ public class MainMenu : MonoBehaviour {
             GUILayout.BeginHorizontal();
             GUILayout.Label("Player " + i + ": ");
 
+            while (playerNames.Count <= i) {
+                playerNames.Add("");
+            }
+
+            GUI.SetNextControlName("player" + i);
+            playerNames[i] = GUILayout.TextArea(playerNames[i], GUILayout.MinWidth(200));
+
+            GUILayout.FlexibleSpace();
+
             while (playerVals.Count <= i) {
                 playerVals.Add(0);
             }
 
-            int newVal = GUILayout.SelectionGrid(playerVals[i], playerOptions, 2);
+            int newVal = GUILayout.SelectionGrid(playerVals[i], playerOptions, 2, GUILayout.MinWidth(300));
             bool isAllComputers = false;
             if (newVal == 1) {
                 // Trying to make this player a computer
@@ -124,5 +135,29 @@ public class MainMenu : MonoBehaviour {
         }
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
+
+        updateDefaultNames();
+    }
+
+    private void updateDefaultNames() {
+        if (UnityEngine.Event.current.type != EventType.Repaint) {
+            return;
+        }
+
+        string focused = GUI.GetNameOfFocusedControl();
+        int index = -1;
+        if (focused.StartsWith("player")) {
+            index = int.Parse(focused.Substring(6));
+        }
+
+        for (int i = 0; i < playerNames.Count; i++) {
+            if (i == index) {
+                // focused
+                if (playerNames[i] == "Player " + i) playerNames[i] = "";
+            } else {
+                // not focused
+                if (playerNames[i] == "") playerNames[i] = "Player " + i;
+            }
+        }
     }
 }
