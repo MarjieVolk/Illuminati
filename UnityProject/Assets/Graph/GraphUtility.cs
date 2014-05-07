@@ -255,7 +255,7 @@ public class GraphUtility : MonoBehaviour {
         //clear only opponent's dominations/connections to this node
         foreach (EdgeData edge in getConnectedEdges(defender))
         {
-            if (edge.nodeOne.GetComponent<NodeData>().Owner != edge.nodeTwo.GetComponent<NodeData>().Owner)
+            if (edge.nodeOne.GetComponent<NodeData>().Owner != edge.nodeTwo.GetComponent<NodeData>().Owner && !(edge.direction == EdgeData.EdgeDirection.Unusable))
             {
                 edge.direction = EdgeData.EdgeDirection.Neutral;
             }
