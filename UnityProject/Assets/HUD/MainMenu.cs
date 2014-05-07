@@ -26,7 +26,7 @@ public class MainMenu : MonoBehaviour {
 	void Start () {
         titleStyle = new GUIStyle();
         titleStyle.fontSize = 120;
-        //titleStyle.normal.textColor = new Color(0.15f, 0.3f, 0.05f);
+        titleStyle.normal.textColor = new Color(0.07f, 0, 0.01f);
         titleStyle.alignment = TextAnchor.LowerCenter;
 
         instructions = gameObject.GetComponent<Instructions>();

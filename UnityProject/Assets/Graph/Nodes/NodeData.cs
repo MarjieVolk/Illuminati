@@ -31,7 +31,7 @@ public class NodeData : Targetable {
 	protected override void Start () {
 		base.Start();
 		Owner = startingOwner;
-		TurnController.instance.OnTurnEnd += onTurnEnd;
+		TurnController.instance.OnTurnStart += onTurnStart;
         this.OnHover += () => {
             // Show node menu
             if (owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState) {
@@ -97,9 +97,9 @@ public class NodeData : Targetable {
 		return isPrivate && owner == TurnController.instance.CurrentPlayer;
 	}
 
-	public void onTurnEnd() {
-		if (TurnController.instance.CurrentPlayer == Owner) {
-			// Don't decrement at the end of your turn - only at the end of opponent's turn
+	public void onTurnStart() {
+		if (TurnController.instance.CurrentPlayer != Owner) {
+			// Only decrement on your own turn
 			return;
 		}
 
