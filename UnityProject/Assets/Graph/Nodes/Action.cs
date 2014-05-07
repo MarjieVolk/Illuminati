@@ -9,8 +9,8 @@ public abstract class Action : MonoBehaviour {
 
 	public GameObject button;
 	public GameObject scheduledTag;
-    public float PathVisibilityIncreaseProbability;
-    public float CarryingEdgeVisibilityIncreaseProbability;
+    public float PathVisibilityIncreaseProbability = 0.4f;
+    public float CarryingEdgeVisibilityIncreaseProbability = 0.8f;
 	
 	public bool isTargeting { get; set;}
 	public Targetable Target { get; private set; }

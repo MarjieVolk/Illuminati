@@ -54,8 +54,6 @@ public class EdgeData : Targetable {
     protected override void Start()
     {
         base.Start();
-        TurnController.instance.OnTurnEnd += () => Visibility *= 0.9f;
-		TurnController.instance.OnTurnEnd += () => triggerEdge(0.1f);
         TurnController.instance.OnTurnEnd += () => Visibility *= 0.95f;
 		TurnController.instance.OnTurnEnd += () => triggerEdge(0.07f);
 		TurnController.instance.OnTurnEnd += updateVisibilityRendering;
