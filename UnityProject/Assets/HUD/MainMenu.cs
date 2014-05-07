@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour {
     private string title = "Enlightened";
     private string play = "<size=32>New Game</size>";
     private string instructText = "Instructions";
+    private string quitText = "Quit";
 
     private bool showMenu = false;
     private Instructions instructions;
@@ -83,15 +84,21 @@ public class MainMenu : MonoBehaviour {
             GUI.Label(new Rect((Screen.width / 2.0f) - (textSize.x / 2.0f), (Screen.height * 0.03f), textSize.x, textSize.y), title, titleStyle);
 
             textSize = skin.button.CalcSize(new GUIContent(play));
-            Rect newGameRect = new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.9f - textSize.y), textSize.x + 40, textSize.y);
+            Rect newGameRect = new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.85f - textSize.y), textSize.x + 40, textSize.y);
             if (GUI.Button(newGameRect, play)) {
                 showMenu = true;
             }
 
             textSize = skin.button.CalcSize(new GUIContent(instructText));
-            Rect instructRect = new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.95f - textSize.y), textSize.x + 40, textSize.y);
+            Rect instructRect = new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.91f - textSize.y), textSize.x + 40, textSize.y);
             if (GUI.Button(instructRect, instructText)) {
                 instructions.enabled = true;
+            }
+
+            textSize = skin.button.CalcSize(new GUIContent(quitText));
+            Rect quitRect = new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.96f - textSize.y), textSize.x + 40, textSize.y);
+            if (GUI.Button(quitRect, quitText)) {
+                Application.Quit();
             }
 
         } else if (showMenu) {
