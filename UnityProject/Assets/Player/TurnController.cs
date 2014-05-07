@@ -141,6 +141,7 @@ namespace Assets.Player
             int removeIndex = players.IndexOf(player);
             if (current >= removeIndex) {
                 current -= 1;
+                current %= players.Count;
             }
 
             players.Remove(player);
