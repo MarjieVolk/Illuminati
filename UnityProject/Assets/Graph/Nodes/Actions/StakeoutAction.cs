@@ -24,8 +24,8 @@ namespace Assets.Graph.Nodes
             ProbabilityZeroThreshold = 0.25f;
             GuaranteedSuccessThreshold = 0.75f;
 
-            PathVisibilityIncreaseProbability = 0.5f;
-            CarryingEdgeVisibilityIncreaseProbability = 1;
+            PathVisibilityIncreaseScaleParameter = 0.5f;
+            CarryingEdgeVisibilityIncreaseScaleParameter = 1;
         }
 
         void Start()

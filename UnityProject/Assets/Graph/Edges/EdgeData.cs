@@ -4,9 +4,6 @@ using Assets.Player;
 using Assets.Graph.Nodes;
 
 public class EdgeData : Targetable {
-
-    public float minVisibilityIncrease, maxVisibilityIncrease;
-
 	public GameObject nodeOne;
 	public GameObject nodeTwo;
 
@@ -53,7 +50,6 @@ public class EdgeData : Targetable {
     {
         base.Start();
         TurnController.instance.OnTurnEnd += () => Visibility *= 0.95f;
-		TurnController.instance.OnTurnEnd += () => triggerEdge(0.07f);
 		TurnController.instance.OnTurnEnd += updateVisibilityRendering;
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
         OnHover += () => displayVisibility = true;
@@ -70,26 +66,36 @@ public class EdgeData : Targetable {
 		OneToTwo, TwoToOne, Neutral, Unusable
 	};
 
-    public void triggerEdge(float baseTriggerProbability)
+    public void applyRandomEdgeVisibilityIncrease(float scaleParameter, float maxVisibilityIncrease, bool respectModifier = true)
     {
-        float rand = 1.0f;
-        while (rand == 1.0f)
-        {
-            rand = Random.value;
-        }
-
-        if (rand < baseTriggerProbability)
-            triggerEdge();
+        Visibility += getRandomEdgeVisibilityIncrease(scaleParameter, maxVisibilityIncrease, respectModifier);
     }
 
-    private void triggerEdge()
+    private float getRandomEdgeVisibilityIncrease(float scaleParameter, float maxVisibilityIncrease, bool respectModifier = true)
     {
-        float rand = Random.value;
-        float max = maxVisibilityIncrease * visIncreaseModifier;
-        float min = minVisibilityIncrease * visIncreaseModifier;
-        float visibilityDelta = rand * (max - min) + min;
+        if (maxVisibilityIncrease <= 0) return 0;
 
-        Visibility += visibilityDelta;
+        float unscaled = -1 * (scaleParameter * Mathf.Log(UnityEngine.Random.value)) % maxVisibilityIncrease;
+        if (respectModifier) unscaled *= visIncreaseModifier;
+        return unscaled;
+    }
+
+    public float getMaxEdgeVisibilityIncrease(float maxVisibilityIncrease, bool respectModifier = true)
+    {
+        if (respectModifier) maxVisibilityIncrease *= visIncreaseModifier;
+        return maxVisibilityIncrease;
+    }
+
+    public float getMinEdgeVisibilityIncrease()
+    {
+        return 0;
+    }
+
+    public float getExpectedVisibilityIncrease(float scaleParameter, float maxVisibilityIncrease, bool respectModifier = true)
+    {
+        float lambda = 1 / scaleParameter;
+        float x = respectModifier ? maxVisibilityIncrease * visIncreaseModifier : maxVisibilityIncrease;
+        return x / lambda * Mathf.Exp(-lambda * x);
     }
 
     private bool displayVisibility = false;

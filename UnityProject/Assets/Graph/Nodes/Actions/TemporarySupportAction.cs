@@ -61,11 +61,7 @@ public class TemporarySupportAction : Action {
 		return (int) (value / 4.0f);
 	}
 
-    public override float maxVisibilityModifier() {
-        return -minVisDecrease;
-    }
-
-    public override float minVisibilityModifier() {
-        return -maxVisDecrease;
+    public override float expectedVisibilityModifier() {
+        return (-minVisDecrease + -maxVisDecrease) / 2;
     }
 }

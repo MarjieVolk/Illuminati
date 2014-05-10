@@ -15,8 +15,8 @@ namespace Assets.Graph.Nodes
         void Reset()
         {
             ActionsPayoff = 2;
-            CarryingEdgeVisibilityIncreaseProbability = 1;
-            PathVisibilityIncreaseProbability = 0.5f;
+            CarryingEdgeVisibilityIncreaseScaleParameter = 1;
+            PathVisibilityIncreaseScaleParameter = 0.5f;
         }
 
         void Start()

@@ -9,8 +9,12 @@ public abstract class Action : MonoBehaviour {
 
 	public GameObject button;
 	public GameObject scheduledTag;
-    public float PathVisibilityIncreaseProbability = 0.4f;
-    public float CarryingEdgeVisibilityIncreaseProbability = 0.8f;
+
+    public float CarryingEdgeVisibilityIncreaseScaleParameter = 0.04f;
+    public float CarryingEdgeMaxVisibilityIncrease = 0.10f;
+
+    public float PathVisibilityIncreaseScaleParameter = 0.02f;
+    public float PathMaxVisibilityIncrease = 0.10f;
 	
 	public bool isTargeting { get; set;}
 	public Targetable Target { get; private set; }
@@ -61,11 +65,11 @@ public abstract class Action : MonoBehaviour {
         {
             if (GraphUtility.instance.getConnectedNodes(GetComponent<NodeData>()).Contains((NodeData)Target))
             {
-                GraphUtility.instance.getConnectingEdge(GetComponent<NodeData>(), (NodeData)Target).triggerEdge(CarryingEdgeVisibilityIncreaseProbability);
+                GraphUtility.instance.getConnectingEdge(GetComponent<NodeData>(), (NodeData)Target).applyRandomEdgeVisibilityIncrease(CarryingEdgeVisibilityIncreaseScaleParameter, CarryingEdgeMaxVisibilityIncrease);
             }
         }
-        VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, GetComponent<NodeData>(), PathVisibilityIncreaseProbability,
-            (edge, increaseProbability) => { edge.triggerEdge(increaseProbability); });
+        VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, GetComponent<NodeData>(), PathVisibilityIncreaseScaleParameter,
+            (edge, increaseScaleParameter) => { edge.applyRandomEdgeVisibilityIncrease(increaseScaleParameter, PathMaxVisibilityIncrease); });
 		
 		clearScheduled();
 	}
@@ -74,11 +78,7 @@ public abstract class Action : MonoBehaviour {
 	public abstract string getAdditionalTextForTarget(Targetable target);
 	protected abstract void doActivate(Targetable target);
 
-    public virtual float maxVisibilityModifier() {
-        return 0;
-    }
-
-    public virtual float minVisibilityModifier() {
+    public virtual float expectedVisibilityModifier() {
         return 0;
     }
 

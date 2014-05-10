@@ -109,34 +109,32 @@ namespace Assets.Player
 
         private void startHoverForTarget(Targetable target) {
             NodeData actionNode = selected.gameObject.GetComponent<NodeData>();
-            float carryingEdgeMax = selected.maxVisibilityModifier();
-            float carryingEdgeMin = selected.minVisibilityModifier();
+            float carryingEdgeExpected = selected.expectedVisibilityModifier();
             EdgeData carryingEdge = null;
 
             if (target is NodeData) {
                 if (GraphUtility.instance.getConnectedNodes(actionNode).Contains((NodeData)target)) {
                     carryingEdge = GraphUtility.instance.getConnectingEdge(actionNode, (NodeData)target);
-                    float maxTriggerIncrease = carryingEdge.maxVisibilityIncrease * carryingEdge.visIncreaseModifier;
-                    carryingEdgeMax += selected.CarryingEdgeVisibilityIncreaseProbability > 0 ? maxTriggerIncrease : 0;
+                    carryingEdgeExpected += carryingEdge.getExpectedVisibilityIncrease(selected.CarryingEdgeVisibilityIncreaseScaleParameter, selected.CarryingEdgeMaxVisibilityIncrease, true);
                 }
             }
-            bool didCarryingEdge = !actionNode;
+            bool didCarryingEdge = false;
 
-            Action.VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, actionNode, selected.PathVisibilityIncreaseProbability,
-                (edge, increaseProbability) => {
-                    float max = increaseProbability > 0 ? edge.maxVisibilityIncrease * edge.visIncreaseModifier : 0;
+            Action.VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, actionNode, selected.PathVisibilityIncreaseScaleParameter,
+                (edge, increaseScaleParameter) => {
+                    float expected = edge.getExpectedVisibilityIncrease(increaseScaleParameter, edge.getMaxEdgeVisibilityIncrease(selected.PathMaxVisibilityIncrease));
                     bool isCarryingEdge = edge != null && edge == carryingEdge;
                     if (isCarryingEdge) {
-                        max += carryingEdgeMax;
+                        expected += carryingEdgeExpected;
                         didCarryingEdge = true;
                     }
 
-                    showEdgeText(edge, max, isCarryingEdge ? carryingEdgeMin : 0);
+                    showEdgeText(edge, expected);
                 }
             );
 
             if (carryingEdge != null && !didCarryingEdge) {
-                showEdgeText(carryingEdge, carryingEdgeMax, carryingEdgeMin);
+                showEdgeText(carryingEdge, carryingEdgeExpected);
             }
         }
 
@@ -152,22 +150,21 @@ namespace Assets.Player
             }
         }
 
-        private void showEdgeText(EdgeData edge, float maxIncrease, float minIncrease) {
-            maxIncrease = Mathf.Max(Mathf.Min(maxIncrease, 1 - edge.Visibility), -edge.Visibility);
-            minIncrease = Mathf.Max(Mathf.Min(minIncrease, 1 - edge.Visibility), -edge.Visibility);
+        private void showEdgeText(EdgeData edge, float expectedIncrease) {
+            expectedIncrease = Mathf.Max(Mathf.Min(expectedIncrease, 1 - edge.Visibility), -edge.Visibility);
 
-            if (maxIncrease == 0 && minIncrease == 0) {
+            if (expectedIncrease == 0) {
                 return;
             }
 
             string val = "<size=12>";
-            if (minIncrease >= 0) {
-                val += "+ " + (int)(minIncrease * 100) + (maxIncrease == minIncrease ? "" : "-" + (int)(maxIncrease * 100));
-            } else if (maxIncrease <= 0) {
-                val += "- " + (int)(maxIncrease * -100) + (maxIncrease == minIncrease ? "" : "-" + (int)(minIncrease * -100));
-            } else {
-                // This is probably hideous, but it should never happen as of right now
-                val += (int)(minIncrease * 100) + " to +" + (int)(maxIncrease * 100);
+            if (expectedIncrease > 0)
+            {
+                val += "+" + Mathf.CeilToInt(expectedIncrease * 100);
+            }
+            else if (expectedIncrease < 0)
+            {
+                val += "-" + Mathf.FloorToInt(expectedIncrease * -100);
             }
 
             val += "% visibility</size>";
