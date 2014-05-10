@@ -30,7 +30,7 @@ public class PermanentSupportAction : Action {
 		return targets;
 	}
 
-    private Action<DominationType, AttackSkill, int> getDisplayTextHandler(String typeLabel, StringBuilder ret)
+    private Action<DominationType, Skill, int> getDisplayTextHandler(String typeLabel, StringBuilder ret)
     {
         return (type, skill, diff) =>
         {
@@ -55,7 +55,7 @@ public class PermanentSupportAction : Action {
 	}
 
 	protected override void doActivate(Targetable target) {
-        Action<DominationType, AttackSkill, int> handler = (type, skill, diff) => 
+        Action<DominationType, Skill, int> handler = (type, skill, diff) => 
             {
                 if (diff > 0) skill.value += getIncreaseAmount(diff);
             };
@@ -65,7 +65,7 @@ public class PermanentSupportAction : Action {
         GraphUtility.instance.getConnectingEdge(gameObject.GetComponent<NodeData>(), (NodeData) target).visIncreaseModifier *= edgeVisModifierMultiplier;
 	}
 
-    private void ForEachDifference(Targetable target, Action<DominationType, AttackSkill, int> attackHandler, Action<DominationType, AttackSkill, int> defenseHandler)
+    private void ForEachDifference(Targetable target, Action<DominationType, Skill, int> attackHandler, Action<DominationType, Skill, int> defenseHandler)
     {
         NodeData node = (NodeData)target;
         NodeData thisNode = this.gameObject.GetComponent<NodeData>();
