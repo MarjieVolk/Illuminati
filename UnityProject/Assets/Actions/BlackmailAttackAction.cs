@@ -11,6 +11,7 @@ public class BlackmailAttackAction : AttackAction {
     public override void additionalEffect(Targetable target, bool isWin) {
         if (isWin) return;
 
-
+        NodeData thisNode = gameObject.GetComponent<NodeData>();
+        SabotageAction.doDecrease(thisNode, (NodeData) target, 0.6f);
     }
 }
