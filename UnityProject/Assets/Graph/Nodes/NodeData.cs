@@ -8,6 +8,7 @@ public class NodeData : Targetable {
 
     private static System.Random gen;
 
+    public NodeType type;
     public string archetype;
     public int power;
 	public PlayerData startingOwner;
@@ -37,7 +38,7 @@ public class NodeData : Targetable {
         if (gen == null) gen = new System.Random();
         double range = power / 6;
         double diff = (gen.NextDouble() * range) - (range / 2.0);
-        power += (int) Math.Round(diff);
+        power += (int)Math.Round(diff);
 
         // Init temporary increases
         increases = new List<TemporaryIncrease>();

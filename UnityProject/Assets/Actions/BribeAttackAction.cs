@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BribeAttackAction : AttackAction {
+public class BribeAttackAction : MonoBehaviour {
 
     /// <summary>
     /// Assist on win
     /// </summary>
     /// <param name="target"></param>
     /// <param name="isWin"></param>
-    public override void additionalEffect(Targetable target, bool isWin) {
+    public void additionalEffect(Targetable target, bool isWin) {
         if (!isWin) return;
 
         NodeData thisNode = gameObject.GetComponent<NodeData>();

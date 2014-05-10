@@ -4,9 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract class AttackAction : Action {
+public class AttackAction : Action {
 
 	private static System.Random gen;
+
+    public NodeType strongAgainst;
 
 	// Use this for initialization
 	void Start () {
@@ -43,22 +45,20 @@ public abstract class AttackAction : Action {
 		if (isWin) {
             GraphUtility.instance.CaptureNode(otherNode, thisNode);
 		}
-
-        additionalEffect(target, isWin);
 	}
-
-    public abstract void additionalEffect(Targetable target, bool isWin);
 
 	public double getProbabilityOfWin(Targetable target) {
 		NodeData otherNode = target.GetComponent<NodeData>();
 		NodeData thisNode = this.GetComponent<NodeData>();
-		
+
+        bool isStrong = (otherNode.type == strongAgainst);
+
 		// Find attacker attack score and defender defense score
 		int defense = otherNode.power;
         int attack = thisNode.power;
 
 		int minAttack = attack / 2;
-		int maxAttack = attack * 2;
+		int maxAttack = attack * (isStrong ? 3 : 2);
 		
 		// Determine if node is captured
 		double probability = 0;
