@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Assets.Player;
 using System;
 
@@ -8,21 +9,14 @@ public class NodeData : Targetable {
     private static System.Random gen;
 
     public string archetype;
-
+    public int power;
 	public PlayerData startingOwner;
 	public bool isStartNode = false;
     public bool isSecondaryStartNode = false;
 
-	private PlayerData owner;
-	public PlayerData Owner {
-		get {
-			return owner;
-		}
+    public PlayerData Owner { get; set; }
 
-		set {
-			owner = value;
-		}
-	}
+    private List<TemporaryIncrease> increases;
 
 	// Used for freezing the node for a certain number of turns after performing an action
 	public int nTurnsUntilAvailable = 0;
@@ -34,82 +28,77 @@ public class NodeData : Targetable {
 		TurnController.instance.OnTurnStart += onTurnStart;
         this.OnHover += () => {
             // Show node menu
-            if (owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState) {
+            if (Owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState) {
                 this.gameObject.GetComponent<NodeMenu>().show();
             }
         };
 
+        // Randomize power
         if (gen == null) gen = new System.Random();
+        double range = power / 10;
+        double diff = (gen.NextDouble() * range) - (range / 2.0);
+        power += (int) Math.Round(diff);
 
-        Array values = Enum.GetValues(typeof(DominationType));
-        foreach (DominationType type in values) {
-            AttackSkill attack = getAttackSkill(type);
-            double range = attack.value / 10;
-            double diff = (gen.NextDouble() * range) - (range / 2.0);
-            attack.value += (int) Math.Round(diff);
+        // Init temporary increases
+        increases = new List<TemporaryIncrease>();
+	}
 
-            DefenseSkill defense = getDefenseSkill(type);
-            range = defense.value / 10;
-            diff = (gen.NextDouble() * range) - (range / 2.0);
-            defense.value += (int) Math.Round(diff);
+    public void temporaryIncrease(int amount, int nTurns) {
+        if (nTurns <= 0) {
+            return;
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        TemporaryIncrease inc = new TemporaryIncrease();
+        inc.amount = amount;
+        inc.nTurns = nTurns;
+        increases.Add(inc);
+    }
 
-	public int getAttack(DominationType type) {
-		AttackSkill skill = getAttackSkill(type);
-		if (skill == null) return 0;
-		return skill.getWorkingValue();
-	}
-
-	public AttackSkill getAttackSkill(DominationType type) {
-		AttackSkill[] skills = gameObject.GetComponents<AttackSkill>();
-		foreach (AttackSkill a in skills) {
-			if (a.type == type) {
-				return a;
-			}
-		}
-		return null;
-	}
-	
-	public int getDefense(DominationType type) {
-		DefenseSkill skill = getDefenseSkill(type);
-		if (skill == null) return 0;
-		return skill.getWorkingValue();
-	}
-
-	public DefenseSkill getDefenseSkill(DominationType type) {
-		DefenseSkill[] skills = gameObject.GetComponents<DefenseSkill>();
-		foreach (DefenseSkill d in skills) {
-			if (d.type == type) {
-				return d;
-			}
-		}
-		return null;
-	}
+    public int getWorkingPower() {
+        int val = power;
+        foreach (TemporaryIncrease inc in increases) {
+            val += inc.amount;
+        }
+        return val;
+    }
 
 	override public bool viewAsOwned(VisibilityController.Visibility vis) {
 		bool isPrivate = vis == VisibilityController.Visibility.Private;
-		return isPrivate && owner == TurnController.instance.CurrentPlayer;
+		return isPrivate && Owner == TurnController.instance.CurrentPlayer;
 	}
 
 	public void onTurnStart() {
-		if (TurnController.instance.CurrentPlayer != Owner) {
+        if (TurnController.instance.CurrentPlayer == Owner) {
 			// Only decrement on your own turn
 			return;
 		}
 
+        // Decrement node freeze
 		if (nTurnsUntilAvailable > 0) {
 			nTurnsUntilAvailable -= 1;
 		}
+
+        // Decrement temporary power increases
+        List<TemporaryIncrease> toRemove = new List<TemporaryIncrease>();
+        foreach (TemporaryIncrease inc in increases) {
+            inc.nTurns -= 1;
+            Debug.LogError("Decrementing increase to " + inc.nTurns);
+            if (inc.nTurns <= 0) {
+                toRemove.Add(inc);
+            }
+        }
+
+        // Remove finished temporary power increases
+        foreach (TemporaryIncrease inc in toRemove) {
+            increases.Remove(inc);
+        }
 	}
 
-    protected override Vector3 getTipTextOffset()
-    {
+    protected override Vector3 getTipTextOffset() {
         return new Vector3(0, GetComponent<CircleCollider2D>().radius, 0);
+    }
+
+    private class TemporaryIncrease {
+        public int amount;
+        public int nTurns;
     }
 }

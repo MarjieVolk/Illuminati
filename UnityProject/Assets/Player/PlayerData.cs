@@ -12,6 +12,7 @@ public class PlayerData : MonoBehaviour {
     public string PlayerName;
     public int ActionPointsPerTurn;
     public int turnOrder = 0;
+    public int startingNodeBonus = 7;
 
     private int actionPoints;
     private List<Action> selectedActions;
@@ -36,6 +37,7 @@ public class PlayerData : MonoBehaviour {
     void Awake()
     {
         actionPoints = 0;
+        selectedActions = new List<Action>();
 
         style = new GUIStyle();
         style.normal.textColor = Color.black;
@@ -45,15 +47,10 @@ public class PlayerData : MonoBehaviour {
 
     public void init() {
         selectStartingNode();
-
         selectSecondaryStartingNodes();
 
-        // Increase starting node attacks
-        Array values = Enum.GetValues(typeof(DominationType));
-        foreach (DominationType type in values) {
-            StartingNode.getAttackSkill(type).value += 10;
-            StartingNode.getDefenseSkill(type).value += 5;
-        }
+        // Increase starting node power
+        StartingNode.power += startingNodeBonus;
     }
 
     private void selectSecondaryStartingNodes()
@@ -76,7 +73,7 @@ public class PlayerData : MonoBehaviour {
 
         foreach (NodeData node in toCapture)
         {
-            GraphUtility.instance.CaptureNode(node, StartingNode, DominationType.Bribe);
+            GraphUtility.instance.CaptureNode(node, StartingNode);
             node.startingOwner = this;
         }
     }

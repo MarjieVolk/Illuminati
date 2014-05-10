@@ -3,34 +3,16 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(NodeData))]
 class NodeDataEditor : Editor
 {
-    private NodeData node;
 
     private static bool spritesFoldout = false;
-    private static bool statsFoldout = false;
     private static bool ownershipFoldout = false;
 
-    void OnEnable() {
-        node = (NodeData) target;
-    }
-
     public override void OnInspectorGUI() {
-        statsFoldout = doFoldout("Stats", statsFoldout, () => {
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.Label("Attack\t\tDefense");
-            EditorGUILayout.EndHorizontal();
+        NodeData node = (NodeData) target;
 
-            Array values = Enum.GetValues(typeof(DominationType));
-            foreach (DominationType type in values) {
-                EditorGUILayout.BeginHorizontal();
-                node.getAttackSkill(type).value = EditorGUILayout.IntField("" + type.ToString(), node.getAttackSkill(type).value);
-                node.getDefenseSkill(type).value = EditorGUILayout.IntField(node.getDefenseSkill(type).value);
-                EditorGUILayout.EndHorizontal();
-            }
-        });
+        node.power = EditorGUILayout.IntField("Power", node.power);
 
         spritesFoldout = doFoldout("Sprites", spritesFoldout, () => {
             node.normalSprite = (Sprite)EditorGUILayout.ObjectField("Normal", node.normalSprite, typeof(Sprite), false);

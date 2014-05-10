@@ -16,7 +16,6 @@ public class EdgeData : Targetable {
     public GameObject ex;
     private GameObject realEx;
 
-	public DominationType type {get; set;}
 	public EdgeDirection direction { get; set; }
 	private EdgeDirection prevDirection;
 
@@ -39,7 +38,6 @@ public class EdgeData : Targetable {
     {
         direction = EdgeDirection.Neutral;
         prevDirection = EdgeDirection.Neutral;
-        type = DominationType.Bribe;
         Visibility = 0;
         visIncreaseModifier = 1.0f;
 

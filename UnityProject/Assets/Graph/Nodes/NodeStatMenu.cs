@@ -37,10 +37,8 @@ public class NodeStatMenu : MonoBehaviour {
 		if (isShown) {
 			GUI.depth = -9001;
 			NodeData data = gameObject.GetComponent<NodeData>();
-			string text = " \t\t\t\tAtt  Def\n" +
-					" Bribe\t\t <color=maroon>" + data.getAttack(DominationType.Bribe) + "  " + data.getDefense(DominationType.Bribe) + "</color>\n" +
-					" Blackmail <color=maroon>" + data.getAttack(DominationType.Blackmail) + "  " + data.getDefense(DominationType.Blackmail) + "</color>\n" +
-					" Threaten\t <color=maroon>" + data.getAttack(DominationType.Threaten) + "  " + data.getDefense(DominationType.Threaten) + "</color>";
+            int increase = data.getWorkingPower() - data.power;
+			string text = "  Power: " + data.power + (increase > 0 ? " <color=green>+" + increase + "</color>" : "");
 
             Vector2 textSize = style.CalcSize(new GUIContent(text));
 

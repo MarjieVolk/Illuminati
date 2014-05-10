@@ -9,7 +9,7 @@ public class TemporarySupportAction : Action {
 
     public float maxVisDecrease, minVisDecrease;
 
-	private const int duration = 2;
+	private const int DURATION = 2;
 
 	void Start () {
 		isTargeting = true;
@@ -30,43 +30,28 @@ public class TemporarySupportAction : Action {
 	
 	public override string getAdditionalTextForTarget(Targetable target) {
 		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
-		Array values = Enum.GetValues(typeof(DominationType));
 		
-		string ret = "";
-		foreach (DominationType type in values) {
-			int increase = getIncrease(thisNode.getAttackSkill(type).getWorkingValue());
-			if (increase > 0) {
-				ret += type.ToString() + " Attack +" + increase + "\n";
-			}
-
-			increase = getIncrease(thisNode.getDefenseSkill(type).getWorkingValue());			
-			if (increase > 0) {
-				ret += type.ToString() + " Defense +" + increase + "\n";
-			}
-		}
-		
-		return ret.Equals("") ? "--" : (ret + "(" + duration + " turns)");
+		int increase = getIncrease(thisNode.getWorkingPower());
+        if (increase > 0) {
+            return "+" + increase + " (" + DURATION + " turns)";
+        } else {
+            return "--";
+        }
 	}
 	
 	protected override void doActivate(Targetable target) {
 		NodeData otherNode = (NodeData) target;
 		NodeData thisNode = gameObject.GetComponent<NodeData>();
-		Array values = Enum.GetValues(typeof(DominationType));
 		
-		foreach (DominationType type in values) {
-			int increase = getIncrease(thisNode.getAttackSkill(type).getWorkingValue());
-			otherNode.getAttackSkill(type).temporaryIncrease(increase, duration);
-
-			increase = getIncrease(thisNode.getDefenseSkill(type).getWorkingValue());
-			otherNode.getDefenseSkill(type).temporaryIncrease(increase, duration);
-		}
+		int increase = getIncrease(thisNode.getWorkingPower());
+		otherNode.temporaryIncrease(increase, DURATION);
 
         // Decrease edge visibility
         float visDecrease = (float) (gen.NextDouble() * (maxVisDecrease - minVisDecrease)) + minVisDecrease;
         GraphUtility.instance.getConnectingEdge(otherNode, thisNode).Visibility -= visDecrease;
 
 		// Freeze node for duration
-		thisNode.nTurnsUntilAvailable = duration;
+		thisNode.nTurnsUntilAvailable = DURATION;
 	}
 
 	private int getIncrease(int value) {

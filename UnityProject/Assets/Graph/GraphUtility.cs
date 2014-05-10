@@ -247,7 +247,7 @@ public class GraphUtility : MonoBehaviour {
         result.Push(origin);
     }
 
-    public void CaptureNode(NodeData defender, NodeData attacker, DominationType attackType)
+    public void CaptureNode(NodeData defender, NodeData attacker)
     {
         EdgeData connection = getConnectingEdge(defender, attacker);
         defender.Owner = attacker.Owner;
@@ -261,7 +261,6 @@ public class GraphUtility : MonoBehaviour {
             }
         }
 
-        connection.type = attackType;
         connection.direction = connection.nodeOne.GetComponent<NodeData>() == attacker ? EdgeData.EdgeDirection.OneToTwo : EdgeData.EdgeDirection.TwoToOne;
     }
 }

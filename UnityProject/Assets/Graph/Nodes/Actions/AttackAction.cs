@@ -8,17 +8,10 @@ public class AttackAction : Action {
 
 	private static System.Random gen;
 
-	public DominationType attackType;
-
 	// Use this for initialization
 	void Start () {
 		isTargeting = true;
 		if (gen == null) gen = new System.Random();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
 	override public List<Targetable> getPossibleTargets() {
@@ -46,7 +39,7 @@ public class AttackAction : Action {
 		
 		// Take node
 		if (gen.NextDouble() <= getProbabilityOfWin(target)) {
-            GraphUtility.instance.CaptureNode(otherNode, thisNode, attackType);
+            GraphUtility.instance.CaptureNode(otherNode, thisNode);
 		}
 	}
 
@@ -55,8 +48,8 @@ public class AttackAction : Action {
 		NodeData thisNode = this.GetComponent<NodeData>();
 		
 		// Find attacker attack score and defender defense score
-		int defense = otherNode.getDefense(attackType);
-		int attack = thisNode.getAttack(attackType);
+		int defense = otherNode.power;
+        int attack = thisNode.power;
 
 		int minAttack = attack / 2;
 		int maxAttack = attack * 2;
