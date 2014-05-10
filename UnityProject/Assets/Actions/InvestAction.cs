@@ -10,7 +10,7 @@ namespace Assets.Graph.Nodes
     public class InvestAction : Action
     {
         public int ActionsPayoff;
-        private const int duration = 2;
+        private const int DURATION = 2;
 
         void Reset()
         {
@@ -26,33 +26,9 @@ namespace Assets.Graph.Nodes
 
         protected override void doActivate(Targetable target)
         {
-            //first, disable this action's button (and put this on cooldown)
-            ActionButton realButton = GetComponent<NodeMenu>().buttons[this].GetComponent<ActionButton>();
-            realButton.ActionEnabled = false;
-            IsOnCooldown = true;
-
-            //two turns from now, give the current player some extra actions to play with
-            //and take this off cd
-            PlayerData playerOfInterest = TurnController.instance.CurrentPlayer;
-            int numTurnsDelay = duration;
-            System.Action handler = null;
-            handler = () =>
-            {
-                if (TurnController.instance.CurrentPlayer == playerOfInterest)
-                {
-                    numTurnsDelay--;
-
-                    if (0 == numTurnsDelay)
-                    {
-                        TurnController.instance.CurrentPlayer.addActionPoints(ActionsPayoff);
-                        realButton.ActionEnabled = true;
-                        IsOnCooldown = false;
-                        TurnController.instance.OnTurnEnd -= handler;
-                    }
-                }
-            };
-
-            TurnController.instance.OnTurnStart += handler;
+            putOnCooldown(DURATION, () => {
+                TurnController.instance.CurrentPlayer.addActionPoints(ActionsPayoff);
+            });
         }
 
         public override List<Targetable> getPossibleTargets()

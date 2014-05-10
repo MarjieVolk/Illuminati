@@ -66,7 +66,7 @@ public class ActionButton : MonoBehaviour {
     {
         if (!ActionEnabled) return;
 		mouseEnterTime = Time.time;
-		if (!ActionController.instance.inSelectionState && hover != null) {
+        if (this.gameObject.GetComponent<SpriteRenderer>().sprite != selected && hover != null) {
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = hover;
 		}
 	}
@@ -75,7 +75,7 @@ public class ActionButton : MonoBehaviour {
     {
         if (!ActionEnabled) return;
 		mouseEnterTime = -1;
-		if (!ActionController.instance.inSelectionState && normal != null) {
+        if (this.gameObject.GetComponent<SpriteRenderer>().sprite != selected && normal != null) {
 			this.gameObject.GetComponent<SpriteRenderer>().sprite = normal;
 		}
 	}

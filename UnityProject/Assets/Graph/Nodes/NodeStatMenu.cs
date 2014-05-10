@@ -14,7 +14,7 @@ public class NodeStatMenu : MonoBehaviour {
 		style = new GUIStyle();
 		style.normal.textColor = Color.black;
 		style.fontStyle = FontStyle.Bold;
-        style.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.5f, 0.5f, 0.5f, 0.9f));
+        style.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.6f, 0.6f, 0.6f, 0.7f));
 	}
 	
 	// Update is called once per frame
@@ -37,8 +37,13 @@ public class NodeStatMenu : MonoBehaviour {
 		if (isShown) {
 			GUI.depth = -9001;
 			NodeData data = gameObject.GetComponent<NodeData>();
+            string text = " Power: " + data.power;
+            
             int increase = data.getWorkingPower() - data.power;
-			string text = "  Power: " + data.power + (increase > 0 ? " <color=green>+" + increase + "</color>" : "");
+            if (increase != 0) {
+                string color = increase > 0 ? "green>+" : "red>";
+                text += " <color=" + color + increase + "</color>";
+            }
 
             Vector2 textSize = style.CalcSize(new GUIContent(text));
 

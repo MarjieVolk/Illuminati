@@ -110,6 +110,37 @@ public abstract class Action : MonoBehaviour {
 		gameObject.GetComponent<NodeMenu>().isScheduled = false;
 	}
 
+    public void putOnCooldown(int nTurns) {
+        putOnCooldown(nTurns, () => { });
+    }
+
+    public void putOnCooldown(int nTurns, System.Action onReactivate) {
+        // First, disable this action's button (and put this on cooldown)
+        ActionButton realButton = GetComponent<NodeMenu>().buttons[this].GetComponent<ActionButton>();
+        realButton.ActionEnabled = false;
+        IsOnCooldown = true;
+
+        // DURATION turns from now, take this off cd
+        PlayerData playerOfInterest = TurnController.instance.CurrentPlayer;
+        int numTurnsDelay = nTurns;
+        System.Action handler = null;
+        handler = () => {
+            if (TurnController.instance.CurrentPlayer == playerOfInterest) {
+                numTurnsDelay--;
+
+                if (0 == numTurnsDelay) {
+                    realButton.ActionEnabled = true;
+                    IsOnCooldown = false;
+                    TurnController.instance.OnTurnEnd -= handler;
+
+                    onReactivate();
+                }
+            }
+        };
+
+        TurnController.instance.OnTurnStart += handler;
+    }
+
     /// <summary>
     /// Visit each player controlled edge along all possible paths from source to target.  For each edge, the visitor will recieve (1) the EdgeData for
     /// the edge being visited and (2) the probability for a visibility increase on that edge.

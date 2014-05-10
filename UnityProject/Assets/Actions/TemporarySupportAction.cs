@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Assets.Player;
 
 public class TemporarySupportAction : Action {
 
@@ -42,14 +43,13 @@ public class TemporarySupportAction : Action {
 	protected override void doActivate(Targetable target) {
 		NodeData otherNode = (NodeData) target;
 		NodeData thisNode = gameObject.GetComponent<NodeData>();
+
         doIncrease(thisNode, otherNode, 1.0f);
+        putOnCooldown(DURATION);
 
         // Decrease edge visibility
         float visDecrease = (float) (gen.NextDouble() * (maxVisDecrease - minVisDecrease)) + minVisDecrease;
         GraphUtility.instance.getConnectingEdge(otherNode, thisNode).Visibility -= visDecrease;
-
-		// Freeze node for duration
-		thisNode.nTurnsUntilAvailable = DURATION;
 	}
 
     public static void doIncrease(NodeData performer, NodeData target, float multiplier) {
