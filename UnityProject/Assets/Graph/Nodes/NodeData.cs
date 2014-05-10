@@ -81,7 +81,6 @@ public class NodeData : Targetable {
         List<TemporaryIncrease> toRemove = new List<TemporaryIncrease>();
         foreach (TemporaryIncrease inc in increases) {
             inc.nTurns -= 1;
-            Debug.LogError("Decrementing increase to " + inc.nTurns);
             if (inc.nTurns <= 0) {
                 toRemove.Add(inc);
             }
