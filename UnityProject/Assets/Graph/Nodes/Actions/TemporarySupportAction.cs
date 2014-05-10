@@ -9,7 +9,7 @@ public class TemporarySupportAction : Action {
 
     public float maxVisDecrease, minVisDecrease;
 
-	private const int DURATION = 2;
+	public const int DURATION = 2;
 
 	void Start () {
 		isTargeting = true;
@@ -42,9 +42,7 @@ public class TemporarySupportAction : Action {
 	protected override void doActivate(Targetable target) {
 		NodeData otherNode = (NodeData) target;
 		NodeData thisNode = gameObject.GetComponent<NodeData>();
-		
-		int increase = getIncrease(thisNode.getWorkingPower());
-		otherNode.temporaryIncrease(increase, DURATION);
+        doIncrease(thisNode, otherNode, 1.0f);
 
         // Decrease edge visibility
         float visDecrease = (float) (gen.NextDouble() * (maxVisDecrease - minVisDecrease)) + minVisDecrease;
@@ -54,8 +52,13 @@ public class TemporarySupportAction : Action {
 		thisNode.nTurnsUntilAvailable = DURATION;
 	}
 
-	private int getIncrease(int value) {
-		return Mathf.CeilToInt(value / 3.0f);
+    public static void doIncrease(NodeData performer, NodeData target, float multiplier) {
+        int increase = getIncrease(performer.getWorkingPower());
+        target.temporaryIncrease((int) (increase * multiplier), DURATION);
+    }
+
+	public static int getIncrease(int value) {
+		return (int) (value / 4.0f);
 	}
 
     public override float maxVisibilityModifier() {

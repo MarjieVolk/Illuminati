@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class AttackAction : Action {
+public abstract class AttackAction : Action {
 
 	private static System.Random gen;
 
@@ -37,11 +37,17 @@ public class AttackAction : Action {
 		NodeData otherNode = target.GetComponent<NodeData>();
 		NodeData thisNode = this.GetComponent<NodeData>();
 		
+        bool isWin = gen.NextDouble() <= getProbabilityOfWin(target);
+
 		// Take node
-		if (gen.NextDouble() <= getProbabilityOfWin(target)) {
+		if (isWin) {
             GraphUtility.instance.CaptureNode(otherNode, thisNode);
 		}
+
+        additionalEffect(target, isWin);
 	}
+
+    public abstract void additionalEffect(Targetable target, bool isWin);
 
 	public double getProbabilityOfWin(Targetable target) {
 		NodeData otherNode = target.GetComponent<NodeData>();

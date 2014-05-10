@@ -8,8 +8,8 @@ public class PermanentSupportAction : Action {
 
     public float edgeVisModifierMultiplier = 0.9f;
 
-	private const float minProportion = 0.2f;
-	private const float maxProportion = 0.6f;
+	private const float MIN_PROPORTION = 0.3f;
+	private const float MAX_PROPORTION = 0.7f;
 
 	private static System.Random gen;
 
@@ -47,29 +47,32 @@ public class PermanentSupportAction : Action {
 	}
 
 	protected override void doActivate(Targetable target) {
-        NodeData node = this.gameObject.GetComponent<NodeData>();
-        NodeData other = (NodeData) target;
-        int difference = node.getWorkingPower() - other.getWorkingPower();
-        if (difference > 0) other.power += getIncreaseAmount(difference);
+        NodeData node = gameObject.GetComponent<NodeData>();
+        doIncrease(node, (NodeData) target, 1.0f);
 
         // Decrease edge visibility modifier
-        GraphUtility.instance.getConnectingEdge(gameObject.GetComponent<NodeData>(), (NodeData) target).visIncreaseModifier *= edgeVisModifierMultiplier;
+        GraphUtility.instance.getConnectingEdge(node, (NodeData) target).visIncreaseModifier *= edgeVisModifierMultiplier;
 	}
 
-	private int getIncreaseAmount(int difference) {
+    public static void doIncrease(NodeData performer, NodeData target, float multiplier) {
+        int difference = performer.getWorkingPower() - target.getWorkingPower();
+        if (difference > 0) target.power += (int) (getIncreaseAmount(difference) * multiplier);
+    }
+
+	public static int getIncreaseAmount(int difference) {
         float min = getMinIncreaseAmount(difference);
         float max = getMaxIncreaseAmount(difference);
 		double randomness = gen.NextDouble();
 		return (int) (((max - min) * randomness) + min);
 	}
 
-    private float getMinIncreaseAmount(int difference)
+    private static float getMinIncreaseAmount(int difference)
     {
-        return difference * minProportion;
+        return difference * MIN_PROPORTION;
     }
 
-    private float getMaxIncreaseAmount(int difference)
+    private static float getMaxIncreaseAmount(int difference)
     {
-        return difference * maxProportion;
+        return difference * MAX_PROPORTION;
     }
 }

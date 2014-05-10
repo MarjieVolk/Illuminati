@@ -35,7 +35,7 @@ public class NodeData : Targetable {
 
         // Randomize power
         if (gen == null) gen = new System.Random();
-        double range = power / 10;
+        double range = power / 6;
         double diff = (gen.NextDouble() * range) - (range / 2.0);
         power += (int) Math.Round(diff);
 
