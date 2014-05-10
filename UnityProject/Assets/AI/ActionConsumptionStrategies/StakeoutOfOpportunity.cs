@@ -36,6 +36,8 @@ namespace Assets.AI.ActionConsumptionStrategies
             List<Action> ret = new List<Action>();
             foreach (EdgeData candidate in candidateTargets)
             {
+                if (numActionsRemaining <= 0) break;
+
                 //also, pick the best gov't node first, just in case they vary...
                 if(myGovtNodes.Count == 0) return ret;
                 float bestSuccessChance = myGovtNodes[0].GetComponent<StakeoutAction>().getSuccessProbability(candidate);
@@ -56,11 +58,11 @@ namespace Assets.AI.ActionConsumptionStrategies
                     selected.SetScheduled(candidate);
                     myGovtNodes.Remove(bestNode);
                     ret.Add(selected);
+                    numActionsRemaining--;
                 }
             }
 
-            if (ret.Count == 0) return ret;
-            return ret.GetRange(0, Math.Min(ret.Count, numActionsRemaining));
+            return ret;
         }
     }
 }
