@@ -17,11 +17,11 @@ public abstract class Targetable : Highlightable {
 		base.Start();
 
 		style = new GUIStyle();
-		style.normal.textColor = new Color(0.5f, 0, 0);
-		style.fontSize = 12;
+        style.normal.textColor = new Color(0.5f, 0, 0);
+		style.fontSize = 14;
 		style.fontStyle = FontStyle.Bold;
 		style.alignment = TextAnchor.LowerCenter;
-        style.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.5f, 0.5f, 0.5f, 0.9f));
+        style.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.5f, 0.5f, 0.5f, 0.7f));
 	}
 
 	void OnMouseUpAsButton() {

@@ -11,7 +11,7 @@ namespace Assets.Player
 		public static ActionController instance { get; private set; }
 
         public bool inSelectionState { get; private set; }
-		private Action selected;
+		public Action selected;
 
         private Dictionary<Targetable, EventHandlers> clickHandlers;
 
@@ -56,6 +56,10 @@ namespace Assets.Player
             scheduleAction(null);
         }
 
+        public List<Targetable> getTargetsForScheduledAction() {
+            return inSelectionState ? clickHandlers.Keys.ToList<Targetable>() : new List<Targetable>();
+        }
+
         public void scheduleAction(Targetable target)
 		{
             endHoverForTarget(target);
@@ -91,6 +95,7 @@ namespace Assets.Player
 		/// Called after a selected action is either scheduled or cancelled.
 		/// </summary>
 		public void clearSelectionState() {
+            Debug.LogError("clearing");
 			//the other targets should not be highlighted now
 			foreach (Targetable noLongerATarget in selected.getPossibleTargets())
 			{
@@ -167,7 +172,7 @@ namespace Assets.Player
                 val += "-" + Mathf.FloorToInt(expectedIncrease * -100);
             }
 
-            val += "% visibility</size>";
+            val += "%</size>";
             edge.showTargetInfoText(val);
         }
 
