@@ -2,6 +2,7 @@
 using System.Collections;
 using Assets.Graph.Nodes;
 using System;
+using System.Collections.Generic;
 
 public abstract class Targetable : Highlightable {
 
@@ -9,12 +10,16 @@ public abstract class Targetable : Highlightable {
     public event System.Action OnHover;
     public event System.Action OnEndHover;
 
+    protected List<Action> targetingActions;
+
 	private bool isShowText = false;
 	private string text = "";
 	private GUIStyle style;
 
 	protected override void Start () {
 		base.Start();
+
+        targetingActions = new List<Action>();
 
 		style = new GUIStyle();
         style.normal.textColor = new Color(0.5f, 0, 0);
@@ -60,4 +65,14 @@ public abstract class Targetable : Highlightable {
     /// </summary>
     /// <returns></returns>
     protected abstract Vector3 getTipTextOffset();
+
+    public void addScheduledAction(Action action)
+    {
+        targetingActions.Add(action);
+    }
+
+    public void removeScheduledAction(Action action)
+    {
+        targetingActions.Remove(action);
+    }
 }

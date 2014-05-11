@@ -13,7 +13,6 @@ namespace Assets.Player
 
         public void Start()
         {
-            GraphUtility graph = GraphUtility.instance;
             TurnController.instance.OnTurnEnd += () =>
             {
                 foreach (EdgeData edge in FindObjectsOfType<EdgeData>())
