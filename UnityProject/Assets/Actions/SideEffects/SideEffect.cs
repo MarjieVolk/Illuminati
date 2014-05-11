@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using UnityEngine;
 
-interface SideEffect
+public abstract class SideEffect : MonoBehaviour
 {
-    void additionalEffect(NodeData performr, Targetable target, bool isWin);
+    public GameObject button;
+
+    public abstract void additionalEffect(NodeData performr, Targetable target, bool isWin);
 }

@@ -95,7 +95,6 @@ namespace Assets.Player
 		/// Called after a selected action is either scheduled or cancelled.
 		/// </summary>
 		public void clearSelectionState() {
-            Debug.LogError("clearing");
 			//the other targets should not be highlighted now
 			foreach (Targetable noLongerATarget in selected.getPossibleTargets())
 			{

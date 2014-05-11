@@ -3,34 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
 
-public class RadialMenu : MonoBehaviour {
+public abstract class RadialMenu : MonoBehaviour {
 
     public float radius = 1;
 	public bool isShown { get; private set; }
 
-	public Dictionary<Action, GameObject> buttons;
+	private List<GameObject> buttons;
 	private NodeButton prev = null;
+
+    public abstract List<GameObject> getButtons();
 
 	// Use this for initialization
 	public virtual void Start () {
-        buttons = new Dictionary<Action, GameObject>();
+        buttons = getButtons();
 
-		Action[] actions = this.gameObject.GetComponents<Action>();
 		float angle = 90;
-		float dAngle = 360.0f / actions.Length;
-		foreach (Action a in actions) {
-			GameObject button = a.getButton();
-			
+		float dAngle = 360.0f / buttons.Count;
+		foreach (GameObject button in buttons) {			
 			float y = Mathf.Sin((angle * Mathf.PI) / 180.0f);
 			float x = Mathf.Cos((angle * Mathf.PI) / 180.0f);
 			Vector3 offset = new Vector3(x, y, 0);
 			offset.Normalize();
 			offset *= radius;
-			
-			GameObject realButton = (GameObject) Instantiate(button, transform.position + offset, Quaternion.identity);
-			realButton.transform.parent = this.gameObject.transform;
 
-			buttons[a] = realButton;
+            button.transform.position += offset;
 			
 			angle -= dAngle;
 		}
@@ -40,7 +36,7 @@ public class RadialMenu : MonoBehaviour {
 
 	public virtual void show() {
 		isShown = true;
-		foreach (GameObject obj in buttons.Values) {
+		foreach (GameObject obj in buttons) {
 			obj.SetActive(true);
 		}
 	}
@@ -48,13 +44,13 @@ public class RadialMenu : MonoBehaviour {
 	public void hide() {
 		isShown = false;
 		clear();
-		foreach (GameObject obj in buttons.Values) {
+		foreach (GameObject obj in buttons) {
 			obj.SetActive(false);
 		}
 	}
 
 	public void clear() {
-		foreach (GameObject obj in buttons.Values) {
+		foreach (GameObject obj in buttons) {
 			obj.GetComponent<NodeButton>().clear();
 		}
 	}
@@ -106,7 +102,7 @@ public class RadialMenu : MonoBehaviour {
 	}
 
 	private void clearChildHighlights() {
-		foreach (GameObject obj in buttons.Values) {
+		foreach (GameObject obj in buttons) {
 			obj.GetComponent<NodeButton>().OnMouseExit();
 		}
 	}

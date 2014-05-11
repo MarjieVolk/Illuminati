@@ -90,7 +90,7 @@ public abstract class Action : MonoBehaviour {
 
         this.Target = target;
         gameObject.GetComponent<NodeMenu>().isScheduled = true;
-        target.addScheduledAction(this);
+        if (target != null) target.addScheduledAction(this);
 
         if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
         {
@@ -107,7 +107,7 @@ public abstract class Action : MonoBehaviour {
 
     public void clearScheduled()
     {
-        Target.removeScheduledAction(this);
+        if (Target != null) Target.removeScheduledAction(this);
         Target = null;
 		gameObject.GetComponent<NodeMenu>().isScheduled = false;
 	}

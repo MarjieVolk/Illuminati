@@ -24,7 +24,7 @@ public class ActionButton : NodeButton {
     }
 
     private bool belongsToAction(Action a) {
-        Dictionary<Action, GameObject> buttons = transform.parent.GetComponent<RadialMenu>().buttons;
+        Dictionary<Action, GameObject> buttons = transform.parent.GetComponent<NodeMenu>().buttons;
         return buttons.ContainsKey(a) && buttons[a] == this.gameObject;
     }
 }

@@ -10,6 +10,12 @@ public class AttackAction : Action {
 
     public NodeType strongAgainst;
 
+    private SideEffect effect = null;
+
+    public void setSideEffect(SideEffect effect) {
+        this.effect = effect;
+    }
+
 	// Use this for initialization
 	void Start () {
 		isTargeting = true;
@@ -42,9 +48,10 @@ public class AttackAction : Action {
         bool isWin = gen.NextDouble() <= getProbabilityOfWin(target);
 
 		// Take node
-		if (isWin) {
-            GraphUtility.instance.CaptureNode(otherNode, thisNode);
-		}
+		if (isWin) GraphUtility.instance.CaptureNode(otherNode, thisNode);
+
+        if (effect != null) effect.additionalEffect(thisNode, target, isWin);
+        effect = null;
 	}
 
 	public double getProbabilityOfWin(Targetable target) {
