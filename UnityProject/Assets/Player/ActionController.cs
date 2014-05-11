@@ -105,6 +105,7 @@ namespace Assets.Player
 				noLongerATarget.hideTargetInfoText();
 			}
 
+            clickHandlers = new Dictionary<Targetable, EventHandlers>();
             selected.gameObject.GetComponent<NodeMenu>().clear();
 
 			inSelectionState = false;
