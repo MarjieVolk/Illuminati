@@ -6,6 +6,8 @@ using Assets.Graph.Nodes;
 
 public class ActionButton : NodeButton {
 
+    public Action Action { get; private set; }
+
     public override void Start() {
         base.Start();
     }
@@ -13,7 +15,7 @@ public class ActionButton : NodeButton {
     public override void OnMouseUpAsButton() {
         if (!ActionEnabled) return;
 
-        bool wasSelected = ActionController.instance.inSelectionState && belongsToAction(ActionController.instance.selected);
+        bool wasSelected = ActionController.instance.inSelectionState && ActionController.instance.selected == Action;
         if (ActionController.instance.inSelectionState) {
             ActionController.instance.clearSelectionState();
         }
@@ -23,8 +25,17 @@ public class ActionButton : NodeButton {
         }
     }
 
-    private bool belongsToAction(Action a) {
-        Dictionary<Action, GameObject> buttons = transform.parent.GetComponent<NodeMenu>().buttons;
-        return buttons.ContainsKey(a) && buttons[a] == this.gameObject;
+    public void SetAction(Action a)
+    {
+        if (this.Action != null) throw new UnityException("Can't reassign the action corresponding to a button!");
+        this.Action = a;
+
+        this.OnClick += () => ActionController.instance.selectAction(Action);
+        Action.OnStateUpdate += OnActionUpdated;
+    }
+
+    private void OnActionUpdated(Action a)
+    {
+        ActionEnabled = !a.IsOnCooldown;
     }
 }
