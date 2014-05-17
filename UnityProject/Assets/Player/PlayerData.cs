@@ -26,9 +26,6 @@ public class PlayerData : MonoBehaviour {
 	private static List<NodeData> startingNodes;
 	private static System.Random gen = new System.Random();
 
-	private const float WIDTH = 50;
-	private const float MARGIN = 5;
-
     void Reset()
     {
         NumStartingNodes = 2;
@@ -108,16 +105,10 @@ public class PlayerData : MonoBehaviour {
         {
             if (IsLocalHumanPlayer)
             {
-                float x = MARGIN;
-                foreach (Action a in selectedActions)
-                {
-                    GameObject tag = a.getListScheduledTag();
+                for (int i = 0; i < selectedActions.Count; i++) {
+                    GameObject tag = selectedActions[i].getListScheduledTag();
                     tag.SetActive(true);
-                    Vector3 screenPos = new Vector3(x + (WIDTH / 2.0f), MARGIN + (WIDTH / 2.0f), 0);
-                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
-                    tag.transform.position = new Vector3(worldPos.x, worldPos.y, -5);
-
-                    x += WIDTH + MARGIN;
+                    tag.GetComponent<ScheduledAction>().updateSelfAsListTag(i);
                 }
             }
         }
@@ -160,6 +151,21 @@ public class PlayerData : MonoBehaviour {
         }
 
         return true;
+    }
+
+    public void setActionIndex(Action a, int index) {
+        if (!selectedActions.Contains(a)) {
+            Debug.LogError("Trying to set the index of a non-scheduled action: " + a);
+            return;
+        }
+
+        index = Mathf.Min(index, selectedActions.Count - 1);
+        selectedActions.Remove(a);
+        selectedActions.Insert(index, a);
+    }
+
+    public int nScheduledActions() {
+        return selectedActions.Count;
     }
 
 	public void endTurn() {

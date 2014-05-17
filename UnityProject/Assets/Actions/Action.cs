@@ -48,6 +48,7 @@ public abstract class Action : MonoBehaviour {
 		mapTag = instantiateTag();
 		listTag = instantiateTag();
 		mapTag.GetComponent<ScheduledAction>().setSister(listTag.GetComponent<ScheduledAction>());
+        listTag.GetComponent<ScheduledAction>().setDragable(true);
 	}
 
 	private GameObject instantiateTag() {
