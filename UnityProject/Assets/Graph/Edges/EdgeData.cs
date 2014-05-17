@@ -119,14 +119,14 @@ public class EdgeData : Targetable {
 	
 	override public bool viewAsOwned(VisibilityController.Visibility vis) {
 		bool isPrivate = vis == VisibilityController.Visibility.Private;
-		bool isOwned = (direction == EdgeDirection.OneToTwo || direction == EdgeDirection.TwoToOne);
-
-		if (isPrivate && isOwned) {
-			return nodeOne.GetComponent<NodeData>().Owner == TurnController.instance.CurrentPlayer;
-		}
-
-		return false;
+		return isPrivate && getOwner() == TurnController.instance.CurrentPlayer;
 	}
+
+    public PlayerData getOwner() {
+        bool isOwned = (direction == EdgeDirection.OneToTwo || direction == EdgeDirection.TwoToOne);
+        if (!isOwned) return null;
+        return nodeOne.GetComponent<NodeData>().Owner;
+    }
 
 	private void updateArrowHead(VisibilityController.Visibility vis) {
 		if (realArrowHead == null) {

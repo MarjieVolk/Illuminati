@@ -57,17 +57,23 @@ namespace Assets.Graph.Nodes
 
         protected override void doActivate(Targetable target)
         {
+            EdgeData edge = (EdgeData) target;
+            PlayerData currentPlayer = TurnController.instance.CurrentPlayer;
+
+            if (edge.getOwner() == currentPlayer) {
+                return;
+            }
+
             float randomValue = 1.0f;
             while(randomValue == 1.0f) randomValue = UnityEngine.Random.value;
             if(randomValue < getSuccessProbability(target))
             {
                 //remove all ownership of the edge (and make it unusable)
-                ((EdgeData)target).direction = EdgeData.EdgeDirection.Unusable;
+                edge.direction = EdgeData.EdgeDirection.Unusable;
 
                 //set it back to neutral in a few turns
                 System.Action directionResetter = null;
                 int numTurnsRemaining = NumTurnsTargetDeactivated;
-                PlayerData currentPlayer = TurnController.instance.CurrentPlayer;
 
                 directionResetter = () =>
                     {
@@ -78,7 +84,7 @@ namespace Assets.Graph.Nodes
 
                         if (numTurnsRemaining == 0)
                         {
-                            ((EdgeData)target).direction = EdgeData.EdgeDirection.Neutral;
+                            edge.direction = EdgeData.EdgeDirection.Neutral;
                             TurnController.instance.OnTurnEnd -= directionResetter;
                         }
                     };

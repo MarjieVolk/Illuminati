@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Player;
 
 public class AttackAction : Action {
 
@@ -44,6 +45,9 @@ public class AttackAction : Action {
 	override protected void doActivate(Targetable target) {
 		NodeData otherNode = target.GetComponent<NodeData>();
 		NodeData thisNode = this.GetComponent<NodeData>();
+
+        EdgeData edge = GraphUtility.instance.getConnectingEdge(thisNode, otherNode);
+        if (edge.direction == EdgeData.EdgeDirection.Unusable) return;
 		
         bool isWin = gen.NextDouble() <= getProbabilityOfWin(target);
 
