@@ -8,6 +8,7 @@ public class ScheduledAction : Highlightable {
     private const float MARGIN = 5;
     private const float MAX_Y = MARGIN + WIDTH;
     private const float MIN_Y = MARGIN;
+    private const float CLICK_DISTANCE = 10;
 
 	public Action action;
 	public PlayerData player;
@@ -18,6 +19,7 @@ public class ScheduledAction : Highlightable {
     private bool isDrag = false;
     private float dragStartTime = 0;
     private float dragEndTime = 0;
+    private Vector3 dragOffset;
 
 	public override bool viewAsOwned(VisibilityController.Visibility visibility) {
 		return false;
@@ -34,10 +36,19 @@ public class ScheduledAction : Highlightable {
 
 	void OnMouseUpAsButton() {
         if (!dragable || (isDrag == false && dragEndTime != Time.time) || Time.time - dragStartTime < 0.3f) {
-		    // Cancel action
-            clearHighlights();
-            isDrag = false;
-		    player.cancelAction(action);
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+            screenPos.z = -5;
+
+            int desiredIndex = (int) Mathf.Floor(screenPos.x / (MARGIN + WIDTH));
+            Vector3 desiredPos = getPos(desiredIndex);
+            float distance = (screenPos - desiredPos).magnitude;
+
+            if (distance <= CLICK_DISTANCE) {
+                // Cancel action
+                clearHighlights();
+                isDrag = false;
+                player.cancelAction(action);
+            }
         }
 	}
 
@@ -52,6 +63,7 @@ public class ScheduledAction : Highlightable {
     void OnMouseDown() {
         isDrag = dragable;
         dragStartTime = Time.time;
+        dragOffset = Camera.main.WorldToScreenPoint(transform.position) - Input.mousePosition;
     }
 
     void OnMouseUp() {
@@ -62,20 +74,23 @@ public class ScheduledAction : Highlightable {
 
     void Update() {
         if (isDrag) {
-            Vector3 newPos = Input.mousePosition;
+            Vector3 newPos = Input.mousePosition + dragOffset;
             newPos.y = Mathf.Min(MAX_Y, Mathf.Max(MIN_Y, newPos.y));
             newPos.x = Mathf.Min((MARGIN + WIDTH) * player.nScheduledActions(), Mathf.Max(MIN_Y, newPos.x));
             setScreenPosition(newPos);
 
-            int desiredIndex = (int) Mathf.Floor(newPos.x / (MARGIN + WIDTH));
+            int desiredIndex = (int)Mathf.Floor(newPos.x / (MARGIN + WIDTH));
             player.setActionIndex(action, desiredIndex);
         }
     }
 
     public void updateSelfAsListTag(int index) {
         if (isDrag) return;
-        Vector3 screenPos = new Vector3(MARGIN * (index + 1) + (WIDTH * (index + 0.5f)), MARGIN + (WIDTH / 2.0f), 0);
-        setScreenPosition(screenPos);
+        setScreenPosition(getPos(index));
+    }
+
+    private Vector3 getPos(int index) {
+        return new Vector3(MARGIN * (index + 1) + (WIDTH * (index + 0.5f)), MARGIN + (WIDTH / 2.0f), 0);
     }
 
     private void setScreenPosition(Vector3 screenPos) {
