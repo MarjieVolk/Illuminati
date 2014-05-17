@@ -27,7 +27,7 @@ namespace Assets.Graph.Nodes
 
         void Start()
         {
-            isTargeting = true;
+            IsTargeting = true;
         }
 
         public float minVisIncrease, maxVisIncreaseUnowned, maxVisIncreaseOwned;

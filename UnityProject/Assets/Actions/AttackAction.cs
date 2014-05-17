@@ -19,7 +19,7 @@ public class AttackAction : Action {
 
 	// Use this for initialization
 	void Start () {
-		isTargeting = true;
+		IsTargeting = true;
 		if (gen == null) gen = new System.Random();
 	}
 

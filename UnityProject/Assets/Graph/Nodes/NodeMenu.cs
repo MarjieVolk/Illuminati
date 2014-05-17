@@ -18,6 +18,8 @@ public class NodeMenu : RadialMenu {
             GameObject realButton = (GameObject)Instantiate(a.button, transform.position, Quaternion.identity);
             realButton.transform.parent = this.gameObject.transform;
             buttons[a] = realButton;
+
+            a.OnStateUpdate += OnActionUpdated;
         }
 
         return buttons.Values.ToList();
@@ -58,4 +60,13 @@ public class NodeMenu : RadialMenu {
 
         base.OnMouseExit();
 	}
+
+    private void OnActionUpdated(Action updatedAction)
+    {
+        if (updatedAction.GetComponent<NodeData>().isScheduled)
+        {
+            clear();
+            hide();
+        }
+    }
 }
