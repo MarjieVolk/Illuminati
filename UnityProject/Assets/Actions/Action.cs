@@ -90,7 +90,7 @@ public abstract class Action : MonoBehaviour {
         if (isTargeting && !getPossibleTargets().Contains(target)) return false;
 
         this.Target = target;
-        gameObject.GetComponent<NodeMenu>().isScheduled = true;
+        gameObject.GetComponent<NodeData>().isScheduled = true;
         if (target != null) target.addScheduledAction(this);
 
         if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
@@ -110,7 +110,7 @@ public abstract class Action : MonoBehaviour {
     {
         if (Target != null) Target.removeScheduledAction(this);
         Target = null;
-		gameObject.GetComponent<NodeMenu>().isScheduled = false;
+		gameObject.GetComponent<NodeData>().isScheduled = false;
 	}
 
     public void putOnCooldown(int nTurns) {

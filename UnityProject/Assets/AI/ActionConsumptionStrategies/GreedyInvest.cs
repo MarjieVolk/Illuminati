@@ -16,8 +16,7 @@ namespace Assets.AI.ActionConsumptionStrategies
 
             foreach (NodeData node in ownedNodes)
             {
-                NodeMenu menu = node.GetComponent<NodeMenu>();
-                if (!menu.isScheduled)
+                if (!node.isScheduled)
                 {
                     InvestAction action = node.gameObject.GetComponent<InvestAction>();
                     if (action != null && !action.IsOnCooldown)

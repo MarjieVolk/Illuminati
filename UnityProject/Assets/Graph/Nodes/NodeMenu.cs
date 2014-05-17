@@ -6,8 +6,9 @@ using System.Linq;
 
 public class NodeMenu : RadialMenu {
 
-	public bool isScheduled = false;
     public Dictionary<Action, GameObject> buttons;
+
+    private NodeData node;
 
     public override List<GameObject> getButtons() {
         Action[] actions = gameObject.GetComponents<Action>();
@@ -29,10 +30,20 @@ public class NodeMenu : RadialMenu {
             Action actionCopy = a;
             buttons[a].GetComponent<ActionButton>().OnClick += () => ActionController.instance.selectAction(actionCopy);
 		}
+
+        node = GetComponent<NodeData>();
+        node.OnHover += () =>
+        {
+            // Show node menu
+            if (node.Owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState)
+            {
+                this.show();
+            }
+        };
 	}
 
 	public override void show() {
-		if (isScheduled || gameObject.GetComponent<NodeData>().nTurnsUntilAvailable > 0 || TurnController.instance.BetweenTurns ||
+		if (node.isScheduled || gameObject.GetComponent<NodeData>().nTurnsUntilAvailable > 0 || TurnController.instance.BetweenTurns ||
             !TurnController.instance.CurrentPlayer.IsLocalHumanPlayer || TurnController.instance.CurrentPlayer.actionPointsRemaining() <= 0) {
 			return;
 		}

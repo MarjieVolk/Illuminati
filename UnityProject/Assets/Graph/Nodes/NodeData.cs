@@ -10,6 +10,7 @@ public class NodeData : Targetable {
 
     public NodeType type;
     public string archetype;
+    public bool isScheduled = false;
     public int power;
 	public PlayerData startingOwner;
 	public bool isStartNode = false;
@@ -27,12 +28,6 @@ public class NodeData : Targetable {
 		base.Start();
 		Owner = startingOwner;
 		TurnController.instance.OnTurnStart += onTurnStart;
-        this.OnHover += () => {
-            // Show node menu
-            if (Owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState) {
-                this.gameObject.GetComponent<NodeMenu>().show();
-            }
-        };
 
         // Randomize power
         if (gen == null) gen = new System.Random();

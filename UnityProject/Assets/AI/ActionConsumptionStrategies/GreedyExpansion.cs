@@ -40,7 +40,7 @@ namespace Assets.AI.ActionConsumptionStrategies
                 double key = valueKeyPair.Item2;
 
                 //if this action can still be performed
-                if (!value.Item1.GetComponent<NodeMenu>().isScheduled)
+                if (!value.Item1.isScheduled)
                 {
                     //how likely is it that we'll get this node anyways, without executing this action?
                     double currentCaptureProbability = 0;
@@ -79,7 +79,7 @@ namespace Assets.AI.ActionConsumptionStrategies
 
             IEnumerable<NodeData> myNodes = FindObjectsOfType<NodeData>()
                 .Where<NodeData>((node) => node.Owner == me)
-                .Where<NodeData>((node) => !node.GetComponent<NodeMenu>().isScheduled);
+                .Where<NodeData>((node) => !node.isScheduled);
 
             foreach (NodeData myNode in myNodes)
             {
