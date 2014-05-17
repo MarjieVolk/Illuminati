@@ -35,20 +35,11 @@ public class ScheduledAction : Highlightable {
     }
 
 	void OnMouseUpAsButton() {
-        if (!dragable || (isDrag == false && dragEndTime != Time.time) || Time.time - dragStartTime < 0.3f) {
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-            screenPos.z = -5;
-
-            int desiredIndex = (int) Mathf.Floor(screenPos.x / (MARGIN + WIDTH));
-            Vector3 desiredPos = getPos(desiredIndex);
-            float distance = (screenPos - desiredPos).magnitude;
-
-            if (distance <= CLICK_DISTANCE) {
-                // Cancel action
-                clearHighlights();
-                isDrag = false;
-                player.cancelAction(action);
-            }
+        if (!dragable || (Time.time - dragStartTime < 0.3f && getDragDistance() <= CLICK_DISTANCE)) {
+            // Cancel action
+            clearHighlights();
+            isDrag = false;
+            player.cancelAction(action);
         }
 	}
 
@@ -114,5 +105,14 @@ public class ScheduledAction : Highlightable {
             action.Target.setHighlighted(false);
             action.Target.hideTargetInfoText();
         }
+    }
+
+    private float getDragDistance() {
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+        screenPos.z = -5;
+
+        int desiredIndex = (int)Mathf.Floor(screenPos.x / (MARGIN + WIDTH));
+        Vector3 desiredPos = getPos(desiredIndex);
+        return (screenPos - desiredPos).magnitude;
     }
 }
