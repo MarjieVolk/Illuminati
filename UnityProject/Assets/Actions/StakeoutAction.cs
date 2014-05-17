@@ -30,7 +30,7 @@ namespace Assets.Graph.Nodes
 
         void Start()
         {
-            isTargeting = true;
+            IsTargeting = true;
         }
 
         public override List<Targetable> getPossibleTargets()

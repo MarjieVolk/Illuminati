@@ -10,7 +10,7 @@ public class SabotageAction : Action {
 	public const int DURATION = 2;
 
 	void Start () {
-		isTargeting = true;
+		IsTargeting = true;
         if (gen == null) gen = new System.Random();
 	}
 	

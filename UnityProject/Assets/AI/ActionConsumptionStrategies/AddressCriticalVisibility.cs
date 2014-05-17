@@ -36,12 +36,12 @@ namespace Assets.AI.ActionConsumptionStrategies
 
                 //choose the node that will be doing the assisting
                 NodeData assistant, assistee;
-                if (!myEdge.nodeOne.GetComponent<NodeMenu>().isScheduled)
+                if (!myEdge.nodeOne.GetComponent<NodeData>().isScheduled)
                 {
                     assistee = myEdge.nodeTwo.GetComponent<NodeData>();
                     assistant = myEdge.nodeOne.GetComponent<NodeData>();
                 }
-                else if (!myEdge.nodeTwo.GetComponent<NodeMenu>().isScheduled)
+                else if (!myEdge.nodeTwo.GetComponent<NodeData>().isScheduled)
                 {
                     assistee = myEdge.nodeOne.GetComponent<NodeData>();
                     assistant = myEdge.nodeTwo.GetComponent<NodeData>();

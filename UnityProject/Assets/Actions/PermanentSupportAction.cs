@@ -14,7 +14,7 @@ public class PermanentSupportAction : Action {
 	private static System.Random gen;
 
 	void Start () {
-		isTargeting = true;
+		IsTargeting = true;
 		if (gen == null) gen = new System.Random();
 	}
 

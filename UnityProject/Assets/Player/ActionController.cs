@@ -24,7 +24,7 @@ namespace Assets.Player
 			this.selected = selected;
 
             //if the action is targeted, ask for targets
-            if (selected.isTargeting)
+            if (selected.IsTargeting)
             {
                 List<Targetable> possibleTargets = selected.getPossibleTargets();
                 possibleTargets.ForEach((x) => {

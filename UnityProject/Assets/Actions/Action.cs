@@ -7,24 +7,41 @@ using Assets.Player;
 
 public abstract class Action : MonoBehaviour {
 
-	public GameObject button;
-	public GameObject scheduledTag;
+    // *****
+    // Unity Editor configuration
+    // *****
 
     public float CarryingEdgeVisibilityIncreaseScaleParameter = 0.04f;
     public float CarryingEdgeMaxVisibilityIncrease = 0.10f;
 
     public float PathVisibilityIncreaseScaleParameter = 0.02f;
     public float PathMaxVisibilityIncrease = 0.10f;
+
+    // *****
+    // Runtime configuration
+    // *****
 	
-	public bool isTargeting { get; set;}
-	public Targetable Target { get; private set; }
+    // set by the subclass in Start or Awake
+	public bool IsTargeting { get; set;}
 
-    public bool IsOnCooldown = false;
+    // *****
+    // State
+    // *****
 
-	private GameObject listTag, mapTag;
+    public System.Action<Action> OnStateUpdate;
 
-	void Start() {
-	}
+    public Targetable Target { get; private set; }
+    public bool IsOnCooldown { get; private set; }
+
+    void Awake()
+    {
+        IsOnCooldown = false;
+    }
+
+    //UI stuff, remove it
+    private GameObject listTag, mapTag;
+    public GameObject button;
+    public GameObject scheduledTag;
 
 	public GameObject getButton() {
 		return button;
@@ -62,7 +79,7 @@ public abstract class Action : MonoBehaviour {
 		doActivate(Target);
         GraphUtility.instance.TidyGraph();
         //do applicable visibility increases
-        if (isTargeting && Target.GetType() == typeof(NodeData))
+        if (IsTargeting && Target.GetType() == typeof(NodeData))
         {
             if (GraphUtility.instance.getConnectedNodes(GetComponent<NodeData>()).Contains((NodeData)Target))
             {
@@ -85,19 +102,17 @@ public abstract class Action : MonoBehaviour {
 
     public bool SetScheduled(Targetable target)
     {
-        if (isTargeting && null == target) return false;
-        if (!isTargeting && null != target) return false;
-        if (isTargeting && !getPossibleTargets().Contains(target)) return false;
+        if (IsTargeting && null == target) return false;
+        if (!IsTargeting && null != target) return false;
+        if (IsTargeting && !getPossibleTargets().Contains(target)) return false;
 
         this.Target = target;
-        gameObject.GetComponent<NodeMenu>().isScheduled = true;
+        gameObject.GetComponent<NodeData>().isScheduled = true;
         if (target != null) target.addScheduledAction(this);
 
+        if (OnStateUpdate != null) OnStateUpdate(this);
         if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
         {
-            gameObject.GetComponent<NodeMenu>().clear();
-            gameObject.GetComponent<NodeMenu>().hide();
-
             GameObject tag = getMapScheduledTag();
             tag.SetActive(true);
             tag.transform.position = gameObject.transform.position + new Vector3(0.5f, 0.3f, -1);
@@ -110,7 +125,7 @@ public abstract class Action : MonoBehaviour {
     {
         if (Target != null) Target.removeScheduledAction(this);
         Target = null;
-		gameObject.GetComponent<NodeMenu>().isScheduled = false;
+		gameObject.GetComponent<NodeData>().isScheduled = false;
 	}
 
     public void putOnCooldown(int nTurns) {
@@ -122,6 +137,8 @@ public abstract class Action : MonoBehaviour {
         ActionButton realButton = GetComponent<NodeMenu>().buttons[this].GetComponent<ActionButton>();
         realButton.ActionEnabled = false;
         IsOnCooldown = true;
+
+        if (OnStateUpdate != null) OnStateUpdate(this);
 
         // DURATION turns from now, take this off cd
         PlayerData playerOfInterest = TurnController.instance.CurrentPlayer;

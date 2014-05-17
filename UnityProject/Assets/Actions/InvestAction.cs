@@ -21,7 +21,7 @@ namespace Assets.Graph.Nodes
 
         void Start()
         {
-            isTargeting = false;
+            IsTargeting = false;
         }
 
         protected override void doActivate(Targetable target)

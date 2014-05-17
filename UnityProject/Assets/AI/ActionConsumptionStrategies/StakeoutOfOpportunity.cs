@@ -20,7 +20,7 @@ namespace Assets.AI.ActionConsumptionStrategies
             List<NodeData> myGovtNodes = FindObjectsOfType<NodeData>()
                 .Where<NodeData>((node) => node.Owner == me 
                     && node.GetComponent<StakeoutAction>() != null 
-                    && !node.GetComponent<NodeMenu>().isScheduled)
+                    && !node.isScheduled)
                 .ToList<NodeData>();
 
             //fetch all the edges
