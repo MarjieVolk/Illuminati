@@ -16,7 +16,7 @@ public class SabotageAction : Action {
 	
 	public override List<Targetable> getPossibleTargets() {
 		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
-		List<NodeData> nodes = GraphUtility.instance.getNeutralConnectedNodes(thisNode);
+		List<NodeData> nodes = GraphUtility.instance.getConnectedNodes(thisNode);
 		
 		List<Targetable> targets = new List<Targetable>();
 		foreach (NodeData node in nodes) {
