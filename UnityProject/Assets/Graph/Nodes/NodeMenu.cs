@@ -36,7 +36,7 @@ public class NodeMenu : RadialMenu {
         node.OnHover += () =>
         {
             // Show node menu
-            if (node.Owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState)
+            if (!Input.GetMouseButton(0) && node.Owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState)
             {
                 this.show();
             }
