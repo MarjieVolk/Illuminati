@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Assets.Graph;
+using Assets.Graph.Edges;
 
 namespace Assets.Player
 {
@@ -25,9 +27,10 @@ namespace Assets.Player
         {
             foreach (EdgeData edge in FindObjectsOfType<EdgeData>())
             {
+                EdgeGUI guiObj = edge.gameObject.GetComponent<EdgeGUI>();
                 EdgeData edgeCopy = edge; //so it can be captured in the closure
-                edge.OnHover += () => hoveredEdgeData = edgeCopy;
-                edge.OnEndHover += () => hoveredEdgeData = null;
+                guiObj.OnHover += () => hoveredEdgeData = edgeCopy;
+                guiObj.OnEndHover += () => hoveredEdgeData = null;
             }
         }
 

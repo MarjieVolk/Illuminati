@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Assets.Player;
 using System.Linq;
 using Assets.Actions;
+using Assets.Graph.Nodes;
 
 public class NodeMenu : RadialMenu {
 
@@ -34,7 +35,7 @@ public class NodeMenu : RadialMenu {
 		}
 
         node = GetComponent<NodeData>();
-        node.OnHover += () =>
+        GetComponent<NodeGUI>().OnHover += () =>
         {
             // Show node menu
             if (!Input.GetMouseButton(0) && node.Owner == TurnController.instance.CurrentPlayer && !ActionController.instance.inSelectionState)

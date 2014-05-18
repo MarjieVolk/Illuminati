@@ -9,7 +9,12 @@ namespace Assets.Graph.Nodes
 {
     public class NodeGUI : Tooltippable
     {
-        public NodeData Node;
+        private NodeData Node;
+
+        protected override void Start() {
+            base.Start();
+            Node = GetComponent<NodeData>();
+        }
 
         public override bool viewAsOwned(Player.VisibilityController.Visibility visibility)
         {

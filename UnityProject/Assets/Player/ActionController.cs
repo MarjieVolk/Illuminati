@@ -30,23 +30,24 @@ namespace Assets.Player
                 List<Targetable> possibleTargets = selected.getPossibleTargets();
                 possibleTargets.ForEach((x) => {
                     //highlight the possible targets
-                    x.GetComponent<Tooltippable>().setHighlighted(true);
-                    x.GetComponent<Tooltippable>().showTargetInfoText(selected.getAdditionalTextForTarget(x));
+                    Tooltippable guiObj = x.GetComponent<Tooltippable>();
+                    guiObj.setHighlighted(true);
+                    guiObj.showTargetInfoText(selected.getAdditionalTextForTarget(x));
 
                     clickHandlers[x] = new EventHandlers();
 
                     //attach click event handlers to the possible targets so they're selected when they're clicked
                     System.Action clickAction = () => scheduleAction(x);
                     clickHandlers[x].click = clickAction;
-                    x.OnClicked += clickAction;
+                    guiObj.OnClicked += clickAction;
 
                     //attach hover event handlers to possible targets so that they display edge visibility data when hovered over
                     System.Action hoverAction = () => startHoverForTarget(x);
                     clickHandlers[x].hover = hoverAction;
-                    x.OnHover += hoverAction;
+                    guiObj.OnHover += hoverAction;
                     System.Action endHoverAction = () => endHoverForTarget(x);
                     clickHandlers[x].endHover = endHoverAction;
-                    x.OnEndHover += endHoverAction;
+                    guiObj.OnEndHover += endHoverAction;
                 });
 
                 return;
@@ -99,11 +100,12 @@ namespace Assets.Player
 			//the other targets should not be highlighted now
 			foreach (Targetable noLongerATarget in selected.getPossibleTargets())
 			{
-                noLongerATarget.GetComponent<Tooltippable>().setHighlighted(false);
-                noLongerATarget.OnClicked -= clickHandlers[noLongerATarget].click;
-                noLongerATarget.OnHover -= clickHandlers[noLongerATarget].hover;
-                noLongerATarget.OnEndHover -= clickHandlers[noLongerATarget].endHover;
-                noLongerATarget.GetComponent<Tooltippable>().hideTargetInfoText();
+                Tooltippable guiObj = noLongerATarget.GetComponent<Tooltippable>();
+                guiObj.setHighlighted(false);
+                guiObj.OnClicked -= clickHandlers[noLongerATarget].click;
+                guiObj.OnHover -= clickHandlers[noLongerATarget].hover;
+                guiObj.OnEndHover -= clickHandlers[noLongerATarget].endHover;
+                guiObj.hideTargetInfoText();
 			}
 
             clickHandlers = new Dictionary<Targetable, EventHandlers>();
