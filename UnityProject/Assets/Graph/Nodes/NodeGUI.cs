@@ -14,10 +14,31 @@ namespace Assets.Graph.Nodes
         protected override void Start() {
             base.Start();
             Node = GetComponent<NodeData>();
+            VisibilityController.instance.VisibilityChanged += (VisibilityController.Visibility visibility) => {
+                bool inRange = true;
+                if (visibility == VisibilityController.Visibility.Private) {
+                    inRange = TurnController.instance.CurrentPlayer == Node.Owner;
+                    if (!inRange) {
+                        foreach (NodeData adjacent in GraphUtility.instance.getConnectedNodes(Node)) {
+                            if (TurnController.instance.CurrentPlayer == adjacent.Owner) {
+                                inRange = true;
+                                break;
+                            }
+                        }
+                    }
+                }
 
+                if (inRange) {
+                    // Show normally
+                    gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+                } else {
+                    // Grey out
+                    gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+                }
+            };
         }
 
-        public override bool viewAsOwned(Player.VisibilityController.Visibility visibility)
+        public override bool viewAsOwned(VisibilityController.Visibility visibility)
         {
             bool isPrivate = visibility == VisibilityController.Visibility.Private;
             return isPrivate && Node.Owner == TurnController.instance.CurrentPlayer;
