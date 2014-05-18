@@ -76,7 +76,7 @@ namespace Assets.Player
             }
 
             players.Remove(player);
-            Destroy(player);
+            Destroy(player.gameObject);
         }
     }
 }
