@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Player;
+using Assets.Graph;
 
 public class ScheduledAction : Highlightable {
 
@@ -91,17 +92,20 @@ public class ScheduledAction : Highlightable {
         setHighlighted(true);
         sister.setHighlighted(true);
         if (action.Target != null) {
-            action.Target.setHighlighted(true);
-            action.Target.showTargetInfoText(action.getAdditionalTextForTarget(action.Target));
+            Tooltippable correspondingHighlightable = action.Target.GetComponent<Tooltippable>();
+            correspondingHighlightable.setHighlighted(true);
+            correspondingHighlightable.showTargetInfoText(action.getAdditionalTextForTarget(action.Target));
         }
     }
 
     private void clearHighlights() {
         setHighlighted(false);
         sister.setHighlighted(false);
-        if (action.Target != null) {
-            action.Target.setHighlighted(false);
-            action.Target.hideTargetInfoText();
+        if (action.Target != null)
+        {
+            Tooltippable correspondingHighlightable = action.Target.GetComponent<Tooltippable>();
+            correspondingHighlightable.setHighlighted(false);
+            correspondingHighlightable.hideTargetInfoText();
         }
     }
 

@@ -11,6 +11,8 @@ public abstract class Highlightable : MonoBehaviour {
 	private int highlightRequests = 0;
 	private Sprite curNormal, curHighlight;
 
+    private bool isShowText;
+
 	// Use this for initialization
 	protected virtual void Start () {
 		spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
@@ -46,7 +48,8 @@ public abstract class Highlightable : MonoBehaviour {
 		bool owned = viewAsOwned(vis);
 		setNormalSprite(owned ? ownedNormalSprite : normalSprite);
 		setHighlightedSprite(owned ? ownedHighlightSprite : highlightSprite);
-	}
+    }
 
-	public abstract bool viewAsOwned(VisibilityController.Visibility visibility);
+    public abstract bool viewAsOwned(VisibilityController.Visibility visibility);
+
 }

@@ -57,11 +57,6 @@ public class NodeData : Targetable {
         return val;
     }
 
-	override public bool viewAsOwned(VisibilityController.Visibility vis) {
-		bool isPrivate = vis == VisibilityController.Visibility.Private;
-		return isPrivate && Owner == TurnController.instance.CurrentPlayer;
-	}
-
 	public void onTurnStart() {
         if (TurnController.instance.CurrentPlayer == Owner) {
 			// Only decrement on your own turn
@@ -87,10 +82,6 @@ public class NodeData : Targetable {
             increases.Remove(inc);
         }
 	}
-
-    protected override Vector3 getTipTextOffset() {
-        return new Vector3(0, GetComponent<CircleCollider2D>().radius, 0);
-    }
 
     private class TemporaryIncrease {
         public int amount;

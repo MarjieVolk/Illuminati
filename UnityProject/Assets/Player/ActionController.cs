@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Graph;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,8 +30,8 @@ namespace Assets.Player
                 List<Targetable> possibleTargets = selected.getPossibleTargets();
                 possibleTargets.ForEach((x) => {
                     //highlight the possible targets
-                    x.setHighlighted(true);
-                    x.showTargetInfoText(selected.getAdditionalTextForTarget(x));
+                    x.GetComponent<Tooltippable>().setHighlighted(true);
+                    x.GetComponent<Tooltippable>().showTargetInfoText(selected.getAdditionalTextForTarget(x));
 
                     clickHandlers[x] = new EventHandlers();
 
@@ -98,11 +99,11 @@ namespace Assets.Player
 			//the other targets should not be highlighted now
 			foreach (Targetable noLongerATarget in selected.getPossibleTargets())
 			{
-				noLongerATarget.setHighlighted(false);
+                noLongerATarget.GetComponent<Tooltippable>().setHighlighted(false);
                 noLongerATarget.OnClicked -= clickHandlers[noLongerATarget].click;
                 noLongerATarget.OnHover -= clickHandlers[noLongerATarget].hover;
                 noLongerATarget.OnEndHover -= clickHandlers[noLongerATarget].endHover;
-				noLongerATarget.hideTargetInfoText();
+                noLongerATarget.GetComponent<Tooltippable>().hideTargetInfoText();
 			}
 
             clickHandlers = new Dictionary<Targetable, EventHandlers>();
@@ -147,11 +148,11 @@ namespace Assets.Player
             NodeData actionNode = selected.gameObject.GetComponent<NodeData>();
             HashSet<EdgeData> edges = GraphUtility.instance.getEdgesBetweenNodes(TurnController.instance.CurrentPlayer.StartingNode, actionNode);
             foreach (EdgeData edge in edges) {
-                edge.hideTargetInfoText();
+                edge.GetComponent<Tooltippable>().hideTargetInfoText();
             }
 
             if (target is NodeData && GraphUtility.instance.getConnectedNodes(actionNode).Contains((NodeData)target)) {
-                GraphUtility.instance.getConnectingEdge(actionNode, (NodeData)target).hideTargetInfoText();
+                GraphUtility.instance.getConnectingEdge(actionNode, (NodeData)target).GetComponent<Tooltippable>().hideTargetInfoText();
             }
         }
 
@@ -173,7 +174,7 @@ namespace Assets.Player
             }
 
             val += "%</size>";
-            edge.showTargetInfoText(val);
+            edge.GetComponent<Tooltippable>().showTargetInfoText(val);
         }
 
         private class EventHandlers {
