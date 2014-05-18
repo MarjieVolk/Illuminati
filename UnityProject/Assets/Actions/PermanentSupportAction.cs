@@ -19,7 +19,7 @@ public class PermanentSupportAction : Action {
 	}
 
 	public override List<Targetable> getPossibleTargets() {
-		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
+		NodeData thisNode = getNode();
 		List<NodeData> nodes = GraphUtility.instance.getInfluencingNodes(thisNode);
 		nodes.AddRange(GraphUtility.instance.getInfluencedNodes(thisNode));
 
@@ -32,7 +32,7 @@ public class PermanentSupportAction : Action {
 
     public override string getAdditionalTextForTarget(Targetable target)
     {
-        NodeData node = this.gameObject.GetComponent<NodeData>();
+        NodeData node = getNode();
         NodeData other = (NodeData)target;
         int difference = node.getWorkingPower() - other.getWorkingPower();
         if (difference > 0) {
@@ -47,7 +47,7 @@ public class PermanentSupportAction : Action {
 	}
 
 	protected override void doActivate(Targetable target) {
-        NodeData node = gameObject.GetComponent<NodeData>();
+        NodeData node = getNode();
         doIncrease(node, (NodeData) target, 1.0f);
 
         // Decrease edge visibility modifier

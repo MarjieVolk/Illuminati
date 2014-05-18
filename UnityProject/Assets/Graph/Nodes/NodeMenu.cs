@@ -12,7 +12,7 @@ public class NodeMenu : RadialMenu {
     private NodeData node;
 
     public override List<GameObject> getButtons() {
-        Action[] actions = gameObject.GetComponents<Action>();
+        Action[] actions = gameObject.GetComponentsInChildren<Action>();
         buttons = new Dictionary<Action, GameObject>();
 
         foreach (Action a in actions) {

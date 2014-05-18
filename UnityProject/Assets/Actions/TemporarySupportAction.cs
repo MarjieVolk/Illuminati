@@ -18,7 +18,7 @@ public class TemporarySupportAction : Action {
 	}
 	
 	public override List<Targetable> getPossibleTargets() {
-		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
+		NodeData thisNode = getNode();
 		List<NodeData> nodes = GraphUtility.instance.getInfluencingNodes(thisNode);
 		nodes.AddRange(GraphUtility.instance.getInfluencedNodes(thisNode));
 		
@@ -30,7 +30,7 @@ public class TemporarySupportAction : Action {
 	}
 	
 	public override string getAdditionalTextForTarget(Targetable target) {
-		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
+        NodeData thisNode = getNode();
 		
 		int increase = getIncrease(thisNode.getWorkingPower());
         if (increase > 0) {
@@ -42,7 +42,7 @@ public class TemporarySupportAction : Action {
 	
 	protected override void doActivate(Targetable target) {
 		NodeData otherNode = (NodeData) target;
-		NodeData thisNode = gameObject.GetComponent<NodeData>();
+        NodeData thisNode = getNode();
 
         doIncrease(thisNode, otherNode, 1.0f);
         putOnCooldown(DURATION);

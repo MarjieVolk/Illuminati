@@ -14,6 +14,7 @@ namespace Assets.Graph.Nodes
         protected override void Start() {
             base.Start();
             Node = GetComponent<NodeData>();
+
         }
 
         public override bool viewAsOwned(Player.VisibilityController.Visibility visibility)

@@ -24,7 +24,7 @@ public class AttackAction : Action {
 	}
 
 	override public List<Targetable> getPossibleTargets() {
-		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
+		NodeData thisNode = getNode();
 		List<NodeData> nodes = GraphUtility.instance.getNeutralConnectedNodes(thisNode);
 		List<Targetable> ret = new List<Targetable>();
 		foreach (NodeData node in nodes) {
@@ -44,7 +44,7 @@ public class AttackAction : Action {
 	
 	override protected void doActivate(Targetable target) {
 		NodeData otherNode = target.GetComponent<NodeData>();
-		NodeData thisNode = this.GetComponent<NodeData>();
+		NodeData thisNode = getNode();
 
         EdgeData edge = GraphUtility.instance.getConnectingEdge(thisNode, otherNode);
         if (edge.direction == EdgeData.EdgeDirection.Unusable) return;
@@ -60,7 +60,7 @@ public class AttackAction : Action {
 
 	public double getProbabilityOfWin(Targetable target) {
 		NodeData otherNode = target.GetComponent<NodeData>();
-		NodeData thisNode = this.GetComponent<NodeData>();
+		NodeData thisNode = getNode();
 
         bool isStrong = (otherNode.type == strongAgainst);
 

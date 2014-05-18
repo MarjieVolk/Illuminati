@@ -159,6 +159,10 @@ public abstract class Action : MonoBehaviour {
         TurnController.instance.OnTurnStart += handler;
     }
 
+    protected NodeData getNode() {
+        return transform.parent.GetComponent<NodeData>();
+    }
+
     /// <summary>
     /// Visit each player controlled edge along all possible paths from source to target.  For each edge, the visitor will recieve (1) the EdgeData for
     /// the edge being visited and (2) the probability for a visibility increase on that edge.

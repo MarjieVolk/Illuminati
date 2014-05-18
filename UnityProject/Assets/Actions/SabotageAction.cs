@@ -15,7 +15,7 @@ public class SabotageAction : Action {
 	}
 	
 	public override List<Targetable> getPossibleTargets() {
-		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
+		NodeData thisNode = getNode();
 		List<NodeData> nodes = GraphUtility.instance.getConnectedNodes(thisNode);
 		
 		List<Targetable> targets = new List<Targetable>();
@@ -26,7 +26,7 @@ public class SabotageAction : Action {
 	}
 	
 	public override string getAdditionalTextForTarget(Targetable target) {
-		NodeData thisNode = this.gameObject.GetComponent<NodeData>();
+		NodeData thisNode = getNode();
 		
 		int decrease = getDecrease(thisNode.getWorkingPower());
         if (decrease > 0) {
@@ -38,7 +38,7 @@ public class SabotageAction : Action {
 	
 	protected override void doActivate(Targetable target) {
 		NodeData otherNode = (NodeData) target;
-		NodeData thisNode = gameObject.GetComponent<NodeData>();
+		NodeData thisNode = getNode();
         doDecrease(thisNode, otherNode, 1.0f);
         putOnCooldown(DURATION);
 	}
