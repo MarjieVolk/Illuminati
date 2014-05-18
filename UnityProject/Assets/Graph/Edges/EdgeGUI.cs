@@ -15,7 +15,6 @@ namespace Assets.Graph.Edges
 
         public GameObject arrowHead;
         public GameObject ex;
-        public EdgeData Edge;
 
         // *****
         // UI State
@@ -23,6 +22,7 @@ namespace Assets.Graph.Edges
         private GameObject realArrowHead;
         private GameObject realEx;
         private EdgeData.EdgeDirection prevDirection;
+        public EdgeData Edge;
 
         protected void Awake()
         {
@@ -32,7 +32,7 @@ namespace Assets.Graph.Edges
         protected override void Start()
         {
             base.Start();
-
+            Edge = GetComponent<EdgeData>();
             TurnController.instance.OnTurnEnd += updateVisibilityRendering;
             VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
         }

@@ -9,9 +9,8 @@ public abstract class Highlightable : MonoBehaviour {
 
 	private SpriteRenderer spriteRenderer;
 	private int highlightRequests = 0;
-	private Sprite curNormal, curHighlight;
 
-    private bool isShowText;
+    private Sprite curNormal, curHighlight;
 
 	// Use this for initialization
 	protected virtual void Start () {
@@ -19,6 +18,22 @@ public abstract class Highlightable : MonoBehaviour {
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateVisibility);
 		updateSprites();
 	}
+
+    public event System.Action OnClicked;
+    public event System.Action OnHover;
+    public event System.Action OnEndHover;
+
+    void OnMouseUpAsButton() {
+        if (OnClicked != null) OnClicked();
+    }
+
+    void OnMouseEnter() {
+        if (OnHover != null) OnHover();
+    }
+
+    void OnMouseExit() {
+        if (OnEndHover != null) OnEndHover();
+    }
 
 	public void setNormalSprite(Sprite newNormal) {
         curNormal = newNormal;

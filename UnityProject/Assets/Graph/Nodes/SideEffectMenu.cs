@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
 using System.Linq;
+using Assets.Graph.Nodes;
 
 public class SideEffectMenu : RadialMenu {
 
@@ -28,7 +29,8 @@ public class SideEffectMenu : RadialMenu {
         base.Start();
 
         NodeData node = transform.parent.GetComponent<NodeData>();
-        node.OnHover += () => {
+        NodeGUI nodeGUI = transform.parent.GetComponent<NodeGUI>();
+        nodeGUI.OnHover += () => {
             if (ActionController.instance.selected is AttackAction && ActionController.instance.getTargetsForScheduledAction().Contains(node)) {
                 show();
                 currentAction = (AttackAction) ActionController.instance.selected;
@@ -37,13 +39,13 @@ public class SideEffectMenu : RadialMenu {
             isMouseOver = true;
         };
 
-        node.OnEndHover += () => {
+        nodeGUI.OnEndHover += () => {
             OnMouseExit();
             hide();
             isMouseOver = false;
         };
 
-        node.OnClicked += () => {
+        nodeGUI.OnClicked += () => {
             OnMouseUpAsButton();
             hide();
         };
