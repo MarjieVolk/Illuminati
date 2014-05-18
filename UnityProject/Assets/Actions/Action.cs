@@ -38,43 +38,6 @@ public abstract class Action : MonoBehaviour {
         IsOnCooldown = false;
     }
 
-    //UI stuff, remove it
-    private GameObject listTag, mapTag;
-    public GameObject button;
-    public GameObject scheduledTag;
-
-	public GameObject getButton() {
-		return button;
-	}
-
-	public GameObject getListScheduledTag() {
-		if (listTag == null) {
-			initTags();
-		}
-		return listTag;
-	}
-
-	public GameObject getMapScheduledTag() {
-		if (mapTag == null) {
-			initTags();
-		}
-		return mapTag;
-	}
-
-	private void initTags() {
-		mapTag = instantiateTag();
-		listTag = instantiateTag();
-		mapTag.GetComponent<ScheduledAction>().setSister(listTag.GetComponent<ScheduledAction>());
-        listTag.GetComponent<ScheduledAction>().setDragable(true);
-	}
-
-	private GameObject instantiateTag() {
-		GameObject tag = (GameObject) Instantiate(scheduledTag, new Vector3(0, 0, -10), Quaternion.identity);
-		tag.GetComponent<ScheduledAction>().action = this;
-		tag.SetActive(false);
-		return tag;
-	}
-
     public void Activate() {
 		doActivate(Target);
         GraphUtility.instance.TidyGraph();
@@ -111,12 +74,6 @@ public abstract class Action : MonoBehaviour {
         if (target != null) target.addScheduledAction(this);
 
         if (OnStateUpdate != null) OnStateUpdate(this);
-        if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
-        {
-            GameObject tag = getMapScheduledTag();
-            tag.SetActive(true);
-            tag.transform.position = gameObject.transform.position + new Vector3(0.5f, 0.3f, -1);
-        }
 
         return true;
     }

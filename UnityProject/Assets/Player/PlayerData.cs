@@ -6,6 +6,7 @@ using Assets.Player;
 using Assets.Graph.Nodes;
 using System.Linq;
 using Assets.AI;
+using Assets.Actions;
 
 public class PlayerData : MonoBehaviour {
 
@@ -92,7 +93,7 @@ public class PlayerData : MonoBehaviour {
             if (IsLocalHumanPlayer)
             {
                 for (int i = 0; i < selectedActions.Count; i++) {
-                    GameObject tag = selectedActions[i].getListScheduledTag();
+                    GameObject tag = selectedActions[i].GetComponent<ActionGUI>().getListScheduledTag();
                     tag.SetActive(true);
                     tag.GetComponent<ScheduledAction>().updateSelfAsListTag(i);
                 }
@@ -125,8 +126,8 @@ public class PlayerData : MonoBehaviour {
 
         if (IsLocalHumanPlayer)
         {
-            toSelect.getListScheduledTag().GetComponent<ScheduledAction>().player = this;
-            toSelect.getMapScheduledTag().GetComponent<ScheduledAction>().player = this;
+            toSelect.GetComponent<ActionGUI>().getListScheduledTag().GetComponent<ScheduledAction>().player = this;
+            toSelect.GetComponent<ActionGUI>().getMapScheduledTag().GetComponent<ScheduledAction>().player = this;
         }
 
         return true;
@@ -164,8 +165,8 @@ public class PlayerData : MonoBehaviour {
     private static void disableScheduledTagsForAction(Action action)
     {
 
-        action.getListScheduledTag().SetActive(false);
-        action.getMapScheduledTag().SetActive(false);
+        action.GetComponent<ActionGUI>().getListScheduledTag().SetActive(false);
+        action.GetComponent<ActionGUI>().getMapScheduledTag().SetActive(false);
     }
 
     public bool startTurn()

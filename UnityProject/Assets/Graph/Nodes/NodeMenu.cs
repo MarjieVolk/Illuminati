@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
 using System.Linq;
+using Assets.Actions;
 
 public class NodeMenu : RadialMenu {
 
@@ -15,7 +16,7 @@ public class NodeMenu : RadialMenu {
         buttons = new Dictionary<Action, GameObject>();
 
         foreach (Action a in actions) {
-            GameObject realButton = (GameObject)Instantiate(a.button, transform.position, Quaternion.identity);
+            GameObject realButton = (GameObject)Instantiate(a.GetComponent<ActionGUI>().button, transform.position, Quaternion.identity);
             realButton.transform.parent = this.gameObject.transform;
             buttons[a] = realButton;
 
