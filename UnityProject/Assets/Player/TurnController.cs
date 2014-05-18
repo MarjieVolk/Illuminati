@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using Assets.HUD;
 using System.Linq;
 
 namespace Assets.Player

@@ -21,8 +21,6 @@ public class PlayerData : MonoBehaviour {
     public bool IsLocalHumanPlayer; //true if this player is human and sitting at this computer, false if it's a human not at this computer or an AI
     public EnlightenedAI AI;
 
-	private GUIStyle style;
-
 	private static System.Random gen = new System.Random();
 
     void Reset()
@@ -34,11 +32,6 @@ public class PlayerData : MonoBehaviour {
     {
         actionPoints = 0;
         selectedActions = new List<Action>();
-
-        style = new GUIStyle();
-        style.normal.textColor = Color.black;
-        style.fontSize = 16;
-        style.normal.background = InvestigateAction.MakeTextureOfColor(Color.gray);
     }
 
     public void init() {
@@ -106,13 +99,6 @@ public class PlayerData : MonoBehaviour {
             }
         }
 	}
-
-    void OnGUI()
-    {
-        if (TurnController.instance == null || this != TurnController.instance.CurrentPlayer) return;
-
-        GUI.Label(new Rect(0, Screen.height - (Screen.height * 0.115f), 85, 20), "  Actions: <b>" + actionPoints + "</b>", style);
-    }
 
     public int actionPointsRemaining() {
         return actionPoints;
