@@ -9,17 +9,11 @@ public class NodeStatMenu : MonoBehaviour {
 	private bool isShown = false;
 	private GUIStyle style;
 
-	// Use this for initialization
 	void Start () {
 		style = new GUIStyle();
 		style.normal.textColor = Color.black;
 		style.fontStyle = FontStyle.Bold;
         style.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.6f, 0.6f, 0.6f, 0.7f));
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
 	void OnMouseEnter() {		
@@ -47,12 +41,14 @@ public class NodeStatMenu : MonoBehaviour {
 
             Vector2 textSize = style.CalcSize(new GUIContent(text));
 
-            //float radius = GetComponent<CircleCollider2D>().radius;
-            //Vector3 leftEdgeScreenPosition = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x - radius - 0.5f, transform.position.y, transform.position.z));
-            //Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-            //new Rect(leftEdgeScreenPosition.x - textSize.x, Screen.height - screenPosition.y - textSize.y / 2.0f, textSize.x + 5, textSize.y)
+            bool isNodeMenuShown = GetComponent<NodeMenu>().isShown;
+            float radius = GetComponent<CircleCollider2D>().radius;
+            float x = transform.position.x - radius + (isNodeMenuShown ? -0.5f : 0);
+            Vector3 leftEdgeScreenPosition = Camera.main.WorldToScreenPoint(new Vector3(x, transform.position.y, transform.position.z));
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+            Rect r = new Rect(leftEdgeScreenPosition.x - textSize.x, Screen.height - screenPosition.y - textSize.y / 2.0f, textSize.x + 5, textSize.y);
 
-            GUI.Label(new Rect(Screen.width - textSize.x - 15, Screen.height - textSize.y - 10, textSize.x + 5, textSize.y), text, style);
+            GUI.Label(r, text, style);
 		}
 	}
 
