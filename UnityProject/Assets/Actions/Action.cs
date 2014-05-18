@@ -133,9 +133,7 @@ public abstract class Action : MonoBehaviour {
     }
 
     public void putOnCooldown(int nTurns, System.Action onReactivate) {
-        // First, disable this action's button (and put this on cooldown)
-        ActionButton realButton = GetComponent<NodeMenu>().buttons[this].GetComponent<ActionButton>();
-        realButton.ActionEnabled = false;
+        // Put on CD, notify people of that
         IsOnCooldown = true;
 
         if (OnStateUpdate != null) OnStateUpdate(this);
@@ -149,8 +147,8 @@ public abstract class Action : MonoBehaviour {
                 numTurnsDelay--;
 
                 if (0 == numTurnsDelay) {
-                    realButton.ActionEnabled = true;
                     IsOnCooldown = false;
+                    if (OnStateUpdate != null) OnStateUpdate(this);
                     TurnController.instance.OnTurnEnd -= handler;
 
                     onReactivate();

@@ -29,8 +29,7 @@ public class NodeMenu : RadialMenu {
         base.Start();
 
 		foreach (Action a in buttons.Keys) {
-            Action actionCopy = a;
-            buttons[a].GetComponent<ActionButton>().OnClick += () => ActionController.instance.selectAction(actionCopy);
+            buttons[a].GetComponent<ActionButton>().SetAction(a);
 		}
 
         node = GetComponent<NodeData>();

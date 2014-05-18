@@ -16,8 +16,6 @@ public class EdgeData : Targetable {
 	public EdgeDirection direction { get; set; }
 	private EdgeDirection prevDirection;
 
-	private GUIStyle visibilityStyle;
-
     public float visIncreaseModifier { get; set; }
 
     private float vis;
@@ -37,12 +35,6 @@ public class EdgeData : Targetable {
         prevDirection = EdgeDirection.Neutral;
         Visibility = 0;
         visIncreaseModifier = 1.0f;
-
-        visibilityStyle = new GUIStyle();
-        visibilityStyle.normal.textColor = Color.black;
-        visibilityStyle.fontStyle = FontStyle.Bold;
-        visibilityStyle.normal.background = InvestigateAction.MakeTextureOfColor(new Color(0.5f, 0.5f, 0.5f, 0.9f));
-        visibilityStyle.alignment = TextAnchor.MiddleCenter;
     }
 
 	// Use this for initialization
@@ -52,8 +44,6 @@ public class EdgeData : Targetable {
         TurnController.instance.OnTurnEnd += () => Visibility *= 0.95f;
 		TurnController.instance.OnTurnEnd += updateVisibilityRendering;
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
-        OnHover += () => displayVisibility = true;
-        OnEndHover += () => displayVisibility = false;
 	}
 	
 	// Update is called once per frame
@@ -96,25 +86,6 @@ public class EdgeData : Targetable {
         float lambda = 1 / scaleParameter;
         float x = respectModifier ? maxVisibilityIncrease * visIncreaseModifier : maxVisibilityIncrease;
         return x / lambda * Mathf.Exp(-lambda * x);
-    }
-
-    private bool displayVisibility = false;
-
-    public override void OnGUI()
-    {
-        base.OnGUI();
-        if (displayVisibility) {
-			float margin = 10;
-            string text = "Visibility: " + (int)(Visibility * 100) + "%";
-
-            bool isOwned = direction == EdgeDirection.OneToTwo || direction == EdgeDirection.TwoToOne;
-            if (isOwned && nodeOne.GetComponent<NodeData>().Owner == TurnController.instance.CurrentPlayer) {
-                text += "\nIncrease Rate: " + Mathf.Round(100 * visIncreaseModifier) + "%";
-            }
-            Vector2 textSize = visibilityStyle.CalcSize(new GUIContent(text));
-
-			GUI.Label(new Rect(Screen.width - textSize.x - margin - 5, Screen.height - textSize.y - margin - 2.5f, textSize.x + 10, textSize.y + 5), text, visibilityStyle);
-		}
     }
 	
 	override public bool viewAsOwned(VisibilityController.Visibility vis) {

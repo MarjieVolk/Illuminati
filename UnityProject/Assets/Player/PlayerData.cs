@@ -201,11 +201,7 @@ public class PlayerData : MonoBehaviour {
 
             foreach (Action toSchedule in decisions)
             {
-                ActionController.instance.selectAction(toSchedule);
-                if (toSchedule.IsTargeting)
-                {
-                    ActionController.instance.scheduleAction(toSchedule.Target);
-                }
+                scheduleAction(toSchedule);
             }
 
             return true;
