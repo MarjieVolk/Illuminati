@@ -58,7 +58,7 @@ public class NodeData : Targetable {
     }
 
 	public void onTurnStart() {
-        if (TurnController.instance.CurrentPlayer == Owner) {
+        if (TurnController.instance.CurrentPlayer != Owner) {
 			// Only decrement on your own turn
 			return;
 		}

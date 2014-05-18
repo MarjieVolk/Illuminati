@@ -9,22 +9,19 @@ namespace Assets.Player
 {
     public class RemainingActionsDisplayer : MonoBehaviour
     {
-        private GUIStyle style;
-
-        private void Awake()
-        {
-            style = new GUIStyle();
-            style.normal.textColor = Color.black;
-            style.fontSize = 16;
-            style.normal.background = InvestigateAction.MakeTextureOfColor(Color.gray);
-        }
+        public GUISkin skin;
 
         void OnGUI()
         {
             if (TurnController.instance == null) return;
 
+            GUI.skin = skin;
+
             int actionPoints = TurnController.instance.CurrentPlayer.actionPointsRemaining();
-            GUI.Label(new Rect(0, Screen.height - (Screen.height * 0.115f), 85, 20), "  Actions: <b>" + actionPoints + "</b>", style);
+            string text = "  Actions: <b>" + actionPoints + "</b>";
+
+            Vector2 size = GUI.skin.FindStyle("Small-Box").CalcSize(new GUIContent(text));
+            GUI.Box(new Rect(-10, (Screen.height * 0.885f), size.x + 20, size.y), text, GUI.skin.FindStyle("Small-Box"));
         }
     }
 }

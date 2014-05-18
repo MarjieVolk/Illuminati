@@ -76,11 +76,10 @@ public class PlayerData : MonoBehaviour {
             List<NodeData> startingNodes = new List<NodeData>();
             foreach (NodeData node in nodes)
             {
-                if (node.isStartNode) startingNodes.Add(node);
+                if (node.isStartNode && node.startingOwner == null) startingNodes.Add(node);
             }
 
             NodeData ourStart = startingNodes[gen.Next(startingNodes.Count)];
-            startingNodes.Remove(ourStart);
             StartingNode = ourStart;
         }
         StartingNode.startingOwner = this;
