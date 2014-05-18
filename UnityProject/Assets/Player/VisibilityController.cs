@@ -22,6 +22,22 @@ namespace Assets.Player
 			instance = this;
         }
 
+        void Start()
+        {
+            TurnController turnController = GetComponent<TurnController>();
+
+            turnController.OnTurnEnd += () =>
+                {
+                    ToggleVisibility();
+                    ToggleVisibility();
+                };
+
+            turnController.OnTurnStart += () =>
+                {
+                    setVisibility(Visibility.Public);
+                };
+        }
+
         void Update()
         {
 

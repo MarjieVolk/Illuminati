@@ -102,9 +102,6 @@ namespace Assets.Player
 
             if (null != OnTurnEnd) OnTurnEnd();
 
-            this.GetComponent<VisibilityController>().ToggleVisibility();
-            this.GetComponent<VisibilityController>().ToggleVisibility();
-
             BetweenTurns = true;
             isDoActionCheck = false;
         }
@@ -112,9 +109,6 @@ namespace Assets.Player
         public void NextTurn()
         {
             BetweenTurns = false;
-
-            //set visibility to public information only
-            this.GetComponent<VisibilityController>().setVisibility(VisibilityController.Visibility.Public);
 
             // Set to next player
             current = (current + 1) % players.Count;
