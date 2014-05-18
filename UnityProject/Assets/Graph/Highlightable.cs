@@ -17,11 +17,6 @@ public abstract class Highlightable : MonoBehaviour {
 		VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateVisibility);
 		updateSprites();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	public void setNormalSprite(Sprite newNormal) {
         curNormal = newNormal;

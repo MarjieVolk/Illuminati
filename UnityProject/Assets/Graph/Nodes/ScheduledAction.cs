@@ -18,7 +18,6 @@ public class ScheduledAction : Highlightable {
     private bool dragable = false;
     private bool isDrag = false;
     private float dragStartTime = 0;
-    private float dragEndTime = 0;
     private Vector3 dragOffset;
 
 	public override bool viewAsOwned(VisibilityController.Visibility visibility) {
@@ -59,7 +58,6 @@ public class ScheduledAction : Highlightable {
 
     void OnMouseUp() {
         isDrag = false;
-        dragEndTime = Time.time;
         clearHighlights();
     }
 
