@@ -38,7 +38,7 @@ namespace Assets.Graph.Nodes
             List<EdgeData> allEdges = new List<EdgeData>(FindObjectsOfType<EdgeData>());
             List<EdgeData> notMyEdges = allEdges.Where<EdgeData>(
                 (x) => EdgeData.EdgeDirection.Neutral == x.direction 
-                    || (EdgeData.EdgeDirection.Neutral != x.direction && x.nodeOne.GetComponent<NodeData>().Owner != GetComponent<NodeData>().Owner)
+                    || (EdgeData.EdgeDirection.Neutral != x.direction && x.nodeOne.GetComponent<NodeData>().Owner != getNode().Owner)
                 ).ToList<EdgeData>();
 
             Debug.Log(notMyEdges[0]);

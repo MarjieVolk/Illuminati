@@ -87,7 +87,7 @@ namespace Assets.Player
         {
 			if (inSelectionState && !isFirstFrameAfterSelected && (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0))) {
                 // Clicked on something else with action selected -- cancel selection
-                selected.gameObject.GetComponent<NodeMenu>().hide();
+                selected.transform.parent.GetComponent<NodeMenu>().hide();
                 clearSelectionState();
 			}
 			isFirstFrameAfterSelected = false;
@@ -109,14 +109,14 @@ namespace Assets.Player
 			}
 
             clickHandlers = new Dictionary<Targetable, EventHandlers>();
-            selected.gameObject.GetComponent<NodeMenu>().clear();
+            selected.transform.parent.GetComponent<NodeMenu>().clear();
 
 			inSelectionState = false;
 			selected = null;
 		}
 
         private void startHoverForTarget(Targetable target) {
-            NodeData actionNode = selected.gameObject.GetComponent<NodeData>();
+            NodeData actionNode = selected.getNode();
             float carryingEdgeExpected = selected.expectedVisibilityModifier();
             EdgeData carryingEdge = null;
 
@@ -147,7 +147,7 @@ namespace Assets.Player
         }
 
         private void endHoverForTarget(Targetable target) {
-            NodeData actionNode = selected.gameObject.GetComponent<NodeData>();
+            NodeData actionNode = selected.getNode();
             HashSet<EdgeData> edges = GraphUtility.instance.getEdgesBetweenNodes(TurnController.instance.CurrentPlayer.StartingNode, actionNode);
             foreach (EdgeData edge in edges) {
                 edge.GetComponent<Tooltippable>().hideTargetInfoText();

@@ -44,12 +44,12 @@ public abstract class Action : MonoBehaviour {
         //do applicable visibility increases
         if (IsTargeting && Target.GetType() == typeof(NodeData))
         {
-            if (GraphUtility.instance.getConnectedNodes(GetComponent<NodeData>()).Contains((NodeData)Target))
+            if (GraphUtility.instance.getConnectedNodes(getNode()).Contains((NodeData)Target))
             {
-                GraphUtility.instance.getConnectingEdge(GetComponent<NodeData>(), (NodeData)Target).applyRandomEdgeVisibilityIncrease(CarryingEdgeVisibilityIncreaseScaleParameter, CarryingEdgeMaxVisibilityIncrease);
+                GraphUtility.instance.getConnectingEdge(getNode(), (NodeData)Target).applyRandomEdgeVisibilityIncrease(CarryingEdgeVisibilityIncreaseScaleParameter, CarryingEdgeMaxVisibilityIncrease);
             }
         }
-        VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, GetComponent<NodeData>(), PathVisibilityIncreaseScaleParameter,
+        VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, getNode(), PathVisibilityIncreaseScaleParameter,
             (edge, increaseScaleParameter) => { edge.applyRandomEdgeVisibilityIncrease(increaseScaleParameter, PathMaxVisibilityIncrease); });
 		
 		clearScheduled();
@@ -70,7 +70,7 @@ public abstract class Action : MonoBehaviour {
         if (IsTargeting && !getPossibleTargets().Contains(target)) return false;
 
         this.Target = target;
-        gameObject.GetComponent<NodeData>().isScheduled = true;
+        getNode().isScheduled = true;
         if (target != null) target.addScheduledAction(this);
 
         if (OnStateUpdate != null) OnStateUpdate(this);
@@ -82,7 +82,7 @@ public abstract class Action : MonoBehaviour {
     {
         if (Target != null) Target.removeScheduledAction(this);
         Target = null;
-		gameObject.GetComponent<NodeData>().isScheduled = false;
+		getNode().isScheduled = false;
 	}
 
     public void putOnCooldown(int nTurns) {
@@ -116,7 +116,7 @@ public abstract class Action : MonoBehaviour {
         TurnController.instance.OnTurnStart += handler;
     }
 
-    protected NodeData getNode() {
+    public NodeData getNode() {
         return transform.parent.GetComponent<NodeData>();
     }
 

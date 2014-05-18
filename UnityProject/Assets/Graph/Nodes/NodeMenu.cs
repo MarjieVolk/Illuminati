@@ -64,7 +64,7 @@ public class NodeMenu : RadialMenu {
 
     private void OnActionUpdated(Action updatedAction)
     {
-        if (updatedAction.GetComponent<NodeData>().isScheduled)
+        if (updatedAction.getNode().isScheduled)
         {
             clear();
             hide();
