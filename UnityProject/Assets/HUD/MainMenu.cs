@@ -37,6 +37,11 @@ public class MainMenu : MonoBehaviour {
 	}
 
     private void startGame() {
+        PlayerData[] leftoverPlayers = GameObject.FindObjectsOfType<PlayerData>();
+        foreach (PlayerData player in leftoverPlayers) {
+            Destroy(player.gameObject);
+        }
+
         for (int i = 0; i < playerVals.Count; i++) {
             if (playerVals[i] == 0) {
                 // Human

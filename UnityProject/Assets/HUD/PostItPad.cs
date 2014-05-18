@@ -44,4 +44,8 @@ public class PostItPad : Highlightable {
     public override bool viewAsOwned(VisibilityController.Visibility visibility) {
         return false;
     }
+
+    void OnDestroy() {
+        COUNT = 0;
+    }
 }

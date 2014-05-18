@@ -23,7 +23,6 @@ public class PlayerData : MonoBehaviour {
 
 	private GUIStyle style;
 
-	private static List<NodeData> startingNodes;
 	private static System.Random gen = new System.Random();
 
     void Reset()
@@ -79,17 +78,11 @@ public class PlayerData : MonoBehaviour {
     {
         if (StartingNode == null)
         {
-            if (startingNodes == null)
+            NodeData[] nodes = UnityEngine.Object.FindObjectsOfType<NodeData>();
+            List<NodeData> startingNodes = new List<NodeData>();
+            foreach (NodeData node in nodes)
             {
-                NodeData[] nodes = UnityEngine.Object.FindObjectsOfType<NodeData>();
-                startingNodes = new List<NodeData>();
-                foreach (NodeData node in nodes)
-                {
-                    if (node.isStartNode)
-                    {
-                        startingNodes.Add(node);
-                    }
-                }
+                if (node.isStartNode) startingNodes.Add(node);
             }
 
             NodeData ourStart = startingNodes[gen.Next(startingNodes.Count)];

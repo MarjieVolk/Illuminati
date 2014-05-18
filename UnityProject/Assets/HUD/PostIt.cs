@@ -33,7 +33,7 @@ public class PostIt : MonoBehaviour {
         VisibilityController.instance.VisibilityChanged += visHandler;
 
         positionHandler = (NodeData node, PostIt claimant) => {
-            if (node == currentNode && claimant != this) {
+            if (node == currentNode && TurnController.instance.CurrentPlayer == owner && claimant != this) {
                 destroySelf();
             }
         };
