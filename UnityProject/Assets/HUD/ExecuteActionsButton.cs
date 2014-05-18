@@ -4,7 +4,7 @@ using Assets.Player;
 
 public class ExecuteActionsButton : HUDButton {
 
-	bool isClick = false;
+	private bool isClick = false;
 	
 	protected override void Start() {
         base.Start();
@@ -37,7 +37,7 @@ public class ExecuteActionsButton : HUDButton {
         if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
         {
             OnMouseUp();
-            TurnController.instance.ExecuteActions();
+            TurnControllerGUI.instance.TryExecuteActions();
         }
 	}
 
