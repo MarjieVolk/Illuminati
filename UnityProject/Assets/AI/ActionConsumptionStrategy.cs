@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.AI
 {
-    public abstract class ActionConsumptionStrategy : MonoBehaviour
+    public abstract class ActionConsumptionStrategy : GameLogicComponent
     {
         public abstract List<Action> consumeActions(int numActionsRemaining);
     }

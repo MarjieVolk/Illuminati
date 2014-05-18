@@ -5,12 +5,15 @@ using Assets.Player;
 public class ExecuteActionsButton : HUDButton {
 
 	private bool isClick = false;
+    private TurnController turnController;
 	
 	protected override void Start() {
         base.Start();
 		x = 0.01f;
         y = 0.157f;
-        TurnController.instance.OnTurnEnd += toggleButton;
+
+        turnController = transform.root.GetComponent<TurnController>();
+        turnController.OnTurnEnd += toggleButton;
 	}
 	
 	override public bool viewAsOwned(VisibilityController.Visibility visibility) {
@@ -18,7 +21,7 @@ public class ExecuteActionsButton : HUDButton {
 	}
 	
 	void OnMouseDown() {
-        if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
+        if (turnController.CurrentPlayer.IsLocalHumanPlayer)
         {
             isClick = true;
             updateSprites();
@@ -26,7 +29,7 @@ public class ExecuteActionsButton : HUDButton {
 	}
 	
 	void OnMouseUp() {
-        if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
+        if (turnController.CurrentPlayer.IsLocalHumanPlayer)
         {
             isClick = false;
             updateSprites();
@@ -34,7 +37,7 @@ public class ExecuteActionsButton : HUDButton {
 	}
 	
 	void OnMouseUpAsButton() {
-        if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
+        if (turnController.CurrentPlayer.IsLocalHumanPlayer)
         {
             OnMouseUp();
             TurnControllerGUI.instance.TryExecuteActions();

@@ -9,10 +9,11 @@ namespace Assets.AI.ActionConsumptionStrategies
 {
     public class GreedyInvest : ActionConsumptionStrategy
     {
+
         public override List<Action> consumeActions(int numActionsRemaining)
         {
             List<Action> ret = new List<Action>();
-            List<NodeData> ownedNodes = FindObjectsOfType<NodeData>().Where<NodeData>((node) => node.Owner == TurnController.instance.CurrentPlayer).ToList<NodeData>();
+            List<NodeData> ownedNodes = FindObjectsOfType<NodeData>().Where<NodeData>((node) => node.Owner == TurnController.CurrentPlayer).ToList<NodeData>();
 
             foreach (NodeData node in ownedNodes)
             {

@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace Assets.Player
 {
-    public class EdgeRandomVisibilityIncreaser : MonoBehaviour
+    public class EdgeRandomVisibilityIncreaser : GameLogicComponent
     {
         public float ScaleParameter;
         public float MaxVisibilityIncrease;
 
         public void Start()
         {
-            TurnController.instance.OnTurnEnd += () =>
+            TurnController.OnTurnEnd += () =>
             {
                 foreach (EdgeData edge in FindObjectsOfType<EdgeData>())
                 {

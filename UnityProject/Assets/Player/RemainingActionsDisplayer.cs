@@ -11,13 +11,20 @@ namespace Assets.Player
     {
         public GUISkin skin;
 
+        private TurnController turnController;
+
+        private void Start()
+        {
+            turnController = transform.root.GetComponent<TurnController>();
+        }
+
         void OnGUI()
         {
-            if (TurnController.instance == null) return;
+            if (turnController == null) return;
 
             GUI.skin = skin;
 
-            int actionPoints = TurnController.instance.CurrentPlayer.actionPointsRemaining();
+            int actionPoints = turnController.CurrentPlayer.actionPointsRemaining();
             string text = "  Actions: <b>" + actionPoints + "</b>";
 
             Vector2 size = GUI.skin.FindStyle("Small-Box").CalcSize(new GUIContent(text));

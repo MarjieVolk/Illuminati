@@ -14,7 +14,7 @@ namespace Assets.AI.ActionConsumptionStrategies
 
         public override List<Action> consumeActions(int numActionsRemaining)
         {
-            PlayerData me = TurnController.instance.CurrentPlayer;
+            PlayerData me = TurnController.CurrentPlayer;
 
             //fetch all the free gov't nodes
             List<NodeData> myGovtNodes = FindObjectsOfType<NodeData>()
