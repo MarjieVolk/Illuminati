@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Actions
 {
-    public class ActionGUI : MonoBehaviour
+    public class ActionGUI : DependencyResolvingComponent
     {
         private Action Action;
         private GameObject listTag, mapTag;
@@ -24,7 +24,7 @@ namespace Assets.Actions
         {
             if (action.transform.parent.GetComponent<NodeData>().isScheduled)
             {
-                if (TurnController.instance.CurrentPlayer.IsLocalHumanPlayer)
+                if (TurnController.CurrentPlayer.IsLocalHumanPlayer)
                 {
                     GameObject tag = getMapScheduledTag();
                     tag.SetActive(true);

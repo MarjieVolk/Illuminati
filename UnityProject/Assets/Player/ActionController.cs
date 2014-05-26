@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Player
 {
-    public class ActionController : MonoBehaviour
+    public class ActionController : DependencyResolvingComponent
     {
 		public static ActionController instance { get; private set; }
 
@@ -128,7 +128,7 @@ namespace Assets.Player
             }
             bool didCarryingEdge = false;
 
-            Action.VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, actionNode, selected.PathVisibilityIncreaseScaleParameter,
+            Action.VisitEdgesBetweenNodesWithVisibility(TurnController.CurrentPlayer.StartingNode, actionNode, selected.PathVisibilityIncreaseScaleParameter,
                 (edge, increaseScaleParameter) => {
                     float expected = edge.getExpectedVisibilityIncrease(increaseScaleParameter, edge.getMaxEdgeVisibilityIncrease(selected.PathMaxVisibilityIncrease));
                     bool isCarryingEdge = edge != null && edge == carryingEdge;
@@ -148,7 +148,7 @@ namespace Assets.Player
 
         private void endHoverForTarget(Targetable target) {
             NodeData actionNode = selected.getNode();
-            HashSet<EdgeData> edges = GraphUtility.instance.getEdgesBetweenNodes(TurnController.instance.CurrentPlayer.StartingNode, actionNode);
+            HashSet<EdgeData> edges = GraphUtility.instance.getEdgesBetweenNodes(TurnController.CurrentPlayer.StartingNode, actionNode);
             foreach (EdgeData edge in edges) {
                 edge.GetComponent<Tooltippable>().hideTargetInfoText();
             }

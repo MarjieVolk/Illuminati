@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
+using Assets;
 
-public abstract class RadialMenu : MonoBehaviour {
+public abstract class RadialMenu : DependencyResolvingComponent
+{
 
     public float radius = 1;
 	public bool isShown { get; private set; }

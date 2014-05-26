@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
 using Eppy;
+using Assets;
 
-public class PostIt : MonoBehaviour {
+public class PostIt : DependencyResolvingComponent
+{
 
     private const float SNAP_DISTANCE = 0.2f;
     private const float NODE_OFFSET_X = -0.5f;
@@ -24,16 +26,16 @@ public class PostIt : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         NODE_OFFSET = new Vector3(NODE_OFFSET_X, NODE_OFFSET_Y, NODE_OFFSET_Z);
-        owner = TurnController.instance.CurrentPlayer;
+        owner = TurnController.CurrentPlayer;
 
         this.gameObject.SetActive(VisibilityController.instance.visibility == VisibilityController.Visibility.Private);
         visHandler = (VisibilityController.Visibility vis) => {
-            this.gameObject.SetActive(vis == VisibilityController.Visibility.Private && TurnController.instance.CurrentPlayer == owner);
+            this.gameObject.SetActive(vis == VisibilityController.Visibility.Private && TurnController.CurrentPlayer == owner);
         };
         VisibilityController.instance.VisibilityChanged += visHandler;
 
         positionHandler = (NodeData node, PostIt claimant) => {
-            if (node == currentNode && TurnController.instance.CurrentPlayer == owner && claimant != this) {
+            if (node == currentNode && TurnController.CurrentPlayer == owner && claimant != this) {
                 destroySelf();
             }
         };
