@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour {
     public GUISkin skin;
 
     private GUIStyle titleStyle;
+    private GUIStyle mapOptionStyle;
     private string title = "Enlightened";
     private string play = "<size=32>New Game</size>";
     private string instructText = "Instructions";
@@ -24,7 +25,7 @@ public class MainMenu : MonoBehaviour {
     private string[] playerOptions = { "Human", "Computer" };
 
     private int mapChoice = 0;
-    private string[] mapOptions = { "Default Map", "New Tiny Map!" };
+    private GUIContent[] mapOptions = new GUIContent[2];
     private int[] mapMaxPlayers = { 4, 2 };
     private string[] mapScenes = { "Map", "TinyMap" };
 
@@ -35,8 +36,24 @@ public class MainMenu : MonoBehaviour {
         titleStyle.normal.textColor = new Color(0.07f, 0, 0.01f);
         titleStyle.alignment = TextAnchor.LowerCenter;
 
+        mapOptionStyle = new GUIStyle(skin.button);
+        mapOptionStyle.padding.left += 10;
+        mapOptionStyle.padding.right += 10;
+        mapOptionStyle.padding.top += 10;
+        mapOptionStyle.padding.bottom += 10;
+        mapOptionStyle.border = skin.window.border;
+
         instructions = gameObject.GetComponent<Instructions>();
         instructions.enabled = false;
+
+        for (int i = 0; i < mapOptions.Length; i++) {
+            mapOptions[i] = new GUIContent();
+        }
+
+        mapOptions[0].image = Resources.Load<Texture>("map_icon");
+        mapOptions[0].text = "Old Map";
+        mapOptions[1].image = Resources.Load<Texture>("tinymap_icon");
+        mapOptions[1].text = "Crazy New Map";
 
         resetDefaults();
 	}
@@ -113,14 +130,14 @@ public class MainMenu : MonoBehaviour {
 
         } else if (showMenu) {
             float width = 700; //Screen.width * 0.6f;
-            float height = 500; //Screen.height * 0.9f;
+            float height = 600; //Screen.height * 0.9f;
             GUI.Window(0, GUIUtilities.getRect(width, height), layoutWindow, "New Game");
         }
     }
 
     private void layoutWindow(int windowID) {
         GUILayout.Label("Map:");
-        mapChoice = GUILayout.SelectionGrid(mapChoice, mapOptions, 2);
+        mapChoice = GUILayout.SelectionGrid(mapChoice, mapOptions, 2, mapOptionStyle, GUILayout.MaxHeight(150));
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Number of Players: ");
