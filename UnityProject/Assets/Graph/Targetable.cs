@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Assets;
 
-public abstract class Targetable : GameLogicComponent {
+public abstract class Targetable : DependencyResolvingComponent {
 
     protected List<Action> targetingActions;
 

@@ -6,7 +6,7 @@ using System.Linq;
 using Assets.Player;
 using Assets;
 
-public abstract class Action : GameLogicComponent {
+public abstract class Action : DependencyResolvingComponent {
 
     // *****
     // Unity Editor configuration

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Player
 {
-    public class EdgeRandomVisibilityIncreaser : GameLogicComponent
+    public class EdgeRandomVisibilityIncreaser : DependencyResolvingComponent
     {
         public float ScaleParameter;
         public float MaxVisibilityIncrease;

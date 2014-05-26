@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets
 {
-    public class GameLogicComponent : MonoBehaviour
+    public class DependencyResolvingComponent : MonoBehaviour
     {
         private Dictionary<Type, Component> dependencies;
 

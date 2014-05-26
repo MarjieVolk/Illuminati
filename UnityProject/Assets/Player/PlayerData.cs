@@ -9,7 +9,7 @@ using Assets.AI;
 using Assets.Actions;
 using Assets;
 
-public class PlayerData : GameLogicComponent {
+public class PlayerData : DependencyResolvingComponent {
 
     public string PlayerName;
     public int ActionPointsPerTurn;
