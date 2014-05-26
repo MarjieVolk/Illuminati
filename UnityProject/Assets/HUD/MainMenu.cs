@@ -138,6 +138,7 @@ public class MainMenu : MonoBehaviour {
     private void layoutWindow(int windowID) {
         GUILayout.Label("Map:");
         mapChoice = GUILayout.SelectionGrid(mapChoice, mapOptions, 2, mapOptionStyle, GUILayout.MaxHeight(150));
+        GUILayout.Space(30);
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Number of Players: ");
@@ -145,6 +146,7 @@ public class MainMenu : MonoBehaviour {
         nPlayers = (int) Mathf.Round(GUILayout.HorizontalSlider(Math.Min(nPlayers, max), 2, max));
         GUILayout.Label("" + nPlayers);
         GUILayout.EndHorizontal();
+        GUILayout.Space(20);
 
         for (int i = 0; i < nPlayers; i++) {
             GUILayout.BeginHorizontal();
