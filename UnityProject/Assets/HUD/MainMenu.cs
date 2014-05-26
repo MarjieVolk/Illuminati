@@ -24,10 +24,14 @@ public class MainMenu : MonoBehaviour {
     private List<string> playerNames;
     private string[] playerOptions = { "Human", "Computer" };
 
+    // To add a new map to the menu, update these 4 arrays:
+    private string[] mapTitles = { "Old Map", "Crazy New Map" }; // User displayed map name
+    private string[] mapImages = { "map_icon", "tinymap_icon" }; // Path to map screenshot file (under "Resources" folder)
+    private int[] mapMaxPlayers = { 4, 2 }; // Maximum number of players
+    private string[] mapScenes = { "Map", "TinyMap" }; // Name of scene containing map
+
     private int mapChoice = 0;
-    private GUIContent[] mapOptions = new GUIContent[2];
-    private int[] mapMaxPlayers = { 4, 2 };
-    private string[] mapScenes = { "Map", "TinyMap" };
+    private GUIContent[] mapOptions;
 
 	// Use this for initialization
 	void Start () {
@@ -46,14 +50,12 @@ public class MainMenu : MonoBehaviour {
         instructions = gameObject.GetComponent<Instructions>();
         instructions.enabled = false;
 
+        mapOptions = new GUIContent[mapTitles.Length];
         for (int i = 0; i < mapOptions.Length; i++) {
             mapOptions[i] = new GUIContent();
+            mapOptions[0].image = Resources.Load<Texture>(mapImages[i]);
+            mapOptions[0].text = mapTitles[i];
         }
-
-        mapOptions[0].image = Resources.Load<Texture>("map_icon");
-        mapOptions[0].text = "Old Map";
-        mapOptions[1].image = Resources.Load<Texture>("tinymap_icon");
-        mapOptions[1].text = "Crazy New Map";
 
         resetDefaults();
 	}
