@@ -16,7 +16,7 @@ public class SabotageAction : Action {
 	
 	public override List<Targetable> getPossibleTargets() {
 		NodeData thisNode = getNode();
-		List<NodeData> nodes = GraphUtility.instance.getConnectedNodes(thisNode);
+		List<NodeData> nodes = GraphUtility.getConnectedNodes(thisNode);
 		
 		List<Targetable> targets = new List<Targetable>();
 		foreach (NodeData node in nodes) {

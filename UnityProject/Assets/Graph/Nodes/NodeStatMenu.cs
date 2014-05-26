@@ -60,7 +60,7 @@ public class NodeStatMenu : DependencyResolvingComponent
 			return true;
 		}
 
-		List<NodeData> nodes = GraphUtility.instance.getConnectedNodes(node);
+		List<NodeData> nodes = GraphUtility.getConnectedNodes(node);
 		foreach (NodeData otherNode in nodes) {
 			if (otherNode.Owner == TurnController.CurrentPlayer) {
 				return true;

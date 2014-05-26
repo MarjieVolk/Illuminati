@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GraphUtility : MonoBehaviour {
-	
-	public static GraphUtility instance { get; private set; }
 
 	private Dictionary<NodeData, List<EdgeData>> graph;
 
 	// Use this for initialization
 	public void Awake () {
-        instance = this;
         graph = new Dictionary<NodeData, List<EdgeData>>();
         EdgeData[] edges = Object.FindObjectsOfType<EdgeData>();
         foreach (EdgeData edge in edges)
@@ -32,7 +30,7 @@ public class GraphUtility : MonoBehaviour {
 	}
 
 	public EdgeData getConnectingEdge(NodeData one, NodeData two) {
-		List<EdgeData> thisEdges = GraphUtility.instance.getConnectedEdges(one);
+		List<EdgeData> thisEdges = getConnectedEdges(one);
 		foreach (EdgeData edge in thisEdges) {
 			if (edge.nodeOne == two.gameObject || edge.nodeTwo == two.gameObject) {
 				return edge;
@@ -245,6 +243,47 @@ public class GraphUtility : MonoBehaviour {
         }
 
         result.Push(origin);
+    }
+
+    /// <summary>
+    /// Visit each player controlled edge along all possible paths from source to target.  For each edge, the visitor will recieve (1) the EdgeData for
+    /// the edge being visited and (2) the probability for a visibility increase on that edge.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="baseIncreaseProbability"></param>
+    /// <param name="doStuffHere"></param>
+    public void VisitEdgesBetweenNodesWithVisibility(NodeData source, NodeData target, float baseIncreaseProbability, System.Action<EdgeData, float> visitor)
+    {
+        //find all the edges that are between the source and target nodes
+        HashSet<EdgeData> betwixtEdgesClosure = getEdgesBetweenNodes(source, target);
+        List<NodeData> sortedNodes = TopologicalSortOnEdgeSubset(source, betwixtEdgesClosure);
+
+        //split the visibility increase over all the possible paths
+        Dictionary<NodeData, float> increaseProbabilities = new Dictionary<NodeData, float>();
+        increaseProbabilities[source] = baseIncreaseProbability;
+        foreach (NodeData currentNode in sortedNodes)
+        {
+            //evenly divide visibility increase likelihood over all child nodes (thus implicitly edges) in the closure
+            List<NodeData> futureNodes = getInfluencedNodes(currentNode);
+            //only this in the closure!
+            futureNodes.RemoveAll((x) => !sortedNodes.Contains(x));
+
+            float increaseProbability = increaseProbabilities[currentNode] / futureNodes.Count;
+
+            //go ahead and apply this visibility, it's safe b/c we've accumulated everything from all this guy's ancestors (yay topo sort!)
+            foreach (EdgeData edge in futureNodes.Select<NodeData, EdgeData>((x) => getConnectingEdge(currentNode, x)))
+            {
+                visitor(edge, increaseProbability);
+            }
+
+            //propagate visibility to descendants
+            foreach (NodeData node in futureNodes)
+            {
+                if (!increaseProbabilities.ContainsKey(node)) increaseProbabilities[node] = 0.0f;
+                increaseProbabilities[node] += increaseProbability;
+            }
+        }
     }
 
     public void CaptureNode(NodeData defender, NodeData attacker)

@@ -19,7 +19,7 @@ namespace Assets.Graph.Nodes
                 if (visibility == VisibilityController.Visibility.Private) {
                     inRange = TurnController.CurrentPlayer == Node.Owner;
                     if (!inRange) {
-                        foreach (NodeData adjacent in GraphUtility.instance.getConnectedNodes(Node)) {
+                        foreach (NodeData adjacent in GraphUtility.getConnectedNodes(Node)) {
                             if (TurnController.CurrentPlayer == adjacent.Owner) {
                                 inRange = true;
                                 break;

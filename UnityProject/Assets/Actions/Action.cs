@@ -50,7 +50,7 @@ public abstract class Action : DependencyResolvingComponent {
                 GraphUtility.getConnectingEdge(getNode(), (NodeData)Target).applyRandomEdgeVisibilityIncrease(CarryingEdgeVisibilityIncreaseScaleParameter, CarryingEdgeMaxVisibilityIncrease);
             }
         }
-        VisitEdgesBetweenNodesWithVisibility(TurnController.CurrentPlayer.StartingNode, getNode(), PathVisibilityIncreaseScaleParameter,
+        GraphUtility.VisitEdgesBetweenNodesWithVisibility(TurnController.CurrentPlayer.StartingNode, getNode(), PathVisibilityIncreaseScaleParameter,
             (edge, increaseScaleParameter) => { edge.applyRandomEdgeVisibilityIncrease(increaseScaleParameter, PathMaxVisibilityIncrease); });
 		
 		clearScheduled();
@@ -119,46 +119,5 @@ public abstract class Action : DependencyResolvingComponent {
 
     public NodeData getNode() {
         return transform.parent.GetComponent<NodeData>();
-    }
-
-    /// <summary>
-    /// Visit each player controlled edge along all possible paths from source to target.  For each edge, the visitor will recieve (1) the EdgeData for
-    /// the edge being visited and (2) the probability for a visibility increase on that edge.
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
-    /// <param name="baseIncreaseProbability"></param>
-    /// <param name="doStuffHere"></param>
-    public static void VisitEdgesBetweenNodesWithVisibility(NodeData source, NodeData target, float baseIncreaseProbability, System.Action<EdgeData, float> visitor)
-    {
-        //find all the edges that are between the source and target nodes
-        HashSet<EdgeData> betwixtEdgesClosure = GraphUtility.instance.getEdgesBetweenNodes(source, target);
-        List<NodeData> sortedNodes = GraphUtility.instance.TopologicalSortOnEdgeSubset(source, betwixtEdgesClosure);
-
-        //split the visibility increase over all the possible paths
-        Dictionary<NodeData, float> increaseProbabilities = new Dictionary<NodeData,float>();
-        increaseProbabilities[source] = baseIncreaseProbability;
-        foreach(NodeData currentNode in sortedNodes)
-        {
-            //evenly divide visibility increase likelihood over all child nodes (thus implicitly edges) in the closure
-            List<NodeData> futureNodes = GraphUtility.instance.getInfluencedNodes(currentNode);
-            //only this in the closure!
-            futureNodes.RemoveAll((x) => !sortedNodes.Contains(x));
-
-            float increaseProbability = increaseProbabilities[currentNode] / futureNodes.Count;
-
-            //go ahead and apply this visibility, it's safe b/c we've accumulated everything from all this guy's ancestors (yay topo sort!)
-            foreach (EdgeData edge in futureNodes.Select<NodeData, EdgeData>((x) => GraphUtility.instance.getConnectingEdge(currentNode, x)))
-            {
-                visitor(edge, increaseProbability);
-            }
-
-            //propagate visibility to descendants
-            foreach (NodeData node in futureNodes)
-            {
-                if (!increaseProbabilities.ContainsKey(node)) increaseProbabilities[node] = 0.0f;
-                increaseProbabilities[node] += increaseProbability;
-            }
-        }
     }
 }
