@@ -14,7 +14,7 @@ namespace Assets
         public TurnController TurnController { get { return getDependency<TurnController>(); } }
         public GraphUtility GraphUtility { get { return getDependency<GraphUtility>(); } }
 
-        private void Awake()
+        public DependencyResolvingComponent()
         {
             dependencies = new Dictionary<Type, Component>();
         }
