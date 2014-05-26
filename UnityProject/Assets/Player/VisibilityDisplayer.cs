@@ -9,7 +9,7 @@ using Assets.Graph.Edges;
 
 namespace Assets.Player
 {
-    public class VisibilityDisplayer : MonoBehaviour
+    public class VisibilityDisplayer : DependencyResolvingComponent
     {
         private EdgeData hoveredEdgeData = null;
         private GUIStyle visibilityStyle;
@@ -42,7 +42,7 @@ namespace Assets.Player
                 string text = "Visibility: " + (int)(hoveredEdgeData.Visibility * 100) + "%";
 
                 bool isOwned = hoveredEdgeData.direction == EdgeData.EdgeDirection.OneToTwo || hoveredEdgeData.direction == EdgeData.EdgeDirection.TwoToOne;
-                if (isOwned && hoveredEdgeData.nodeOne.GetComponent<NodeData>().Owner == TurnController.instance.CurrentPlayer)
+                if (isOwned && hoveredEdgeData.nodeOne.GetComponent<NodeData>().Owner == TurnController.CurrentPlayer)
                 {
                     text += "\nIncrease Rate: " + Mathf.Round(100 * hoveredEdgeData.visIncreaseModifier) + "%";
                 }

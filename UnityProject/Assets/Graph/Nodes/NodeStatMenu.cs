@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
 using Assets.Graph.Nodes;
+using Assets;
 
-public class NodeStatMenu : MonoBehaviour {
+public class NodeStatMenu : DependencyResolvingComponent
+{
 
 	private bool isShown = false;
 	private GUIStyle style;
@@ -53,14 +55,14 @@ public class NodeStatMenu : MonoBehaviour {
 	}
 
 	private bool canShowMenu(NodeData node) {
-        if (!TurnController.instance.CurrentPlayer.IsLocalHumanPlayer) return false;
-		if (node.Owner == TurnController.instance.CurrentPlayer) {
+        if (!TurnController.CurrentPlayer.IsLocalHumanPlayer) return false;
+		if (node.Owner == TurnController.CurrentPlayer) {
 			return true;
 		}
 
-		List<NodeData> nodes = GraphUtility.instance.getConnectedNodes(node);
+		List<NodeData> nodes = GraphUtility.getConnectedNodes(node);
 		foreach (NodeData otherNode in nodes) {
-			if (otherNode.Owner == TurnController.instance.CurrentPlayer) {
+			if (otherNode.Owner == TurnController.CurrentPlayer) {
 				return true;
 			}
 		}

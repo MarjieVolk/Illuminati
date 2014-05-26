@@ -7,14 +7,14 @@ using UnityEngine;
 
 namespace Assets
 {
-    public class GameLogicComponent : MonoBehaviour
+    public class DependencyResolvingComponent : MonoBehaviour
     {
         private Dictionary<Type, Component> dependencies;
 
         public TurnController TurnController { get { return getDependency<TurnController>(); } }
         public GraphUtility GraphUtility { get { return getDependency<GraphUtility>(); } }
 
-        private void Awake()
+        public DependencyResolvingComponent()
         {
             dependencies = new Dictionary<Type, Component>();
         }

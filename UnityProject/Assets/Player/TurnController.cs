@@ -8,8 +8,6 @@ namespace Assets.Player
 {
     public class TurnController : MonoBehaviour
     {
-		public static TurnController instance { get; private set; }
-
         public event System.Action OnTurnEnd;
         public event System.Action OnTurnStart;
 
@@ -22,12 +20,6 @@ namespace Assets.Player
         private int current = 0;
 
         public bool BetweenTurns = false;
-
-        // Use this for initialization
-        void Awake()
-        {
-			instance = this;
-        }
 
         void Start()
         {

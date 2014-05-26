@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Player;
 using Assets.HUD;
+using Assets;
 
-public class VictoryConditionController : MonoBehaviour {
+public class VictoryConditionController : DependencyResolvingComponent {
 
 	public GameObject winScreen;
     public GUISkin skin;
@@ -17,7 +18,7 @@ public class VictoryConditionController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		TurnController.instance.OnTurnEnd += checkVictoryCondition;
+		TurnController.OnTurnEnd += checkVictoryCondition;
 		style = new GUIStyle();
 		style.fontSize = 32;
 		style.fontStyle = FontStyle.Bold;
@@ -48,7 +49,7 @@ public class VictoryConditionController : MonoBehaviour {
             lossMessage = "";
             foreach (PlayerData losingPlayer in players) {
                 lossMessage += losingPlayer.PlayerName + " Lost!\n";
-                TurnController.instance.removePlayer(losingPlayer);
+                TurnController.removePlayer(losingPlayer);
             }
         }
 

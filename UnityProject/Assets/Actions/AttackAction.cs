@@ -25,11 +25,11 @@ public class AttackAction : Action {
 
 	override public List<Targetable> getPossibleTargets() {
 		NodeData thisNode = getNode();
-		List<NodeData> nodes = GraphUtility.instance.getNeutralConnectedNodes(thisNode);
+		List<NodeData> nodes = GraphUtility.getNeutralConnectedNodes(thisNode);
 		List<Targetable> ret = new List<Targetable>();
 		foreach (NodeData node in nodes) {
             //make sure captures can't create a cycle
-            if (GraphUtility.instance.getNodesReachableFrom(node, false).Contains(thisNode))
+            if (GraphUtility.getNodesReachableFrom(node, false).Contains(thisNode))
                 continue;
             if (FindObjectsOfType<PlayerData>().Any((player) => player.StartingNode == node))
                 continue;
@@ -46,13 +46,13 @@ public class AttackAction : Action {
 		NodeData otherNode = target.GetComponent<NodeData>();
 		NodeData thisNode = getNode();
 
-        EdgeData edge = GraphUtility.instance.getConnectingEdge(thisNode, otherNode);
+        EdgeData edge = GraphUtility.getConnectingEdge(thisNode, otherNode);
         if (edge.direction == EdgeData.EdgeDirection.Unusable) return;
 		
         bool isWin = gen.NextDouble() <= getProbabilityOfWin(target);
 
 		// Take node
-		if (isWin) GraphUtility.instance.CaptureNode(otherNode, thisNode);
+		if (isWin) GraphUtility.CaptureNode(otherNode, thisNode);
 
         if (effect != null) effect.additionalEffect(thisNode, target, isWin);
         effect = null;

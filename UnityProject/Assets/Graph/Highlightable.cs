@@ -2,8 +2,9 @@
 using System.Collections;
 using System;
 using Assets.Player;
+using Assets;
 
-public abstract class Highlightable : MonoBehaviour {
+public abstract class Highlightable : DependencyResolvingComponent {
 	
 	public Sprite normalSprite, highlightSprite, ownedNormalSprite, ownedHighlightSprite;
 

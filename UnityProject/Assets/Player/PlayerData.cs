@@ -7,8 +7,9 @@ using Assets.Graph.Nodes;
 using System.Linq;
 using Assets.AI;
 using Assets.Actions;
+using Assets;
 
-public class PlayerData : MonoBehaviour {
+public class PlayerData : DependencyResolvingComponent {
 
     public string PlayerName;
     public int ActionPointsPerTurn;
@@ -45,7 +46,7 @@ public class PlayerData : MonoBehaviour {
 
     private void selectSecondaryStartingNodes()
     {
-        List<NodeData> adjacentNodes = GraphUtility.instance.getConnectedNodes(StartingNode)
+        List<NodeData> adjacentNodes = GraphUtility.getConnectedNodes(StartingNode)
             .Where<NodeData>((node) => node.isSecondaryStartNode)
             .ToList<NodeData>();
         List<NodeData> toCapture = new List<NodeData>();
@@ -63,7 +64,7 @@ public class PlayerData : MonoBehaviour {
 
         foreach (NodeData node in toCapture)
         {
-            GraphUtility.instance.CaptureNode(node, StartingNode);
+            GraphUtility.CaptureNode(node, StartingNode);
             node.startingOwner = this;
         }
     }
@@ -87,7 +88,7 @@ public class PlayerData : MonoBehaviour {
     }
 	
 	void Update() {
-        if (TurnController.instance != null && this == TurnController.instance.CurrentPlayer)
+        if (TurnController != null && this == TurnController.CurrentPlayer)
         {
             if (IsLocalHumanPlayer)
             {
