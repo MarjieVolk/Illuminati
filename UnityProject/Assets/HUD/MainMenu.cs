@@ -23,6 +23,11 @@ public class MainMenu : MonoBehaviour {
     private List<string> playerNames;
     private string[] playerOptions = { "Human", "Computer" };
 
+    private int mapChoice = 0;
+    private string[] mapOptions = { "Default Map", "New Tiny Map!" };
+    private int[] mapMaxPlayers = { 4, 2 };
+    private string[] mapScenes = { "Map", "TinyMap" };
+
 	// Use this for initialization
 	void Start () {
         titleStyle = new GUIStyle();
@@ -52,7 +57,7 @@ public class MainMenu : MonoBehaviour {
             }
         }
 
-        Application.LoadLevel("Map");
+        Application.LoadLevel(mapScenes[mapChoice]);
     }
 
     private void resetDefaults() {
@@ -114,9 +119,13 @@ public class MainMenu : MonoBehaviour {
     }
 
     private void layoutWindow(int windowID) {
+        GUILayout.Label("Map:");
+        mapChoice = GUILayout.SelectionGrid(mapChoice, mapOptions, 2);
+
         GUILayout.BeginHorizontal();
         GUILayout.Label("Number of Players: ");
-        nPlayers = (int) Mathf.Round(GUILayout.HorizontalSlider(nPlayers, 2, 4));
+        int max = mapMaxPlayers[mapChoice];
+        nPlayers = (int) Mathf.Round(GUILayout.HorizontalSlider(Math.Min(nPlayers, max), 2, max));
         GUILayout.Label("" + nPlayers);
         GUILayout.EndHorizontal();
 
