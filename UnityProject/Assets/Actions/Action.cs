@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Assets.Player;
+using Assets;
 
-public abstract class Action : MonoBehaviour {
+public abstract class Action : GameLogicComponent {
 
     // *****
     // Unity Editor configuration
@@ -40,16 +41,16 @@ public abstract class Action : MonoBehaviour {
 
     public void Activate() {
 		doActivate(Target);
-        GraphUtility.instance.TidyGraph();
+        GraphUtility.TidyGraph();
         //do applicable visibility increases
         if (IsTargeting && Target.GetType() == typeof(NodeData))
         {
-            if (GraphUtility.instance.getConnectedNodes(getNode()).Contains((NodeData)Target))
+            if (GraphUtility.getConnectedNodes(getNode()).Contains((NodeData)Target))
             {
-                GraphUtility.instance.getConnectingEdge(getNode(), (NodeData)Target).applyRandomEdgeVisibilityIncrease(CarryingEdgeVisibilityIncreaseScaleParameter, CarryingEdgeMaxVisibilityIncrease);
+                GraphUtility.getConnectingEdge(getNode(), (NodeData)Target).applyRandomEdgeVisibilityIncrease(CarryingEdgeVisibilityIncreaseScaleParameter, CarryingEdgeMaxVisibilityIncrease);
             }
         }
-        VisitEdgesBetweenNodesWithVisibility(TurnController.instance.CurrentPlayer.StartingNode, getNode(), PathVisibilityIncreaseScaleParameter,
+        VisitEdgesBetweenNodesWithVisibility(TurnController.CurrentPlayer.StartingNode, getNode(), PathVisibilityIncreaseScaleParameter,
             (edge, increaseScaleParameter) => { edge.applyRandomEdgeVisibilityIncrease(increaseScaleParameter, PathMaxVisibilityIncrease); });
 		
 		clearScheduled();
@@ -96,24 +97,24 @@ public abstract class Action : MonoBehaviour {
         if (OnStateUpdate != null) OnStateUpdate(this);
 
         // DURATION turns from now, take this off cd
-        PlayerData playerOfInterest = TurnController.instance.CurrentPlayer;
+        PlayerData playerOfInterest = TurnController.CurrentPlayer;
         int numTurnsDelay = nTurns;
         System.Action handler = null;
         handler = () => {
-            if (TurnController.instance.CurrentPlayer == playerOfInterest) {
+            if (TurnController.CurrentPlayer == playerOfInterest) {
                 numTurnsDelay--;
 
                 if (0 == numTurnsDelay) {
                     IsOnCooldown = false;
                     if (OnStateUpdate != null) OnStateUpdate(this);
-                    TurnController.instance.OnTurnEnd -= handler;
+                    TurnController.OnTurnEnd -= handler;
 
                     onReactivate();
                 }
             }
         };
 
-        TurnController.instance.OnTurnStart += handler;
+        TurnController.OnTurnStart += handler;
     }
 
     public NodeData getNode() {

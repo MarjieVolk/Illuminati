@@ -18,7 +18,7 @@ namespace Assets.AI.ActionConsumptionStrategies
         public override List<Action> consumeActions(int numActionsRemaining)
         {
             //get the list of attack options we've got
-            List<Tuple<NodeData, NodeData, AttackAction, double>> attackPossibilities = generateInitialAttackPossibilities();
+            List<Tuple<NodeData, NodeData, AttackAction, double>> attackPossibilities = generateInitialAttackPossibilities(TurnController.CurrentPlayer);
 
             //put them in a priority queue to keep them sorted by probability of adding a new node
             PriorityQueue<Tuple<NodeData, NodeData, AttackAction, double>, double> queue = new PriorityQueue<Tuple<NodeData, NodeData, AttackAction, double>, double>();
@@ -71,14 +71,12 @@ namespace Assets.AI.ActionConsumptionStrategies
             return ret;
         }
 
-        private static List<Tuple<NodeData, NodeData, AttackAction, double>> generateInitialAttackPossibilities()
+        private static List<Tuple<NodeData, NodeData, AttackAction, double>> generateInitialAttackPossibilities(PlayerData attackingPlayer)
         {
-            PlayerData me = TurnController.instance.CurrentPlayer;
-
             List<Tuple<NodeData, NodeData, AttackAction, double>> attackPossibilities = new List<Tuple<NodeData, NodeData, AttackAction, double>>();
 
             IEnumerable<NodeData> myNodes = FindObjectsOfType<NodeData>()
-                .Where<NodeData>((node) => node.Owner == me)
+                .Where<NodeData>((node) => node.Owner == attackingPlayer)
                 .Where<NodeData>((node) => !node.isScheduled);
 
             foreach (NodeData myNode in myNodes)

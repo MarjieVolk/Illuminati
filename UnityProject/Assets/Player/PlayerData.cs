@@ -7,8 +7,9 @@ using Assets.Graph.Nodes;
 using System.Linq;
 using Assets.AI;
 using Assets.Actions;
+using Assets;
 
-public class PlayerData : MonoBehaviour {
+public class PlayerData : GameLogicComponent {
 
     public string PlayerName;
     public int ActionPointsPerTurn;
@@ -87,7 +88,7 @@ public class PlayerData : MonoBehaviour {
     }
 	
 	void Update() {
-        if (TurnController.instance != null && this == TurnController.instance.CurrentPlayer)
+        if (TurnController != null && this == TurnController.CurrentPlayer)
         {
             if (IsLocalHumanPlayer)
             {

@@ -38,7 +38,7 @@ namespace Assets.Graph.Nodes
             //can target any edge that does not belong to you with sufficiently high visibility
             List<EdgeData> allEdges = new List<EdgeData>(FindObjectsOfType<EdgeData>());
 
-            PlayerData currentPlayer = TurnController.instance.CurrentPlayer;
+            PlayerData currentPlayer = TurnController.CurrentPlayer;
 
             IEnumerable<EdgeData> possibleTargetEdges = allEdges.Where<EdgeData>((x) =>
                 {
@@ -58,7 +58,7 @@ namespace Assets.Graph.Nodes
         protected override void doActivate(Targetable target)
         {
             EdgeData edge = (EdgeData) target;
-            PlayerData currentPlayer = TurnController.instance.CurrentPlayer;
+            PlayerData currentPlayer = TurnController.CurrentPlayer;
 
             if (edge.getOwner() == currentPlayer) {
                 return;
@@ -77,7 +77,7 @@ namespace Assets.Graph.Nodes
 
                 directionResetter = () =>
                     {
-                        if (TurnController.instance.CurrentPlayer == currentPlayer)
+                        if (TurnController.CurrentPlayer == currentPlayer)
                         {
                             numTurnsRemaining--;
                         }
@@ -85,11 +85,11 @@ namespace Assets.Graph.Nodes
                         if (numTurnsRemaining == 0)
                         {
                             edge.direction = EdgeData.EdgeDirection.Neutral;
-                            TurnController.instance.OnTurnEnd -= directionResetter;
+                            TurnController.OnTurnEnd -= directionResetter;
                         }
                     };
 
-                TurnController.instance.OnTurnEnd += directionResetter;
+                TurnController.OnTurnEnd += directionResetter;
 
                 //TODO possibly reveal the user of the edge, if any?
             }

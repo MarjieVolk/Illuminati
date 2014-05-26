@@ -3,8 +3,9 @@ using System.Collections;
 using Assets.Graph.Nodes;
 using System;
 using System.Collections.Generic;
+using Assets;
 
-public abstract class Targetable : MonoBehaviour {
+public abstract class Targetable : GameLogicComponent {
 
     protected List<Action> targetingActions;
 
