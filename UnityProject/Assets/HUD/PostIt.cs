@@ -9,10 +9,6 @@ public class PostIt : DependencyResolvingComponent
 {
 
     private const float SNAP_DISTANCE = 0.2f;
-    private const float NODE_OFFSET_X = -0.5f;
-    private const float NODE_OFFSET_Y = 0;
-    private const float NODE_OFFSET_Z = -1;
-    private static Vector3 NODE_OFFSET;
 
     private delegate void PositionChangeHandler(NodeData node, PostIt owner);
     private static event PositionChangeHandler PositionChanged;
@@ -25,7 +21,6 @@ public class PostIt : DependencyResolvingComponent
 
 	// Use this for initialization
 	void Start () {
-        NODE_OFFSET = new Vector3(NODE_OFFSET_X, NODE_OFFSET_Y, NODE_OFFSET_Z);
         owner = TurnController.CurrentPlayer;
 
         this.gameObject.SetActive(VisibilityController.instance.visibility == VisibilityController.Visibility.Private);
