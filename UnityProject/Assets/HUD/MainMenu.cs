@@ -53,8 +53,8 @@ public class MainMenu : MonoBehaviour {
         mapOptions = new GUIContent[mapTitles.Length];
         for (int i = 0; i < mapOptions.Length; i++) {
             mapOptions[i] = new GUIContent();
-            mapOptions[0].image = Resources.Load<Texture>(mapImages[i]);
-            mapOptions[0].text = mapTitles[i];
+            mapOptions[i].image = Resources.Load<Texture>(mapImages[i]);
+            mapOptions[i].text = mapTitles[i];
         }
 
         resetDefaults();
