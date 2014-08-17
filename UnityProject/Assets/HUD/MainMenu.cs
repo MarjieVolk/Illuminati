@@ -24,11 +24,7 @@ public class MainMenu : MonoBehaviour {
     private List<string> playerNames;
     private string[] playerOptions = { "Human", "Computer" };
 
-    // To add a new map to the menu, update these 4 arrays:
-    private string[] mapTitles = { "Old Map", "Crazy New Map" }; // User displayed map name
-    private string[] mapImages = { "map_icon", "tinymap_icon" }; // Path to map screenshot file (under "Resources" folder)
-    private int[] mapMaxPlayers = { 4, 2 }; // Maximum number of players
-    private string[] mapScenes = { "Map", "TinyMap" }; // Name of scene containing map
+    private MapData[] maps = { new MapData("Old Map", "map_icon", "Map", 4), new MapData("Crazy New map", "tinymap_icon", "TinyMap", 2) };
 
     private int mapChoice = 0;
     private GUIContent[] mapOptions;
@@ -50,11 +46,11 @@ public class MainMenu : MonoBehaviour {
         instructions = gameObject.GetComponent<Instructions>();
         instructions.enabled = false;
 
-        mapOptions = new GUIContent[mapTitles.Length];
+        mapOptions = new GUIContent[maps.Length];
         for (int i = 0; i < mapOptions.Length; i++) {
             mapOptions[i] = new GUIContent();
-            mapOptions[i].image = Resources.Load<Texture>(mapImages[i]);
-            mapOptions[i].text = mapTitles[i];
+            mapOptions[i].image = Resources.Load<Texture>(maps[i].screenshot);
+            mapOptions[i].text = maps[i].title;
         }
 
         resetDefaults();
@@ -76,7 +72,7 @@ public class MainMenu : MonoBehaviour {
             }
         }
 
-        Application.LoadLevel(mapScenes[mapChoice]);
+        Application.LoadLevel(maps[mapChoice].scene);
     }
 
     private void resetDefaults() {
@@ -146,7 +142,7 @@ public class MainMenu : MonoBehaviour {
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Number of Players: ");
-        int max = mapMaxPlayers[mapChoice];
+        int max = maps[mapChoice].maxPlayers;
         nPlayers = (int) Mathf.Round(GUILayout.HorizontalSlider(Math.Min(nPlayers, max), 2, max));
         GUILayout.Label("" + nPlayers);
         GUILayout.EndHorizontal();
@@ -233,6 +229,20 @@ public class MainMenu : MonoBehaviour {
                 // not focused
                 if (playerNames[i] == "") playerNames[i] = "Player " + i;
             }
+        }
+    }
+
+    private class MapData {
+        public String scene { get; private set; }
+        public String title { get; private set; }
+        public String screenshot { get; private set; } // Path to map screenshot file (under "Resources" folder)
+        public int maxPlayers { get; private set; }
+
+        public MapData(String title, String screenshot, String scene, int maxPlayers) {
+            this.scene = scene;
+            this.title = title;
+            this.screenshot = screenshot;
+            this.maxPlayers = maxPlayers;
         }
     }
 }
