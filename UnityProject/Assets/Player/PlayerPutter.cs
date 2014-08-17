@@ -8,11 +8,12 @@ namespace Assets.Player
 {
     public class PlayerPutter : MonoBehaviour
     {
-        private void Start()
+        private void Awake()
         {
             foreach (PlayerData player in FindObjectsOfType<PlayerData>())
             {
                 player.transform.parent = gameObject.transform;
+                player.enabled = true;
             }
         }
     }

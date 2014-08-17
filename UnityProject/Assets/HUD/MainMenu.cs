@@ -92,6 +92,7 @@ public class MainMenu : MonoBehaviour {
         player.PlayerName = name;
         player.turnOrder = index;
         player.IsLocalHumanPlayer = true;
+        player.enabled = false;
         DontDestroyOnLoad(obj);
     }
 
@@ -102,6 +103,7 @@ public class MainMenu : MonoBehaviour {
         player.PlayerName = name;
         player.turnOrder = index;
         player.IsLocalHumanPlayer = false;
+        player.enabled = false;
         DontDestroyOnLoad(obj);
     }
 
