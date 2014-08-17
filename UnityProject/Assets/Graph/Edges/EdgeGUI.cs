@@ -33,7 +33,7 @@ namespace Assets.Graph.Edges
         {
             base.Start();
             Edge = GetComponent<EdgeData>();
-            TurnController.OnTurnEnd += updateVisibilityRendering;
+            turnController.OnTurnEnd += updateVisibilityRendering;
             VisibilityController.instance.VisibilityChanged += new VisibilityController.VisibilityChangeHandler(updateArrowHead);
         }
 
@@ -47,7 +47,7 @@ namespace Assets.Graph.Edges
         public override bool viewAsOwned(Player.VisibilityController.Visibility visibility)
         {
             bool isPrivate = visibility == VisibilityController.Visibility.Private;
-            return isPrivate && Edge.getOwner() == TurnController.CurrentPlayer;
+            return isPrivate && Edge.getOwner() == turnController.CurrentPlayer;
         }
 
         private void updateArrowHead(VisibilityController.Visibility vis)

@@ -46,7 +46,7 @@ public class PlayerData : DependencyResolvingComponent {
 
     private void selectSecondaryStartingNodes()
     {
-        List<NodeData> adjacentNodes = GraphUtility.getConnectedNodes(StartingNode)
+        List<NodeData> adjacentNodes = graphUtility.getConnectedNodes(StartingNode)
             .Where<NodeData>((node) => node.isSecondaryStartNode)
             .ToList<NodeData>();
         List<NodeData> toCapture = new List<NodeData>();
@@ -64,7 +64,7 @@ public class PlayerData : DependencyResolvingComponent {
 
         foreach (NodeData node in toCapture)
         {
-            GraphUtility.CaptureNode(node, StartingNode);
+            graphUtility.CaptureNode(node, StartingNode);
             node.startingOwner = this;
         }
     }
@@ -88,7 +88,7 @@ public class PlayerData : DependencyResolvingComponent {
     }
 	
 	void Update() {
-        if (TurnController != null && this == TurnController.CurrentPlayer)
+        if (turnController != null && this == turnController.CurrentPlayer)
         {
             if (IsLocalHumanPlayer)
             {

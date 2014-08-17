@@ -14,7 +14,7 @@ namespace Assets.AI.ActionConsumptionStrategies
 
         public override List<Action> consumeActions(int numActionsRemaining)
         {
-            PlayerData me = TurnController.CurrentPlayer;
+            PlayerData me = turnController.CurrentPlayer;
 
             //fetch all the edges
             IEnumerable<EdgeData> myEdges = FindObjectsOfType<EdgeData>()

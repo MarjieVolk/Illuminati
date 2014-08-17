@@ -13,7 +13,7 @@ namespace Assets.Player
 
         public void Start()
         {
-            TurnController.OnTurnEnd += () =>
+            turnController.OnTurnEnd += () =>
             {
                 foreach (EdgeData edge in FindObjectsOfType<EdgeData>())
                 {

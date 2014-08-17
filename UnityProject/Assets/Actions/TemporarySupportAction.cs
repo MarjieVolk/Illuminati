@@ -19,8 +19,8 @@ public class TemporarySupportAction : Action {
 	
 	public override List<Targetable> getPossibleTargets() {
 		NodeData thisNode = getNode();
-		List<NodeData> nodes = GraphUtility.getInfluencingNodes(thisNode);
-		nodes.AddRange(GraphUtility.getInfluencedNodes(thisNode));
+		List<NodeData> nodes = graphUtility.getInfluencingNodes(thisNode);
+		nodes.AddRange(graphUtility.getInfluencedNodes(thisNode));
 		
 		List<Targetable> targets = new List<Targetable>();
 		foreach (NodeData node in nodes) {
@@ -49,7 +49,7 @@ public class TemporarySupportAction : Action {
 
         // Decrease edge visibility
         float visDecrease = (float) (gen.NextDouble() * (maxVisDecrease - minVisDecrease)) + minVisDecrease;
-        GraphUtility.getConnectingEdge(otherNode, thisNode).Visibility -= visDecrease;
+        graphUtility.getConnectingEdge(otherNode, thisNode).Visibility -= visDecrease;
 	}
 
     public static void doIncrease(NodeData performer, NodeData target, float multiplier) {

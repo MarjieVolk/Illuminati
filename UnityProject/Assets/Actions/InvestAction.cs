@@ -27,7 +27,7 @@ namespace Assets.Graph.Nodes
         protected override void doActivate(Targetable target)
         {
             putOnCooldown(DURATION, () => {
-                TurnController.CurrentPlayer.addActionPoints(ActionsPayoff);
+                turnController.CurrentPlayer.addActionPoints(ActionsPayoff);
             });
         }
 

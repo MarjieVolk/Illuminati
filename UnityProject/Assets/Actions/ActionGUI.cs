@@ -24,7 +24,7 @@ namespace Assets.Actions
         {
             if (action.transform.parent.GetComponent<NodeData>().isScheduled)
             {
-                if (TurnController.CurrentPlayer.IsLocalHumanPlayer)
+                if (turnController.CurrentPlayer.IsLocalHumanPlayer)
                 {
                     GameObject tag = getMapScheduledTag();
                     tag.SetActive(true);

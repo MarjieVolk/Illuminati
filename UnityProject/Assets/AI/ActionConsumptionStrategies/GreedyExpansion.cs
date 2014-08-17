@@ -18,7 +18,7 @@ namespace Assets.AI.ActionConsumptionStrategies
         public override List<Action> consumeActions(int numActionsRemaining)
         {
             //get the list of attack options we've got
-            List<Tuple<NodeData, NodeData, AttackAction, double>> attackPossibilities = generateInitialAttackPossibilities(TurnController.CurrentPlayer);
+            List<Tuple<NodeData, NodeData, AttackAction, double>> attackPossibilities = generateInitialAttackPossibilities(turnController.CurrentPlayer);
 
             //put them in a priority queue to keep them sorted by probability of adding a new node
             PriorityQueue<Tuple<NodeData, NodeData, AttackAction, double>, double> queue = new PriorityQueue<Tuple<NodeData, NodeData, AttackAction, double>, double>();

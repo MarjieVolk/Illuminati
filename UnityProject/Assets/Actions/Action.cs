@@ -41,16 +41,16 @@ public abstract class Action : DependencyResolvingComponent {
 
     public void Activate() {
 		doActivate(Target);
-        GraphUtility.TidyGraph();
+        graphUtility.TidyGraph();
         //do applicable visibility increases
         if (IsTargeting && Target.GetType() == typeof(NodeData))
         {
-            if (GraphUtility.getConnectedNodes(getNode()).Contains((NodeData)Target))
+            if (graphUtility.getConnectedNodes(getNode()).Contains((NodeData)Target))
             {
-                GraphUtility.getConnectingEdge(getNode(), (NodeData)Target).applyRandomEdgeVisibilityIncrease(CarryingEdgeVisibilityIncreaseScaleParameter, CarryingEdgeMaxVisibilityIncrease);
+                graphUtility.getConnectingEdge(getNode(), (NodeData)Target).applyRandomEdgeVisibilityIncrease(CarryingEdgeVisibilityIncreaseScaleParameter, CarryingEdgeMaxVisibilityIncrease);
             }
         }
-        GraphUtility.VisitEdgesBetweenNodesWithVisibility(TurnController.CurrentPlayer.StartingNode, getNode(), PathVisibilityIncreaseScaleParameter,
+        graphUtility.VisitEdgesBetweenNodesWithVisibility(turnController.CurrentPlayer.StartingNode, getNode(), PathVisibilityIncreaseScaleParameter,
             (edge, increaseScaleParameter) => { edge.applyRandomEdgeVisibilityIncrease(increaseScaleParameter, PathMaxVisibilityIncrease); });
 		
 		clearScheduled();
@@ -97,24 +97,24 @@ public abstract class Action : DependencyResolvingComponent {
         if (OnStateUpdate != null) OnStateUpdate(this);
 
         // DURATION turns from now, take this off cd
-        PlayerData playerOfInterest = TurnController.CurrentPlayer;
+        PlayerData playerOfInterest = turnController.CurrentPlayer;
         int numTurnsDelay = nTurns;
         System.Action handler = null;
         handler = () => {
-            if (TurnController.CurrentPlayer == playerOfInterest) {
+            if (turnController.CurrentPlayer == playerOfInterest) {
                 numTurnsDelay--;
 
                 if (0 == numTurnsDelay) {
                     IsOnCooldown = false;
                     if (OnStateUpdate != null) OnStateUpdate(this);
-                    TurnController.OnTurnEnd -= handler;
+                    turnController.OnTurnEnd -= handler;
 
                     onReactivate();
                 }
             }
         };
 
-        TurnController.OnTurnStart += handler;
+        turnController.OnTurnStart += handler;
     }
 
     public NodeData getNode() {

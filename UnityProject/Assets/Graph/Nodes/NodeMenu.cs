@@ -38,7 +38,7 @@ public class NodeMenu : RadialMenu {
         GetComponent<NodeGUI>().OnHover += () =>
         {
             // Show node menu
-            if (!Input.GetMouseButton(0) && node.Owner == TurnController.CurrentPlayer && !ActionController.instance.inSelectionState)
+            if (!Input.GetMouseButton(0) && node.Owner == turnController.CurrentPlayer && !ActionController.instance.inSelectionState)
             {
                 this.show();
             }
@@ -46,8 +46,8 @@ public class NodeMenu : RadialMenu {
 	}
 
 	public override void show() {
-		if (node.isScheduled || gameObject.GetComponent<NodeData>().nTurnsUntilAvailable > 0 || TurnController.BetweenTurns ||
-            !TurnController.CurrentPlayer.IsLocalHumanPlayer || TurnController.CurrentPlayer.actionPointsRemaining() <= 0) {
+		if (node.isScheduled || gameObject.GetComponent<NodeData>().nTurnsUntilAvailable > 0 || turnController.BetweenTurns ||
+            !turnController.CurrentPlayer.IsLocalHumanPlayer || turnController.CurrentPlayer.actionPointsRemaining() <= 0) {
 			return;
 		}
 

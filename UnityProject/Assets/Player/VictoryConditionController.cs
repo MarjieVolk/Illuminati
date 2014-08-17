@@ -18,7 +18,7 @@ public class VictoryConditionController : DependencyResolvingComponent {
 
 	// Use this for initialization
 	void Start () {
-		TurnController.OnTurnEnd += checkVictoryCondition;
+		turnController.OnTurnEnd += checkVictoryCondition;
 		style = new GUIStyle();
 		style.fontSize = 32;
 		style.fontStyle = FontStyle.Bold;
@@ -49,7 +49,7 @@ public class VictoryConditionController : DependencyResolvingComponent {
             lossMessage = "";
             foreach (PlayerData losingPlayer in players) {
                 lossMessage += losingPlayer.PlayerName + " Lost!\n";
-                TurnController.removePlayer(losingPlayer);
+                turnController.removePlayer(losingPlayer);
             }
         }
 

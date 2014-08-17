@@ -121,14 +121,14 @@ namespace Assets.Player
             EdgeData carryingEdge = null;
 
             if (target is NodeData) {
-                if (GraphUtility.getConnectedNodes(actionNode).Contains((NodeData)target)) {
-                    carryingEdge = GraphUtility.getConnectingEdge(actionNode, (NodeData)target);
+                if (graphUtility.getConnectedNodes(actionNode).Contains((NodeData)target)) {
+                    carryingEdge = graphUtility.getConnectingEdge(actionNode, (NodeData)target);
                     carryingEdgeExpected += carryingEdge.getExpectedVisibilityIncrease(selected.CarryingEdgeVisibilityIncreaseScaleParameter, selected.CarryingEdgeMaxVisibilityIncrease, true);
                 }
             }
             bool didCarryingEdge = false;
 
-            GraphUtility.VisitEdgesBetweenNodesWithVisibility(TurnController.CurrentPlayer.StartingNode, actionNode, selected.PathVisibilityIncreaseScaleParameter,
+            graphUtility.VisitEdgesBetweenNodesWithVisibility(turnController.CurrentPlayer.StartingNode, actionNode, selected.PathVisibilityIncreaseScaleParameter,
                 (edge, increaseScaleParameter) => {
                     float expected = edge.getExpectedVisibilityIncrease(increaseScaleParameter, edge.getMaxEdgeVisibilityIncrease(selected.PathMaxVisibilityIncrease));
                     bool isCarryingEdge = edge != null && edge == carryingEdge;
@@ -148,13 +148,13 @@ namespace Assets.Player
 
         private void endHoverForTarget(Targetable target) {
             NodeData actionNode = selected.getNode();
-            HashSet<EdgeData> edges = GraphUtility.getEdgesBetweenNodes(TurnController.CurrentPlayer.StartingNode, actionNode);
+            HashSet<EdgeData> edges = graphUtility.getEdgesBetweenNodes(turnController.CurrentPlayer.StartingNode, actionNode);
             foreach (EdgeData edge in edges) {
                 edge.GetComponent<Tooltippable>().hideTargetInfoText();
             }
 
-            if (target is NodeData && GraphUtility.getConnectedNodes(actionNode).Contains((NodeData)target)) {
-                GraphUtility.getConnectingEdge(actionNode, (NodeData)target).GetComponent<Tooltippable>().hideTargetInfoText();
+            if (target is NodeData && graphUtility.getConnectedNodes(actionNode).Contains((NodeData)target)) {
+                graphUtility.getConnectingEdge(actionNode, (NodeData)target).GetComponent<Tooltippable>().hideTargetInfoText();
             }
         }
 

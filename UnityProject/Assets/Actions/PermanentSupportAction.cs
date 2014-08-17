@@ -20,8 +20,8 @@ public class PermanentSupportAction : Action {
 
 	public override List<Targetable> getPossibleTargets() {
 		NodeData thisNode = getNode();
-		List<NodeData> nodes = GraphUtility.getInfluencingNodes(thisNode);
-		nodes.AddRange(GraphUtility.getInfluencedNodes(thisNode));
+		List<NodeData> nodes = graphUtility.getInfluencingNodes(thisNode);
+		nodes.AddRange(graphUtility.getInfluencedNodes(thisNode));
 
 		List<Targetable> targets = new List<Targetable>();
 		foreach (NodeData node in nodes) {
@@ -51,7 +51,7 @@ public class PermanentSupportAction : Action {
         doIncrease(node, (NodeData) target, 1.0f);
 
         // Decrease edge visibility modifier
-        GraphUtility.getConnectingEdge(node, (NodeData) target).visIncreaseModifier *= edgeVisModifierMultiplier;
+        graphUtility.getConnectingEdge(node, (NodeData) target).visIncreaseModifier *= edgeVisModifierMultiplier;
 	}
 
     public static void doIncrease(NodeData performer, NodeData target, float multiplier) {

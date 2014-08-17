@@ -33,7 +33,7 @@ public class EdgeData : Targetable {
     protected override void Start()
     {
         base.Start();
-        TurnController.OnTurnEnd += () => Visibility *= 0.95f;
+        turnController.OnTurnEnd += () => Visibility *= 0.95f;
 	}
 
 	public enum EdgeDirection {

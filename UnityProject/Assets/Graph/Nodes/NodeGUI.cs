@@ -17,10 +17,10 @@ namespace Assets.Graph.Nodes
             VisibilityController.instance.VisibilityChanged += (VisibilityController.Visibility visibility) => {
                 bool inRange = true;
                 if (visibility == VisibilityController.Visibility.Private) {
-                    inRange = TurnController.CurrentPlayer == Node.Owner;
+                    inRange = turnController.CurrentPlayer == Node.Owner;
                     if (!inRange) {
-                        foreach (NodeData adjacent in GraphUtility.getConnectedNodes(Node)) {
-                            if (TurnController.CurrentPlayer == adjacent.Owner) {
+                        foreach (NodeData adjacent in graphUtility.getConnectedNodes(Node)) {
+                            if (turnController.CurrentPlayer == adjacent.Owner) {
                                 inRange = true;
                                 break;
                             }
@@ -41,7 +41,7 @@ namespace Assets.Graph.Nodes
         public override bool viewAsOwned(VisibilityController.Visibility visibility)
         {
             bool isPrivate = visibility == VisibilityController.Visibility.Private;
-            return isPrivate && Node.Owner == TurnController.CurrentPlayer;
+            return isPrivate && Node.Owner == turnController.CurrentPlayer;
         }
 
         protected override Vector3 getTipTextOffset()

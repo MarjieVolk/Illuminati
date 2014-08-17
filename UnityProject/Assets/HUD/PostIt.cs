@@ -26,16 +26,16 @@ public class PostIt : DependencyResolvingComponent
 	// Use this for initialization
 	void Start () {
         NODE_OFFSET = new Vector3(NODE_OFFSET_X, NODE_OFFSET_Y, NODE_OFFSET_Z);
-        owner = TurnController.CurrentPlayer;
+        owner = turnController.CurrentPlayer;
 
         this.gameObject.SetActive(VisibilityController.instance.visibility == VisibilityController.Visibility.Private);
         visHandler = (VisibilityController.Visibility vis) => {
-            this.gameObject.SetActive(vis == VisibilityController.Visibility.Private && TurnController.CurrentPlayer == owner);
+            this.gameObject.SetActive(vis == VisibilityController.Visibility.Private && turnController.CurrentPlayer == owner);
         };
         VisibilityController.instance.VisibilityChanged += visHandler;
 
         positionHandler = (NodeData node, PostIt claimant) => {
-            if (node == currentNode && TurnController.CurrentPlayer == owner && claimant != this) {
+            if (node == currentNode && turnController.CurrentPlayer == owner && claimant != this) {
                 destroySelf();
             }
         };

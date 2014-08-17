@@ -55,14 +55,14 @@ public class NodeStatMenu : DependencyResolvingComponent
 	}
 
 	private bool canShowMenu(NodeData node) {
-        if (!TurnController.CurrentPlayer.IsLocalHumanPlayer) return false;
-		if (node.Owner == TurnController.CurrentPlayer) {
+        if (!turnController.CurrentPlayer.IsLocalHumanPlayer) return false;
+		if (node.Owner == turnController.CurrentPlayer) {
 			return true;
 		}
 
-		List<NodeData> nodes = GraphUtility.getConnectedNodes(node);
+		List<NodeData> nodes = graphUtility.getConnectedNodes(node);
 		foreach (NodeData otherNode in nodes) {
-			if (otherNode.Owner == TurnController.CurrentPlayer) {
+			if (otherNode.Owner == turnController.CurrentPlayer) {
 				return true;
 			}
 		}

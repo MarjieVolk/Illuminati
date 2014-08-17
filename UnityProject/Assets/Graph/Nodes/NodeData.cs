@@ -27,7 +27,7 @@ public class NodeData : Targetable {
 	protected override void Start () {
 		base.Start();
 		Owner = startingOwner;
-		TurnController.OnTurnStart += onTurnStart;
+		turnController.OnTurnStart += onTurnStart;
 
         // Randomize power
         if (gen == null) gen = new System.Random();
@@ -58,7 +58,7 @@ public class NodeData : Targetable {
     }
 
 	public void onTurnStart() {
-        if (TurnController.CurrentPlayer != Owner) {
+        if (turnController.CurrentPlayer != Owner) {
 			// Only decrement on your own turn
 			return;
 		}
