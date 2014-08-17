@@ -11,8 +11,9 @@ public class MainMenu : MonoBehaviour {
 
     private GUIStyle titleStyle;
     private GUIStyle mapOptionStyle;
+    private GUIStyle newGameStyle;
     private string title = "Enlightened";
-    private string play = "<size=32>New Game</size>";
+    private string play = "New Game";
     private string instructText = "Instructions";
     private string quitText = "Quit";
 
@@ -42,6 +43,9 @@ public class MainMenu : MonoBehaviour {
         mapOptionStyle.padding.top += 10;
         mapOptionStyle.padding.bottom += 10;
         mapOptionStyle.border = skin.window.border;
+
+        newGameStyle = new GUIStyle(mapOptionStyle);
+        newGameStyle.fontSize = 32;
 
         instructions = gameObject.GetComponent<Instructions>();
         instructions.enabled = false;
@@ -110,9 +114,9 @@ public class MainMenu : MonoBehaviour {
             Vector2 textSize = titleStyle.CalcSize(new GUIContent(title));
             GUI.Label(new Rect((Screen.width / 2.0f) - (textSize.x / 2.0f), (Screen.height * 0.03f), textSize.x, textSize.y), title, titleStyle);
 
-            textSize = skin.button.CalcSize(new GUIContent(play));
+            textSize = newGameStyle.CalcSize(new GUIContent(play));
             Rect newGameRect = new Rect((Screen.width / 2.0f) - ((textSize.x + 40) / 2.0f), (Screen.height * 0.85f - textSize.y), textSize.x + 40, textSize.y);
-            if (GUI.Button(newGameRect, play)) {
+            if (GUI.Button(newGameRect, play, newGameStyle)) {
                 showMenu = true;
             }
 
