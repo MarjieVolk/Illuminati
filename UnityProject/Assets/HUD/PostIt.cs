@@ -88,7 +88,10 @@ public class PostIt : DependencyResolvingComponent
             return true;
         }
 
-        PositionChanged(currentNode, this);
+        if (PositionChanged != null) {
+            PositionChanged(currentNode, this);
+        }
+
         isDrag = false;
         return false;
     }

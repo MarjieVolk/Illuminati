@@ -25,7 +25,6 @@ public class MainMenu : MonoBehaviour {
     private string[] playerOptions = { "Human", "Computer" };
 
     private MapData[] maps = { new MapData("Old Map", "map_icon", "Map", 4), new MapData("Crazy New map", "tinymap_icon", "TinyMap", 2) };
-
     private int mapChoice = 0;
     private GUIContent[] mapOptions;
 

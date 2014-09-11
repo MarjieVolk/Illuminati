@@ -30,6 +30,7 @@ public class PostItPad : Highlightable {
     void OnMouseDown() {
         GameObject postit = (GameObject) Instantiate(toGenerate.gameObject, transform.position, Quaternion.identity);
         postit.transform.position = this.transform.position;
+        postit.transform.parent = this.transform;
     }
 
     private Vector3 getPos(int index) {
